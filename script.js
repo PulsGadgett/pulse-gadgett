@@ -319,7 +319,7 @@ function checkout() {
     cart = [];
     updateCartDisplay();
     toggleCart();
-}
+
     // خالی کردن سبد خرید
     cart = [];
     updateCartDisplay();
@@ -348,6 +348,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
 
