@@ -278,31 +278,53 @@ function updateCartDisplay() {
     }
 }
 
-// ثبت سفارش
+// ثبت سفارش با انتخاب پلتفرم
 function checkout() {
     if (cart.length === 0) {
         alert('❌ سبد خرید شما خالی است!');
         return;
     }
     
+    // ساخت پیام سفارش
     const productNames = cart.map(item => `${item.name} (${item.quantity} عدد)`).join('\n');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    // محاسبه قیمت کل
     const totalPrice = cart.reduce((sum, item) => {
-        const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+        // استخراج عدد از قیمت (حذف حروف و کاما)
+        const priceStr = item.price.replace(/[^0-9]/g, '');
+        const price = parseInt(priceStr) || 0;
         return sum + (price * item.quantity);
     }, 0);
     
-    const message = `🛒 *سفارش جدید از PulseGadgett* 🛒\n\n`;
+    const message = `🛍️ *سفارش جدید از PulseGadgett* 🛍️\n\n`;
     const details = `📋 *لیست محصولات:*\n${productNames}\n\n`;
-    const summary = `📊 *جمع کل:* ${totalItems} محصول\n💰 *مبلغ کل:* ${totalPrice.toLocaleString()} تومان\n\n`;
-    const contact = `👤 *اطلاعات تماس:*\n`;
+    const summary = `📊 *تعداد کل:* ${totalItems} محصول\n💰 *مبلغ کل:* ${totalPrice.toLocaleString('fa-IR')} تومان\n\n`;
+    const contact = `👤 *لطفا اطلاعات زیر را تکمیل کنید:*\n\n`;
+    const info = `🔸 نام و نام خانوادگی:\n🔸 شماره تلفن:\n🔸 آدرس کامل:\n🔸 کد پستی:\n\n`;
     
-    const fullMessage = message + details + summary + contact;
+    const fullMessage = message + details + summary + contact + info + note;
     
-    // ارسال به تلگرام
-    const telegramUrl = `https://t.me/PG_supporter?text=${encodeURIComponent(fullMessage)}`;
-    window.open(telegramUrl, '_blank');
+    // نمایش انتخاب پلتفرم
+    const platform = confirm('📱 *انتخاب پلتفرم ارسال*\n\nOK = ارسال به تلگرام (@PG_supporter)\nCancel = ارسال به واتساپ');
     
+    if (platform) {
+        // ارسال به تلگرام
+        const telegramUrl = `https://t.me/PG_supporter?text=${encodeURIComponent(fullMessage)}`;
+        window.open(telegramUrl, '_blank');
+        alert('✅ پیام سفارش در تلگرام آماده شد!\n\nلطفا اطلاعات خواسته شده را تکمیل کنید.');
+    } else {
+        // ارسال به واتساپ
+        const whatsappUrl = `https://wa.me/989965566964?text=${encodeURIComponent(fullMessage)}`;
+        window.open(whatsappUrl, '_blank');
+        alert('✅ پیام سفارش در واتساپ آماده شد!\n\nلطفا اطلاعات خواسته شده را تکمیل کنید.');
+    }
+    
+    // خالی کردن سبد خرید
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
+}
     // خالی کردن سبد خرید
     cart = [];
     updateCartDisplay();
@@ -331,5 +353,6 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
