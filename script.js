@@ -300,7 +300,7 @@ function checkout() {
     const fullMessage = message + details + summary + contact;
     
     // ارسال به تلگرام
-    const telegramUrl = `https://t.me/PulseGadgett?text=${encodeURIComponent(fullMessage)}`;
+    const telegramUrl = `https://t.me/PG_supporter?text=${encodeURIComponent(fullMessage)}`;
     window.open(telegramUrl, '_blank');
     
     // خالی کردن سبد خرید
@@ -331,4 +331,5 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
