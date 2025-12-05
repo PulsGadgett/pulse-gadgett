@@ -324,7 +324,6 @@ function checkout() {
     cart = [];
     updateCartDisplay();
     toggleCart();
-}
 
 // اضافه کردن استایل دکمه افزودن به سبد خرید به CSS
 const style = document.createElement('style');
@@ -348,6 +347,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
 
