@@ -848,6 +848,11 @@ footer {
     background: var(--footer-brown) !important;
     color: white !important;
 }
+/* دکمه واتساپ */
+.support-btn.whatsapp {
+    background: linear-gradient(45deg, #25D366, #128C7E) !important;
+    color: white !important;
+}
 
 
 
