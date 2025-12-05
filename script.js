@@ -280,9 +280,6 @@ function updateCartDisplay() {
 
 // ثبت سفارش
 function checkout() {
-    // هماهنگ با صفحه جزئیات - خواندن از localStorage
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
     if (cart.length === 0) {
         alert('❌ سبد خرید شما خالی است!');
         return;
@@ -290,15 +287,24 @@ function checkout() {
     
     const productNames = cart.map(item => `${item.name} (${item.quantity} عدد)`).join('\n');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cart.reduce((sum, item) => {
+        const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+        return sum + (price * item.quantity);
+    }, 0);
     
-    const message = `سلام! میخوام این محصولات رو سفارش بدم:\n\n${productNames}\n\nتعداد کل: ${totalItems} محصول\n\nلطفا راهنمایی کنید.`;
+    const message = `🛒 *سفارش جدید از PulseGadgett* 🛒\n\n`;
+    const details = `📋 *لیست محصولات:*\n${productNames}\n\n`;
+    const summary = `📊 *جمع کل:* ${totalItems} محصول\n💰 *مبلغ کل:* ${totalPrice.toLocaleString()} تومان\n\n`;
+    const contact = `👤 *اطلاعات تماس:*\n`;
     
-    // ارسال به واتساپ
-    const whatsappUrl = `https://wa.me/989965566964?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    const fullMessage = message + details + summary + contact;
+    
+    // ارسال به تلگرام
+    const telegramUrl = `https://t.me/PulseGadgett?text=${encodeURIComponent(fullMessage)}`;
+    window.open(telegramUrl, '_blank');
     
     // خالی کردن سبد خرید
-    localStorage.removeItem('cart');
+    cart = [];
     updateCartDisplay();
     toggleCart();
 }
@@ -325,3 +331,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
