@@ -692,6 +692,10 @@ footer {
 
 .cart-item-image {
     width: 60px;
+    .support-btn.telegram {
+    background: linear-gradient(45deg, #0088cc, #1da1f2);
+    color: white;
+}
     height: 60px;
     border-radius: 8px;
     object-fit: cover;
@@ -842,4 +846,5 @@ footer {
     background: var(--footer-brown) !important;
     color: white !important;
 }
+
 
