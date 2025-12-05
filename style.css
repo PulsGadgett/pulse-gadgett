@@ -833,8 +833,10 @@ footer {
     background: linear-gradient(135deg, var(--footer-brown) 0%, #2A1D18 100%) !important;
 }
 
-.support-btn.whatsapp {
-    background: var(--category-teal) !important;
+.support-btn.telegram {
+    background: linear-gradient(45deg, #0088cc, #1da1f2) !important;
+    color: white !important;
+}
 }
 
 .support-btn.instagram {
@@ -846,5 +848,6 @@ footer {
     background: var(--footer-brown) !important;
     color: white !important;
 }
+
 
 
