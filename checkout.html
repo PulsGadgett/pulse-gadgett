@@ -277,6 +277,65 @@
             gap: 12px;
         }
 
+        /* پیام سبد خرید خالی */
+        .empty-cart-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-cart-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #bdc3c7;
+        }
+
+        .empty-cart-message h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .empty-cart-message p {
+            margin-bottom: 20px;
+        }
+
+        .empty-cart-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .empty-cart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* دکمه حذف محصول */
+        .remove-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
         /* رسپانسیو */
         @media (max-width: 768px) {
             .header h1 {
@@ -313,6 +372,12 @@
             .total-price {
                 font-size: 1.5rem;
             }
+            
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
         }
     </style>
     <!-- آیکون‌های Font Awesome -->
@@ -339,7 +404,7 @@
         </div>
 
         <!-- انتخاب پیام‌رسان -->
-        <div class="messenger-selection">
+        <div class="messenger-selection" id="messengerSection" style="display: none;">
             <h2>📱 انتخاب روش ارتباط</h2>
             <div class="messenger-grid">
                 <!-- کارت تلگرام -->
@@ -390,46 +455,128 @@
     </div>
 
     <script>
-        // اطلاعات نمونه سفارش (در حالت واقعی از localStorage می‌آید)
-        let orderItems = [
-            { name: "هندزفری بیسیم Baseus", price: 1767000, quantity: 1 },
-            { name: "کابل شارژ تایپ سی", price: 534000, quantity: 2 },
-            { name: "قاب مگسیف آیفون ۱۶", price: 291000, quantity: 1 }
-        ];
-
+        // اطلاعات سبد خرید واقعی
+        let orderItems = [];
         let selectedMessenger = null;
         const phoneNumber = "989965566964"; // شماره شما
 
         // بارگذاری صفحه
         document.addEventListener('DOMContentLoaded', function() {
-            displayOrderItems();
-            calculateTotal();
+            loadRealCartData();
         });
+
+        // بارگذاری سبد خرید واقعی از localStorage
+        function loadRealCartData() {
+            const savedCart = localStorage.getItem('cart');
+            
+            if (savedCart) {
+                try {
+                    const parsedCart = JSON.parse(savedCart);
+                    
+                    // بررسی ساختار داده‌ها
+                    if (Array.isArray(parsedCart) && parsedCart.length > 0) {
+                        // فیلتر کردن آیتم‌های معتبر
+                        orderItems = parsedCart.filter(item => 
+                            item && 
+                            item.name && 
+                            typeof item.price === 'number' && 
+                            typeof item.quantity === 'number' &&
+                            item.quantity > 0
+                        );
+                        
+                        console.log('سبد خرید واقعی بارگذاری شد:', orderItems);
+                        
+                        if (orderItems.length > 0) {
+                            displayOrderItems();
+                            calculateTotal();
+                            showMessengerSection();
+                        } else {
+                            showEmptyCartMessage();
+                        }
+                    } else {
+                        showEmptyCartMessage();
+                    }
+                } catch (error) {
+                    console.error('خطا در خواندن سبد خرید:', error);
+                    showEmptyCartMessage();
+                }
+            } else {
+                showEmptyCartMessage();
+            }
+        }
 
         // نمایش آیتم‌های سفارش
         function displayOrderItems() {
             const container = document.getElementById('orderItems');
             container.innerHTML = '';
             
-            orderItems.forEach(item => {
+            orderItems.forEach((item, index) => {
                 const itemElement = document.createElement('div');
                 itemElement.className = 'order-item';
                 itemElement.innerHTML = `
                     <div class="item-info">
-                        <div class="item-name">${item.name}</div>
+                        <div class="item-name">${escapeHtml(item.name)}</div>
                         <div class="item-quantity">تعداد: ${item.quantity}</div>
                     </div>
-                    <div class="item-price">${(item.price * item.quantity).toLocaleString()} تومان</div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="item-price">${(item.price * item.quantity).toLocaleString('fa-IR')} تومان</div>
+                        <button class="remove-btn" onclick="removeItem(${index})" title="حذف از سبد خرید">
+                            <i class="fas fa-trash"></i>
+                            حذف
+                        </button>
+                    </div>
                 `;
                 container.appendChild(itemElement);
             });
         }
 
+        // حذف آیتم از سبد خرید
+        function removeItem(index) {
+            if (confirm('آیا از حذف این محصول از سبد خرید مطمئن هستید؟')) {
+                orderItems.splice(index, 1);
+                
+                // به‌روزرسانی localStorage
+                localStorage.setItem('cart', JSON.stringify(orderItems));
+                
+                // نمایش مجدد
+                if (orderItems.length > 0) {
+                    displayOrderItems();
+                    calculateTotal();
+                } else {
+                    showEmptyCartMessage();
+                }
+            }
+        }
+
         // محاسبه جمع کل
         function calculateTotal() {
             const total = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('totalPrice').textContent = total.toLocaleString() + ' تومان';
+            document.getElementById('totalPrice').textContent = total.toLocaleString('fa-IR') + ' تومان';
             return total;
+        }
+
+        // نمایش پیام سبد خرید خالی
+        function showEmptyCartMessage() {
+            const container = document.getElementById('orderItems');
+            container.innerHTML = `
+                <div class="empty-cart-message">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>سبد خرید شما خالی است</h3>
+                    <p>هنوز هیچ محصولی به سبد خرید خود اضافه نکرده‌اید.</p>
+                    <a href="index.html" class="empty-cart-btn">
+                        <i class="fas fa-store"></i>
+                        بازگشت به فروشگاه
+                    </a>
+                </div>
+            `;
+            
+            document.getElementById('totalPrice').textContent = '۰ تومان';
+            document.getElementById('messengerSection').style.display = 'none';
+        }
+
+        // نمایش بخش انتخاب پیام‌رسان
+        function showMessengerSection() {
+            document.getElementById('messengerSection').style.display = 'block';
         }
 
         // انتخاب پیام‌رسان
@@ -462,7 +609,7 @@
 
         // تکمیل سفارش
         function completeOrder() {
-            if (!selectedMessenger) return;
+            if (!selectedMessenger || orderItems.length === 0) return;
             
             const total = calculateTotal();
             let message = `سلام! می‌خوام سفارش بدم:\n\n`;
@@ -470,10 +617,10 @@
             orderItems.forEach(item => {
                 message += `📦 ${item.name}\n`;
                 message += `   تعداد: ${item.quantity}\n`;
-                message += `   قیمت: ${(item.price * item.quantity).toLocaleString()} تومان\n\n`;
+                message += `   قیمت: ${(item.price * item.quantity).toLocaleString('fa-IR')} تومان\n\n`;
             });
             
-            message += `💰 جمع کل: ${total.toLocaleString()} تومان\n\n`;
+            message += `💰 جمع کل: ${total.toLocaleString('fa-IR')} تومان\n\n`;
             message += `لطفا راهنمایی کنید.`;
             
             const encodedMessage = encodeURIComponent(message);
@@ -493,6 +640,10 @@
             setTimeout(() => {
                 window.open(url, '_blank');
                 button.innerHTML = '<i class="fas fa-check"></i> سفارش ثبت شد!';
+                
+                // پاک کردن سبد خرید پس از ثبت سفارش (اختیاری)
+                // localStorage.removeItem('cart');
+                
                 setTimeout(() => {
                     button.innerHTML = '<i class="fas fa-paper-plane"></i> ارسال مجدد';
                     button.disabled = false;
@@ -500,14 +651,11 @@
             }, 1500);
         }
 
-        // در حالت واقعی، این اطلاعات از localStorage گرفته می‌شود
-        function loadCartFromStorage() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                orderItems = JSON.parse(savedCart);
-                displayOrderItems();
-                calculateTotal();
-            }
+        // تابع برای جلوگیری از XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
     </script>
 </body>
