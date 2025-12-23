@@ -390,23 +390,18 @@
     </div>
 
     <script>
-        // اطلاعات سبد خرید از localStorage
-        let orderItems = [];
-        let selectedMessenger = null;
-        const whatsappNumber = "989965566964"; // شماره واتساپ
-        const telegramUsername = "PG_supporter"; // ایدی تلگرام
+        // اطلاعات نمونه سفارش (در حالت واقعی از localStorage می‌آید)
+        let orderItems = [
+            { name: "هندزفری بیسیم Baseus", price: 1767000, quantity: 1 },
+            { name: "کابل شارژ تایپ سی", price: 534000, quantity: 2 },
+            { name: "قاب مگسیف آیفون ۱۶", price: 291000, quantity: 1 }
+        ];
 
-        // بارگذاری سبد خرید از localStorage
-        function loadCartFromStorage() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                orderItems = JSON.parse(savedCart);
-            }
-        }
+        let selectedMessenger = null;
+        const phoneNumber = "989965566964"; // شماره شما
 
         // بارگذاری صفحه
         document.addEventListener('DOMContentLoaded', function() {
-            loadCartFromStorage();
             displayOrderItems();
             calculateTotal();
         });
@@ -485,9 +480,9 @@
             let url = '';
             
             if (selectedMessenger === 'telegram') {
-                url = `https://t.me/${telegramUsername}?text=${encodedMessage}`;
+                url = `https://t.me/+${phoneNumber}?text=${encodedMessage}`;
             } else {
-                url = `https://wa.me/+${whatsappNumber}?text=${encodedMessage}`;
+                url = `https://wa.me/+${phoneNumber}?text=${encodedMessage}`;
             }
             
             // انیمیشن قبل از رفتن
@@ -503,6 +498,16 @@
                     button.disabled = false;
                 }, 2000);
             }, 1500);
+        }
+
+        // در حالت واقعی، این اطلاعات از localStorage گرفته می‌شود
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                orderItems = JSON.parse(savedCart);
+                displayOrderItems();
+                calculateTotal();
+            }
         }
     </script>
 </body>
