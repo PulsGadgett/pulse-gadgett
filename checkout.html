@@ -394,9 +394,18 @@
         let orderItems = [];
 
         let selectedMessenger = null;
+let orderItems = [];
 
+// بارگذاری سبد خرید از localStorage
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+        orderItems = JSON.parse(savedCart);
+    }
+}
         // بارگذاری صفحه
         document.addEventListener('DOMContentLoaded', function() {
+            loadCartFromStroage();
             displayOrderItems();
             calculateTotal();
         });
