@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تکمیل سفارش | پالس گجت</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .order-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid #3498db;
+        }
+
+        .order-summary h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-summary h2 i {
+            color: #3498db;
+        }
+
+        .order-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: all 0.3s;
+        }
+
+        .order-item:hover {
+            background: #f8f9fa;
+            transform: translateX(-5px);
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .item-price {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 2px solid #3498db;
+            margin-top: 20px;
+        }
+
+        .total-label {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .total-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #27ae60;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* بخش انتخاب پیام‌رسان */
+        .messenger-selection {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .messenger-selection h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .messenger-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .messenger-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .messenger-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: #3498db;
+        }
+
+        .messenger-card.selected {
+            border-color: #2ecc71;
+            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e9 100%);
+        }
+
+        .messenger-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            transition: all 0.3s;
+        }
+
+        .telegram-card .messenger-icon {
+            background: linear-gradient(135deg, #0088cc, #1e96e8);
+            color: white;
+        }
+
+        .whatsapp-card .messenger-icon {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .messenger-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .messenger-card p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .messenger-features {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        .messenger-features li {
+            list-style: none;
+            padding: 5px 0;
+            color: #555;
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .messenger-features li:before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* دکمه اقدام */
+        .action-button {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
+            background: linear-gradient(135deg, #2980b9, #1c5a7a);
+        }
+
+        .action-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .action-button i {
+            font-size: 1.5rem;
+        }
+
+        /* بازگشت به فروشگاه */
+        .back-to-shop {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-to-shop a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-to-shop a:hover {
+            color: #2980b9;
+            gap: 12px;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .messenger-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-summary, .messenger-selection {
+                padding: 20px;
+            }
+            
+            .messenger-card {
+                padding: 20px;
+            }
+            
+            .action-button {
+                padding: 18px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .item-name {
+                font-size: 0.9rem;
+            }
+            
+            .total-price {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <!-- آیکون‌های Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- هدر -->
+        <div class="header">
+            <h1>🎯 تکمیل سفارش شما</h1>
+            <p>لطفاً روش ارتباط برای ثبت نهایی سفارش را انتخاب کنید</p>
+        </div>
+
+        <!-- خلاصه سفارش -->
+        <div class="order-summary">
+            <h2><i class="fas fa-shopping-bag"></i> خلاصه سفارش</h2>
+            <div class="order-items" id="orderItems">
+                <!-- آیتم‌های سفارش اینجا نمایش داده می‌شوند -->
+            </div>
+            <div class="order-total">
+                <div class="total-label">مبلغ قابل پرداخت:</div>
+                <div class="total-price" id="totalPrice">۰ تومان</div>
+            </div>
+        </div>
+
+        <!-- انتخاب پیام‌رسان -->
+        <div class="messenger-selection">
+            <h2>📱 انتخاب روش ارتباط</h2>
+            <div class="messenger-grid">
+                <!-- کارت تلگرام -->
+                <div class="messenger-card telegram-card" onclick="selectMessenger('telegram')" id="telegramCard">
+                    <div class="messenger-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3>ارسال از طریق تلگرام</h3>
+                    <p>سفارش خود را در تلگرام ثبت کنید و پشتیبانی سریع دریافت نمایید</p>
+                    <ul class="messenger-features">
+                        <li>پشتیبانی ۲۴ساعته</li>
+                        <li>درخواست عکس بیشتر از محصولات</li>
+                        <li>ثبت سفارش</li>
+                    </ul>
+                </div>
+
+                <!-- کارت واتساپ -->
+                <div class="messenger-card whatsapp-card" onclick="selectMessenger('whatsapp')" id="whatsappCard">
+                    <div class="messenger-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3>ارسال از طریق واتساپ</h3>
+                    <p>سفارش خود را در واتساپ ثبت کنید و پشتیبانی سریع دریافت نمایید=</p>
+                    <ul class="messenger-features">
+                        <li>پشتیبانی ۲۴ساعته</li>
+                        <li>درخواست عکس بیشتر از محصولات</li>
+                        <li>ثبت سفارش</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- دکمه اقدام -->
+            <button class="action-button" id="actionButton" onclick="completeOrder()" disabled>
+                <i class="fas fa-paper-plane"></i>
+                <span id="buttonText">لطفاً یک روش را انتخاب کنید</span>
+            </button>
+
+            <!-- بازگشت به فروشگاه -->
+            <div class="back-to-shop">
+                <a href="index.html">
+                    <i class="fas fa-arrow-right"></i>
+                    بازگشت به فروشگاه
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // اطلاعات نمونه سفارش (در حالت واقعی از localStorage می‌آید)
+        let orderItems = [
+            { name: "هندزفری بیسیم Baseus", price: 1767000, quantity: 1 },
+            { name: "کابل شارژ تایپ سی", price: 534000, quantity: 2 },
+            { name: "قاب مگسیف آیفون ۱۶", price: 291000, quantity: 1 }
+        ];
+
+        let selectedMessenger = null;
+        const phoneNumber = "989965566964"; // شماره شما
+
+        // بارگذاری صفحه
+        document.addEventListener('DOMContentLoaded', function() {
+            displayOrderItems();
+            calculateTotal();
+        });
+
+        // نمایش آیتم‌های سفارش
+        function displayOrderItems() {
+            const container = document.getElementById('orderItems');
+            container.innerHTML = '';
+            
+            orderItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'order-item';
+                itemElement.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-quantity">تعداد: ${item.quantity}</div>
+                    </div>
+                    <div class="item-price">${(item.price * item.quantity).toLocaleString()} تومان</div>
+                `;
+                container.appendChild(itemElement);
+            });
+        }
+
+        // محاسبه جمع کل
+        function calculateTotal() {
+            const total = orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('totalPrice').textContent = total.toLocaleString() + ' تومان';
+            return total;
+        }
+
+        // انتخاب پیام‌رسان
+        function selectMessenger(messenger) {
+            selectedMessenger = messenger;
+            
+            // حذف انتخاب قبلی
+            document.getElementById('telegramCard').classList.remove('selected');
+            document.getElementById('whatsappCard').classList.remove('selected');
+            
+            // انتخاب جدید
+            document.getElementById(messenger + 'Card').classList.add('selected');
+            
+            // فعال کردن دکمه
+            const button = document.getElementById('actionButton');
+            const buttonText = document.getElementById('buttonText');
+            
+            button.disabled = false;
+            
+            if (messenger === 'telegram') {
+                buttonText.textContent = 'ثبت سفارش در تلگرام';
+                button.style.background = 'linear-gradient(135deg, #0088cc, #1e96e8)';
+                button.style.boxShadow = '0 5px 15px rgba(0, 136, 204, 0.4)';
+            } else {
+                buttonText.textContent = 'ثبت سفارش در واتساپ';
+                button.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
+                button.style.boxShadow = '0 5px 15px rgba(37, 211, 102, 0.4)';
+            }
+        }
+
+        // تکمیل سفارش
+        function completeOrder() {
+            if (!selectedMessenger) return;
+            
+            const total = calculateTotal();
+            let message = `سلام! می‌خوام سفارش بدم:\n\n`;
+            
+            orderItems.forEach(item => {
+                message += `📦 ${item.name}\n`;
+                message += `   تعداد: ${item.quantity}\n`;
+                message += `   قیمت: ${(item.price * item.quantity).toLocaleString()} تومان\n\n`;
+            });
+            
+            message += `💰 جمع کل: ${total.toLocaleString()} تومان\n\n`;
+            message += `لطفا راهنمایی کنید.`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            let url = '';
+            
+            if (selectedMessenger === 'telegram') {
+                url = `https://t.me/+${phoneNumber}?text=${encodedMessage}`;
+            } else {
+                url = `https://wa.me/+${phoneNumber}?text=${encodedMessage}`;
+            }
+            
+            // انیمیشن قبل از رفتن
+            const button = document.getElementById('actionButton');
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال انتقال...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                window.open(url, '_blank');
+                button.innerHTML = '<i class="fas fa-check"></i> سفارش ثبت شد!';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-paper-plane"></i> ارسال مجدد';
+                    button.disabled = false;
+                }, 2000);
+            }, 1500);
+        }
+
+        // در حالت واقعی، این اطلاعات از localStorage گرفته می‌شود
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                orderItems = JSON.parse(savedCart);
+                displayOrderItems();
+                calculateTotal();
+            }
+        }
+    </script>
+</body>
+</html>
