@@ -213,13 +213,16 @@
         <div class="debug-info" id="debugInfo">
             <p><strong>اطلاعات دیباگ:</strong> <span id="debugText">در حال بررسی...</span></p>
         </div>
+        
+        <!-- دکمه مخفی برای تست -->
+        <button onclick="forceShowCart()" style="position: fixed; bottom: 20px; right: 20px; background: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; display: none;">
+            تست
+        </button>
     </div>
 
     <script>
-        // ایدی تلگرام و شماره واتساپ
-        const TELEGRAM_ID = "PG_supporter"; // ایدی تلگرام بدون @
-        const WHATSAPP_NUMBER = "989965566964"; // شماره واتساپ
-        
+        // شماره تلفن شما
+        const PHONE_NUMBER = "989965566964";
         let selectedMessenger = null;
         let cartItems = [];
         
@@ -316,7 +319,28 @@
                 }
             }
             
-            // 5. پردازش داده‌های پیدا شده
+            // 5. اگر باز هم پیدا نشد، یک تست انجام بده
+            if (!cartKey) {
+                console.log("❌ هیچ کلید سبد خرید پیدا نشد!");
+                console.log("🧪 تست: اضافه کردن یک سبد خرید تستی");
+                
+                // اضافه کردن سبد خرید تستی
+                const testCart = [
+                    { name: "محصول تست ۱", price: 100000, quantity: 2 },
+                    { name: "محصول تست ۲", price: 200000, quantity: 1 }
+                ];
+                localStorage.setItem('test_cart_check', JSON.stringify(testCart));
+                
+                // دوباره چک کن
+                const testData = localStorage.getItem('test_cart_check');
+                if (testData) {
+                    console.log("✅ تست موفق: localStorage کار می‌کند");
+                    cartKey = 'test_cart_check';
+                    cartData = JSON.parse(testData);
+                }
+            }
+            
+            // 6. پردازش داده‌های پیدا شده
             if (cartKey && cartData) {
                 console.log(`🎉 سبد خرید پیدا شد! کلید: "${cartKey}"`);
                 console.log("📦 داده‌های سبد خرید:", cartData);
@@ -480,11 +504,9 @@
             let url = '';
             
             if (selectedMessenger === 'telegram') {
-                // استفاده از ایدی تلگرام @PG_supporter
-                url = `https://t.me/${TELEGRAM_ID}?text=${encodedMessage}`;
+                url = `https://t.me/+${PHONE_NUMBER}?text=${encodedMessage}`;
             } else {
-                // استفاده از شماره واتساپ
-                url = `https://wa.me/+${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+                url = `https://wa.me/+${PHONE_NUMBER}?text=${encodedMessage}`;
             }
             
             // تغییر وضعیت دکمه
@@ -513,6 +535,16 @@
             info += `تعداد محصولات: ${productCount}`;
             
             debugText.textContent = info;
+        }
+        
+        // تابع برای تست (با کلیک روی دکمه قرمز)
+        function forceShowCart() {
+            console.clear();
+            console.log("🛠️ تست دستی سبد خرید");
+            
+            // پاک کردن همه چیز و شروع مجدد
+            localStorage.removeItem('test_cart_check');
+            checkCart();
         }
         
         // تابعی که می‌توانید در کنسول فراخوانی کنید
