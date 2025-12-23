@@ -2,7 +2,7 @@ const products = [
     {
         id: 1,
         name: "پخش‌کننده FM خودرو",
-        price: "۶۲۹,۰۰۰ تومان", 
+        price: "۶۶۹,۰۰۰ تومان", 
         image: "images/پخش‌کننده خودرو/T03.jpg",
         category: "پخش‌کننده خودرو",
         code: "T03",
@@ -12,7 +12,7 @@ const products = [
     {
         id: 2,
         name: "میکروفون تایپ سی",
-        price: "۶۱۸,۰۰۰ تومان", 
+        price: "۵۶۵,۰۰ تومان", 
         image: "images/میکروفون/JD057.jpg",
         category: "میکروفون",
         code: "JD057",
@@ -22,7 +22,7 @@ const products = [
     {
         id: 3,
         name: "کابل شارژ سه کاره",
-        price: "۱۹۹,۰۰۰ تومان", 
+        price: "۲۱۰,۰۰۰ تومان", 
         image: "images/کابل شارژ/JA024.jpg",
         category: "کابل شارژ",
         code: "JA024",
@@ -32,7 +32,7 @@ const products = [
     {
         id: 4,
         name: "آداپتور سامسونگ سه پین",
-        price: "۱,۰۹۸,۰۰۰ تومان", 
+        price: "۱,۱۷۳,۰۰۰ تومان", 
         image: "images/آداپتور/S087.jpg",
         category: "آداپتور",
         code: "S087",
@@ -42,7 +42,7 @@ const products = [
     {  
         id: 5,
         name: "قاب سیلیکونی سامسونگ A26",
-        price: "۱۵۷,۰۰۰ تومان", 
+        price: "۱۴۸,۰۰۰ تومان", 
         image: "images/قاب/GS86.jpg",
         category: "قاب",
         code: "GS86",
@@ -52,7 +52,7 @@ const products = [
     {
         id: 6,
         name: "هولدر کانال کولری ۳۶۰درجه",
-        price: "۲۳۴,۰۰۰ تومان",
+        price: "۲۳۹,۰۰۰ تومان",
         image: "images/هولدر/JE057.jpg",
         category: "هولدر",
         code: "JE057",
@@ -62,7 +62,7 @@ const products = [
     {
         id: 7,
         name: "هولدر کانال کولری",
-        price: "۳۴۲,۰۰۰ تومان", 
+        price: "۳۸۱,۰۰۰ تومان", 
         image: "images/هولدر/500A.jpg",
         category: "هولدر",
         code: "500A",
@@ -72,7 +72,7 @@ const products = [
     {
         id: 8,
         name: "قاب مخصوص مگ‌سیف آیفون۱۶",
-        price: "۲۹۱,۰۰۰ تومان",
+        price: "۲۹۶,۰۰۰ تومان",
         image: "images/قاب/M93S.jpg",
         category: "قاب",
         code: "M93S",
@@ -82,7 +82,7 @@ const products = [
     {
         id: 9,
         name: "قاب مخصوص مگ‌سیف آیفون۱۳",
-        price: "۲۹۱,۰۰۰ تومان", 
+        price: "۲۹۶,۰۰۰ تومان", 
         image: "images/قاب/M46S.jpg",
         category: "قاب",
         code: "M46S",
@@ -96,7 +96,7 @@ const products = [
         image: "images/فلش/JC034.jpg",
         category: "فلش",
         code: "JC034",
-        available: true,
+        available: false,
         description: "Jokade | فلش ۶۴گیگ | گارانتی یک ساله"
     },
     {
@@ -106,13 +106,13 @@ const products = [
         image: "images/فلش/JC032.jpg",
         category: "فلش",
         code: "JC032",
-        available: true,
+        available: false,
         description: "Jokade | فلش ۶۴گیگ | گارانتی یک ساله"
     },
     {
         id: 12,
         name: "هندزفری دور گردنی",
-        price: "۴۶۹,۰۰۰ تومان", 
+        price: "۴۸۸,۰۰۰ تومان", 
         image: "images/هندزفری و هدست/JI025.jpg",
         category: "هندزفری و هدست",
         code: "JI025",
@@ -122,7 +122,7 @@ const products = [
     {
         id: 13,
         name: "هندزفری بی‌سیم",
-        price: "۱,۷۶۷,۰۰۰ تومان", 
+        price: "۲,۰۶۴,۰۰۰ تومان", 
         image: "images/هندزفری و هدست/E19.jpg",
         category: "هندزفری و هدست",
         code: "E19",
@@ -132,7 +132,7 @@ const products = [
     {
         id: 14,
         name: "کابل شارژ تایپ سی به لایتنینگ",
-        price: "۵۳۴,۰۰۰ تومان", 
+        price: "۵۶۹,۰۰۰ تومان", 
         image: "images/کابل شارژ/TL05.jpg",
         category: "کابل شارژ",
         code: "TL05",
@@ -142,7 +142,7 @@ const products = [
     {
         id: 15,
         name: "هندزفری سیم‌دار تایپ سی",
-        price: "۶۹۹,۰۰۰ تومان",
+        price: "۷۴۸,۰۰۰ تومان",
         image: "images/هندزفری و هدست/5830.jpg",
         category: "هندزفری و هدست",
         code: "5830",
@@ -152,7 +152,7 @@ const products = [
     {
         id: 16,
         name: "کابل فنری AUX به بلوتوث",
-        price: "۶۳۴,۰۰۰ تومان", 
+        price: "۶۷۷,۰۰۰ تومان", 
         image: "images/کابل AUX/8700.jpg",
         category: "کابل AUX",
         code: "8700",
@@ -162,7 +162,7 @@ const products = [
     {
         id: 17,
         name: "کابل شارژ تایپ سی به لایتنینگ",
-        price: "۲۱۲,۰۰۰ تومان", 
+        price: "۴۰۵,۰۰۰ تومان", 
         image: "images/کابل شارژ/275.jpg",
         category: "کابل شارژ",
         code: "275",
@@ -172,7 +172,7 @@ const products = [
     {
         id: 18,
         name: "کابل شارژ تایپ سی به تایپ سی",
-        price: "۱,۰۲۹,۰۰۰ تومان",
+        price: "۱,۱۴۵,۰۰۰ تومان",
         image: "images/کابل شارژ/IO86.jpg",
         category: "کابل شارژ",
         code: "IO86",
@@ -182,7 +182,7 @@ const products = [
     {
         id: 19,
         name: "تبدیل لایتنینگ به USB",
-        price: "۴۱۶,۰۰۰ تومان", 
+        price: "۴۴۶,۰۰۰ تومان", 
         image: "images/تبدیل/7390.jpg",
         category: "تبدیل",
         code: "7390",
@@ -192,7 +192,7 @@ const products = [
     {
         id: 20,
         name: "تبدیل لایتنینگ",
-        price: "۱۶۰,۰۰۰ تومان", 
+        price: "۱۷۱,۰۰۰ تومان", 
         image: "images/تبدیل/JC018.jpg",
         category: "تبدیل",
         code: "JC018",
@@ -202,7 +202,7 @@ const products = [
     {
         id: 21,
         name: "اسپیکر قابل حمل",
-        price: "۱,۶۵۹,۰۰۰ تومان", 
+        price: "۱,۸۷۹,۰۰۰ تومان", 
         image: "images/اسپیکر/VS-801.jpg",
         category: "اسپیکر",
         code: "VS-801",
@@ -212,7 +212,7 @@ const products = [
     {
         id: 22,
         name: "هدست بی‌سیم گربه‌ای",
-        price: "۹۷۵,۰۰۰ تومان", 
+        price: "۱,۰۳۴,۰۰۰ تومان", 
         image: "images/هندزفری و هدست/JD012.jpg",
         category: "هندزفری و هدست",
         code: "JD012",
@@ -226,13 +226,13 @@ const products = [
         image: "images/کابل شارژ/C920.jpg",
         category: "کابل شارژ",
         code: "C920",
-        available: true,
+        available: false,
         description: "Baseus | کابل شارژ کنفی تایپ سی به تایپ سی | ۱۰۰وات | ۱متر | گارانتی شش ماهه"
     },
     {
         id: 24,
         name: "آداپتور سامسونگ ۲۵وات",
-        price: "۴۹۷,۰۰۰ تومان", 
+        price: "۵۲۹,۰۰۰ تومان", 
         image: "images/آداپتور/029.jpg",
         category: "آداپتور",
         code: "029",
@@ -240,4 +240,5 @@ const products = [
         description: "Samsung | آداپتور سامسونگ ۲۵وات | اورجینال | با قابلیت شارژ فوق سریع | سفید، مشکی | گارانتی شش ماهه"
     }
 ]; // <- کامای اضافی حذف شد
+
 
