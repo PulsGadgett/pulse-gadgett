@@ -3,556 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تکمیل سفارش | پالس گجت</title>
+    <title>تکمیل سفارش</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 100%;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            color: #2c3e50;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #3498db, #9b59b6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header p {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-
-        /* بخش انتخاب پیام‌رسان */
-        .messenger-selection {
-            background: white;
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            border-top: 5px solid #3498db;
-            display: none; /* ابتدا مخفی */
-        }
-
-        .messenger-selection h2 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1.8rem;
-        }
-
-        .messenger-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .messenger-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 3px solid transparent;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
-
-        .messenger-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            border-color: #3498db;
-        }
-
-        .messenger-card.selected {
-            border-color: #2ecc71;
-            background: linear-gradient(135deg, #f8fff9 0%, #e8f5e9 100%);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-        }
-
-        .messenger-icon {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.8rem;
-            transition: all 0.3s;
-        }
-
-        .telegram-card .messenger-icon {
-            background: linear-gradient(135deg, #0088cc, #1e96e8);
-            color: white;
-        }
-
-        .whatsapp-card .messenger-icon {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-        }
-
-        .messenger-card h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.6rem;
-        }
-
-        .messenger-card p {
-            color: #7f8c8d;
-            margin-bottom: 25px;
-            line-height: 1.7;
-            font-size: 1.05rem;
-        }
-
-        .messenger-features {
-            text-align: right;
-            margin-top: 20px;
-        }
-
-        .messenger-features li {
-            list-style: none;
-            padding: 8px 0;
-            color: #555;
-            position: relative;
-            padding-right: 30px;
-            font-size: 0.95rem;
-        }
-
-        .messenger-features li:before {
-            content: "✓";
-            position: absolute;
-            right: 0;
-            color: #2ecc71;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        /* دکمه اقدام */
-        .action-button {
-            display: block;
-            width: 100%;
-            padding: 22px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 40px;
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .action-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(52, 152, 219, 0.6);
-            background: linear-gradient(135deg, #2980b9, #1c5a7a);
-        }
-
-        .action-button:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .action-button i {
-            font-size: 1.6rem;
-        }
-
-        /* بازگشت به فروشگاه */
-        .back-to-shop {
-            text-align: center;
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 1px solid #ecf0f1;
-        }
-
-        .back-to-shop a {
-            color: #3498db;
-            text-decoration: none;
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s;
-            font-weight: 600;
-            padding: 12px 25px;
-            border-radius: 10px;
-            background: #f8f9fa;
-        }
-
-        .back-to-shop a:hover {
-            color: #2980b9;
-            gap: 15px;
-            background: #eef5ff;
-            transform: translateX(-5px);
-        }
-
-        /* پیام سبد خرید خالی */
-        .empty-cart-message {
-            background: white;
-            border-radius: 25px;
-            padding: 50px 40px;
-            text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            border-top: 5px solid #e74c3c;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .empty-cart-icon {
-            font-size: 5rem;
-            color: #e74c3c;
-            margin-bottom: 25px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-20px);}
-            60% {transform: translateY(-10px);}
-        }
-
-        .empty-cart-message h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-
-        .empty-cart-message p {
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .primary-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 16px 35px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .primary-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.6);
-        }
-
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            body {
-                align-items: flex-start;
-                padding-top: 40px;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .messenger-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .messenger-selection, .empty-cart-message {
-                padding: 25px;
-            }
-            
-            .messenger-card {
-                padding: 25px;
-            }
-            
-            .action-button, .primary-button {
-                padding: 18px;
-                font-size: 1.1rem;
-            }
-            
-            .header {
-                margin-bottom: 30px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 1.7rem;
-            }
-            
-            .messenger-selection, .empty-cart-message {
-                padding: 20px;
-            }
-            
-            .messenger-card {
-                padding: 20px;
-            }
-            
-            .messenger-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 2.2rem;
-            }
-            
-            .action-button, .primary-button {
-                padding: 16px;
-                font-size: 1rem;
-            }
-            
-            .empty-cart-icon {
-                font-size: 4rem;
-            }
-        }
+        /* استایل ساده */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui; }
+        body { background: #f5f7fa; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .section { background: white; padding: 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .messenger-card { background: white; border: 2px solid #ddd; padding: 20px; border-radius: 10px; margin: 15px 0; cursor: pointer; text-align: center; }
+        .messenger-card.selected { border-color: #3498db; background: #e3f2fd; }
+        .btn { display: block; width: 100%; padding: 15px; background: #3498db; color: white; border: none; border-radius: 10px; font-size: 16px; margin-top: 20px; cursor: pointer; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
     </style>
-    <!-- آیکون‌های Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- هدر -->
         <div class="header">
             <h1>🎯 تکمیل سفارش</h1>
-            <p id="pageSubtitle">در حال بررسی سبد خرید شما...</p>
+            <p id="statusMessage">در حال بررسی...</p>
         </div>
 
-        <!-- بخش انتخاب پیام‌رسان (فقط اگر سبد خرید پر باشد نمایش داده می‌شود) -->
-        <div class="messenger-selection" id="messengerSection">
-            <h2>📱 از چه طریقی مایل به ثبت سفارش هستید؟</h2>
-            <div class="messenger-grid">
-                <!-- کارت تلگرام -->
-                <div class="messenger-card telegram-card" onclick="selectMessenger('telegram')" id="telegramCard">
-                    <div class="messenger-icon">
-                        <i class="fab fa-telegram"></i>
-                    </div>
-                    <h3>ثبت سفارش در تلگرام</h3>
-                    <p>سفارش خود را مستقیماً در تلگرام ثبت کرده و از پشتیبانی آنلاین بهره‌مند شوید</p>
-                    <ul class="messenger-features">
-                        <li>پاسخگویی ۲۴ ساعته</li>
-                        <li>مشاوره تخصصی رایگان</li>
-                        <li>ارسال تصاویر محصولات بیشتر</li>
-                        <li>پیگیری لحظه‌ای سفارش</li>
-                    </ul>
-                </div>
-
-                <!-- کارت واتساپ -->
-                <div class="messenger-card whatsapp-card" onclick="selectMessenger('whatsapp')" id="whatsappCard">
-                    <div class="messenger-icon">
-                        <i class="fab fa-whatsapp"></i>
-                    </div>
-                    <h3>ثبت سفارش در واتساپ</h3>
-                    <p>از طریق واتساپ با ما در ارتباط باشید و سفارش خود را نهایی کنید</p>
-                    <ul class="messenger-features">
-                        <li>ارسال فوری پیام و رسید</li>
-                        <li>پاسخگویی در ساعات اداری</li>
-                        <li>ثبت سریع و آسان سفارش</li>
-                        <li>پشتیبانی چند زبانه</li>
-                    </ul>
-                </div>
+        <!-- بخش پیام‌رسان -->
+        <div class="section" id="messengerSection" style="display: none;">
+            <h2>📱 روش ارتباط را انتخاب کنید:</h2>
+            
+            <div class="messenger-card" onclick="selectMessenger('telegram')" id="telegramCard">
+                <h3>📨 تلگرام</h3>
+                <p>ارسال سفارش از طریق تلگرام</p>
             </div>
-
-            <!-- دکمه اقدام -->
-            <button class="action-button" id="actionButton" onclick="completeOrder()" disabled>
-                <i class="fas fa-paper-plane"></i>
-                <span id="buttonText">لطفاً یک روش را انتخاب کنید</span>
+            
+            <div class="messenger-card" onclick="selectMessenger('whatsapp')" id="whatsappCard">
+                <h3>💬 واتساپ</h3>
+                <p>ارسال سفارش از طریق واتساپ</p>
+            </div>
+            
+            <button class="btn" id="sendButton" onclick="sendOrder()" disabled>
+                ارسال سفارش
             </button>
-
-            <!-- بازگشت به فروشگاه -->
-            <div class="back-to-shop">
-                <a href="index.html">
-                    <i class="fas fa-arrow-right"></i>
-                    بازگشت به صفحه فروشگاه
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="index.html" style="color: #3498db; text-decoration: none;">
+                    ↩️ بازگشت به فروشگاه
                 </a>
             </div>
         </div>
 
-        <!-- پیام سبد خرید خالی (اگر سبد خرید خالی باشد نمایش داده می‌شود) -->
-        <div class="empty-cart-message" id="emptyCartMessage" style="display: none;">
-            <div class="empty-cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-            </div>
-            <h2>سبد خرید شما خالی است!</h2>
-            <p>شما هنوز هیچ محصولی به سبد خرید خود اضافه نکرده‌اید.<br>لطفاً ابتدا محصولات مورد نظر خود را به سبد خرید اضافه کنید.</p>
-            <button class="primary-button" onclick="goToShop()">
-                <i class="fas fa-store"></i>
-                بازگشت به فروشگاه و انتخاب محصول
+        <!-- پیام خالی بودن سبد -->
+        <div class="section" id="emptyCartMessage" style="display: none;">
+            <h2>🛒 سبد خرید خالی است</h2>
+            <p>شما هنوز هیچ محصولی به سبد خرید اضافه نکرده‌اید.</p>
+            <button class="btn" onclick="goToShop()">
+                🏪 رفتن به فروشگاه
             </button>
         </div>
     </div>
 
     <script>
+        const phoneNumber = "989965566964";
         let selectedMessenger = null;
-        const phoneNumber = "989965566964"; // شماره شما
 
-        // بارگذاری صفحه
-        document.addEventListener('DOMContentLoaded', function() {
-            checkCartAndDisplay();
-        });
-
-        // بررسی سبد خرید و نمایش بخش مناسب
-        function checkCartAndDisplay() {
-            const cartItems = getCartItems();
+        // تابع اصلی بررسی همه حالت‌های ممکن
+        function checkAllPossibilities() {
+            console.log("🔍 شروع بررسی localStorage...");
             
-            if (cartItems.length > 0) {
-                // سبد خرید پر است - نمایش بخش انتخاب پیام‌رسان
-                document.getElementById('messengerSection').style.display = 'block';
-                document.getElementById('emptyCartMessage').style.display = 'none';
-                document.getElementById('pageSubtitle').textContent = 'لطفاً روش ارتباط برای ثبت سفارش را انتخاب کنید';
-                
-                console.log(`✅ سبد خرید پر است: ${cartItems.length} محصول`);
-                console.log('محصولات:', cartItems);
-            } else {
-                // سبد خرید خالی است - نمایش پیام خالی بودن
-                document.getElementById('messengerSection').style.display = 'none';
-                document.getElementById('emptyCartMessage').style.display = 'block';
-                document.getElementById('pageSubtitle').textContent = 'سبد خرید شما خالی است';
-                
-                console.log('❌ سبد خرید خالی است یا وجود ندارد');
-            }
-        }
-
-        // خواندن سبد خرید از localStorage
-        function getCartItems() {
-            try {
-                const savedCart = localStorage.getItem('cart');
-                if (savedCart) {
-                    const cart = JSON.parse(savedCart);
-                    
-                    // بررسی اینکه آیا cart آرایه است و آیتم‌های معتبر دارد
-                    if (Array.isArray(cart)) {
-                        // فیلتر کردن آیتم‌های معتبر
-                        const validItems = cart.filter(item => 
-                            item && 
-                            typeof item === 'object' &&
-                            item.name && 
-                            typeof item.name === 'string' &&
-                            typeof item.price === 'number' && 
-                            item.price > 0 &&
-                            typeof item.quantity === 'number' &&
-                            item.quantity > 0
-                        );
-                        
-                        return validItems;
-                    }
+            // لیست تمام keyهای ممکن برای سبد خرید
+            const possibleKeys = [
+                'cart', 'shoppingCart', 'basket', 'سبدخرید', 
+                'cartItems', 'userCart', 'products', 'items'
+            ];
+            
+            let foundData = null;
+            let foundKey = null;
+            
+            // جستجو در تمام keyهای ممکن
+            possibleKeys.forEach(key => {
+                const data = localStorage.getItem(key);
+                if (data && data !== 'null' && data !== '[]' && data !== '{}') {
+                    foundData = data;
+                    foundKey = key;
+                    console.log(`✅ داده در key '${key}' یافت شد:`, data.substring(0, 100));
                 }
-            } catch (error) {
-                console.error('❌ خطا در خواندن سبد خرید:', error);
-            }
-            return [];
-        }
-
-        // ایجاد متن سفارش
-        function createOrderMessage() {
-            const cartItems = getCartItems();
-            
-            if (cartItems.length === 0) {
-                return null; // اگر سبد خرید خالی است، null برمی‌گرداند
-            }
-            
-            let message = `سلام! می‌خوام سفارش بدم:\n\n`;
-            let total = 0;
-            
-            cartItems.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                message += `📦 ${item.name}\n`;
-                message += `   تعداد: ${item.quantity}\n`;
-                message += `   قیمت: ${itemTotal.toLocaleString('fa-IR')} تومان\n\n`;
             });
             
-            if (total > 0) {
-                message += `💰 جمع کل: ${total.toLocaleString('fa-IR')} تومان\n\n`;
+            // اگر هیچ داده‌ای پیدا نشد، کل localStorage را بررسی کن
+            if (!foundData) {
+                console.log("🔎 جستجوی در تمام localStorage...");
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    
+                    // اگر مقدار شبیه داده JSON است
+                    if (value && (value.includes('{') || value.includes('['))) {
+                        console.log(`📝 key پیدا شده: '${key}'`, value.substring(0, 100));
+                        foundData = value;
+                        foundKey = key;
+                        break;
+                    }
+                }
             }
             
-            message += `لطفا برای ادامه فرآیند خرید راهنماییم کنید.`;
-            return message;
+            // پردازش داده‌های پیدا شده
+            if (foundData) {
+                processFoundData(foundData, foundKey);
+            } else {
+                showEmptyCart();
+            }
+        }
+
+        // پردازش داده‌های پیدا شده
+        function processFoundData(data, key) {
+            try {
+                console.log(`🔄 پردازش داده‌های '${key}':`, data);
+                
+                const parsed = JSON.parse(data);
+                let cartItems = [];
+                
+                // تشخیص ساختار داده
+                if (Array.isArray(parsed)) {
+                    console.log("📋 ساختار: آرایه");
+                    cartItems = extractItemsFromArray(parsed);
+                } 
+                else if (typeof parsed === 'object') {
+                    console.log("📋 ساختار: آبجکت");
+                    cartItems = extractItemsFromObject(parsed);
+                }
+                
+                if (cartItems.length > 0) {
+                    console.log(`✅ ${cartItems.length} محصول پیدا شد:`, cartItems);
+                    showMessengerSection(cartItems);
+                } else {
+                    console.log("⚠️ داده پیدا شد اما محصولی استخراج نشد");
+                    showEmptyCart();
+                }
+                
+            } catch (error) {
+                console.error("❌ خطا در پردازش داده:", error);
+                showEmptyCart();
+            }
+        }
+
+        // استخراج آیتم‌ها از آرایه
+        function extractItemsFromArray(arr) {
+            const items = [];
+            
+            arr.forEach(item => {
+                if (!item) return;
+                
+                // چندین حالت مختلف نام
+                const name = item.name || item.title || item.productName || item.product || 'محصول';
+                
+                // چندین حالت مختلف قیمت
+                const price = item.price || item.cost || item.productPrice || item.value || 0;
+                
+                // چندین حالت مختلف تعداد
+                const quantity = item.quantity || item.count || item.qty || item.amount || 1;
+                
+                if (name && price > 0 && quantity > 0) {
+                    items.push({
+                        name: name,
+                        price: Number(price),
+                        quantity: Number(quantity)
+                    });
+                }
+            });
+            
+            return items;
+        }
+
+        // استخراج آیتم‌ها از آبجکت
+        function extractItemsFromObject(obj) {
+            const items = [];
+            
+            // اگر خود آبجکت شامل فیلدهای محصول باشد
+            if (obj.name || obj.title) {
+                const name = obj.name || obj.title;
+                const price = obj.price || obj.cost || 0;
+                const quantity = obj.quantity || obj.count || 1;
+                
+                if (name && price > 0) {
+                    items.push({ name, price: Number(price), quantity: Number(quantity) });
+                }
+            }
+            
+            // اگر آبجکت شامل آرایه‌ای از محصولات باشد
+            if (obj.items && Array.isArray(obj.items)) {
+                items.push(...extractItemsFromArray(obj.items));
+            }
+            if (obj.products && Array.isArray(obj.products)) {
+                items.push(...extractItemsFromArray(obj.products));
+            }
+            if (obj.cart && Array.isArray(obj.cart)) {
+                items.push(...extractItemsFromArray(obj.cart));
+            }
+            
+            // اگر آبجکت شامل چندین محصول به صورت key-value باشد
+            Object.keys(obj).forEach(key => {
+                const item = obj[key];
+                if (item && typeof item === 'object') {
+                    const extracted = extractItemsFromObject(item);
+                    if (extracted.length > 0) {
+                        items.push(...extracted);
+                    }
+                }
+            });
+            
+            return items;
+        }
+
+        // نمایش بخش پیام‌رسان
+        function showMessengerSection(cartItems) {
+            document.getElementById('messengerSection').style.display = 'block';
+            document.getElementById('emptyCartMessage').style.display = 'none';
+            document.getElementById('statusMessage').textContent = 
+                `✅ ${cartItems.length} محصول در سبد خرید شما موجود است`;
+            
+            // ذخیره محصولات برای استفاده بعدی
+            window.cartItems = cartItems;
+        }
+
+        // نمایش پیام خالی
+        function showEmptyCart() {
+            document.getElementById('messengerSection').style.display = 'none';
+            document.getElementById('emptyCartMessage').style.display = 'block';
+            document.getElementById('statusMessage').textContent = 'سبد خرید شما خالی است';
         }
 
         // انتخاب پیام‌رسان
         function selectMessenger(messenger) {
             selectedMessenger = messenger;
-            
-            // حذف انتخاب قبلی
             document.getElementById('telegramCard').classList.remove('selected');
             document.getElementById('whatsappCard').classList.remove('selected');
-            
-            // انتخاب جدید
             document.getElementById(messenger + 'Card').classList.add('selected');
-            
-            // فعال کردن دکمه
-            const button = document.getElementById('actionButton');
-            const buttonText = document.getElementById('buttonText');
-            
-            button.disabled = false;
-            
-            if (messenger === 'telegram') {
-                buttonText.textContent = 'ورود به تلگرام و ثبت سفارش';
-                button.style.background = 'linear-gradient(135deg, #0088cc, #1e96e8)';
-                button.style.boxShadow = '0 8px 20px rgba(0, 136, 204, 0.4)';
-            } else {
-                buttonText.textContent = 'ورود به واتساپ و ثبت سفارش';
-                button.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
-                button.style.boxShadow = '0 8px 20px rgba(37, 211, 102, 0.4)';
-            }
+            document.getElementById('sendButton').disabled = false;
         }
 
-        // تکمیل سفارش - فقط وقتی سبد خرید پر است
-        function completeOrder() {
-            if (!selectedMessenger) return;
-            
-            const message = createOrderMessage();
-            
-            // اگر سبد خرید خالی باشد، پیام ارسال نمی‌شود
-            if (!message) {
-                alert('❌ سبد خرید شما خالی است! لطفاً ابتدا محصولی به سبد خرید اضافه کنید.');
+        // ارسال سفارش
+        function sendOrder() {
+            if (!selectedMessenger || !window.cartItems || window.cartItems.length === 0) {
+                alert('لطفا ابتدا محصولاتی به سبد خرید اضافه کنید');
                 return;
             }
             
+            // ساخت پیام
+            let message = `سلام! سفارش جدید:\n\n`;
+            let total = 0;
+            
+            window.cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                message += `📦 ${item.name}\n`;
+                message += `   تعداد: ${item.quantity}\n`;
+                message += `   قیمت: ${itemTotal.toLocaleString('fa-IR')} تومان\n\n`;
+            });
+            
+            message += `💰 جمع کل: ${total.toLocaleString('fa-IR')} تومان\n\n`;
+            message += `لطفا راهنمایی کنید.`;
+            
+            // ساخت لینک
             const encodedMessage = encodeURIComponent(message);
             let url = '';
             
@@ -562,20 +271,20 @@
                 url = `https://wa.me/+${phoneNumber}?text=${encodedMessage}`;
             }
             
-            // انیمیشن قبل از رفتن
-            const button = document.getElementById('actionButton');
-            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال انتقال...';
+            // تغییر وضعیت دکمه
+            const button = document.getElementById('sendButton');
+            button.textContent = 'در حال انتقال...';
             button.disabled = true;
             
+            // باز کردن لینک
             setTimeout(() => {
                 window.open(url, '_blank');
-                button.innerHTML = '<i class="fas fa-check"></i> انتقال انجام شد!';
-                
+                button.textContent = '✅ ارسال شد';
                 setTimeout(() => {
-                    button.innerHTML = '<i class="fas fa-paper-plane"></i> تلاش مجدد';
+                    button.textContent = 'ارسال مجدد';
                     button.disabled = false;
                 }, 2000);
-            }, 1500);
+            }, 1000);
         }
 
         // رفتن به فروشگاه
@@ -583,13 +292,38 @@
             window.location.href = 'index.html';
         }
 
-        // بررسی مجدد سبد خرید (در صورت نیاز)
-        function refreshCart() {
-            checkCartAndDisplay();
-        }
+        // اجرا هنگام بارگذاری
+        document.addEventListener('DOMContentLoaded', function() {
+            // ابتدا منتظر بمان تا مطمئن شویم همه چیز لود شده
+            setTimeout(() => {
+                checkAllPossibilities();
+            }, 500);
+        });
 
-        // می‌توانید این تابع را با دکمه‌ای در صفحه فراخوانی کنید
-        // یا به صورت دوره‌ای چک کنید
+        // دکمه بازرسی در کنسول
+        window.inspectCart = function() {
+            console.clear();
+            console.log("🕵️‍♂️ بازرسی localStorage:");
+            console.log("کلیدهای موجود:", Object.keys(localStorage));
+            
+            Object.keys(localStorage).forEach(key => {
+                console.log(`\n📁 Key: "${key}"`);
+                try {
+                    const value = localStorage.getItem(key);
+                    console.log("مقدار:", value.substring(0, 200));
+                    console.log("طول:", value.length);
+                    console.log("نوع:", typeof value);
+                    
+                    // سعی در parse کردن
+                    const parsed = JSON.parse(value);
+                    console.log("✅ Parse موفق:", parsed);
+                } catch(e) {
+                    console.log("❌ Parse ناموفق - احتمالاً string ساده است");
+                }
+            });
+            
+            checkAllPossibilities();
+        };
     </script>
 </body>
 </html>
