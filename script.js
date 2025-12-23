@@ -285,29 +285,12 @@ function checkout() {
         return;
     }
     
-    // ساخت پیام سفارش
-    const productNames = cart.map(item => `${item.name} (${item.quantity} عدد)`).join('\n');
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    // ذخیره سبد خرید در localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
     
-    const message = `🛍️ *سفارش جدید از PulseGadgett* 🛍️\n\n`;
-    const details = `📋 *لیست محصولات:*\n${productNames}\n\n`;
-    const summary = `📊 *تعداد کل:* ${totalItems} محصول\n\n`;
-    const contact = `👤 *لطفا اطلاعات تماس خود را وارد کنید:*\n- نام و نام خانوادگی:\n- شماره تلفن:\n- آدرس:\n\n`;
-    
-    const fullMessage = message + details + summary + contact;
-    
-    // نمایش انتخاب پلتفرم
-    const platform = confirm('لطفا انتخاب کنید:\n\nOK = ارسال به تلگرام\nCancel = ارسال به واتساپ');
-    
-    if (platform) {
-        // ارسال به تلگرام
-        const telegramUrl = `https://t.me/PG_supporter?text=${encodeURIComponent(fullMessage)}`;
-        window.open(telegramUrl, '_blank');
-    } else {
-        // ارسال به واتساپ
-        const whatsappUrl = `https://wa.me/989965566964?text=${encodeURIComponent(fullMessage)}`;
-        window.open(whatsappUrl, '_blank');
-    }
+    // هدایت به صفحه جدید سفارش
+    window.location.href = 'checkout.html';
+}
     
     // خالی کردن سبد خرید
     cart = [];
@@ -347,6 +330,7 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
 
 
 
