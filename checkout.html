@@ -5,16 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تکمیل سفارش</title>
     <style>
-        /* استایل ساده */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui; }
         body { background: #f5f7fa; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; }
         .header { text-align: center; margin-bottom: 30px; }
-        .section { background: white; padding: 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .messenger-card { background: white; border: 2px solid #ddd; padding: 20px; border-radius: 10px; margin: 15px 0; cursor: pointer; text-align: center; }
-        .messenger-card.selected { border-color: #3498db; background: #e3f2fd; }
-        .btn { display: block; width: 100%; padding: 15px; background: #3498db; color: white; border: none; border-radius: 10px; font-size: 16px; margin-top: 20px; cursor: pointer; }
-        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        
+        /* خلاصه سفارش */
+        .order-summary {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-right: 5px solid #3498db;
+            display: none; /* ابتدا مخفی */
+        }
+        
+        .order-items {
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 2px solid #3498db;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .total-price {
+            color: #27ae60;
+        }
+        
+        /* بخش پیام‌رسان */
+        .section { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+        }
+        
+        .messenger-card { 
+            background: white; 
+            border: 2px solid #ddd; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 15px 0; 
+            cursor: pointer; 
+            text-align: center; 
+        }
+        
+        .messenger-card.selected { 
+            border-color: #3498db; 
+            background: #e3f2fd; 
+        }
+        
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            background: #3498db; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            margin-top: 20px; 
+            cursor: pointer; 
+        }
+        
+        .btn:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+        }
     </style>
 </head>
 <body>
@@ -22,6 +95,18 @@
         <div class="header">
             <h1>🎯 تکمیل سفارش</h1>
             <p id="statusMessage">در حال بررسی...</p>
+        </div>
+        
+        <!-- خلاصه سفارش -->
+        <div class="order-summary" id="orderSummary">
+            <h2>📋 خلاصه سفارش</h2>
+            <div class="order-items" id="orderItems">
+                <!-- محصولات اینجا نمایش داده می‌شوند -->
+            </div>
+            <div class="order-total">
+                <span>جمع کل:</span>
+                <span class="total-price" id="totalPrice">۰ تومان</span>
+            </div>
         </div>
 
         <!-- بخش پیام‌رسان -->
@@ -60,42 +145,38 @@
     </div>
 
     <script>
-        const phoneNumber = "989965566964";
+        const TELEGRAM_ID = "PG_supporter";
+        const WHATSAPP_NUMBER = "989965566964";
+        
         let selectedMessenger = null;
+        let cartItems = [];
 
-        // تابع اصلی بررسی همه حالت‌های ممکن
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                checkAllPossibilities();
+            }, 500);
+        });
+
         function checkAllPossibilities() {
-            console.log("🔍 شروع بررسی localStorage...");
+            console.log("🔍 بررسی سبد خرید...");
             
-            // لیست تمام keyهای ممکن برای سبد خرید
-            const possibleKeys = [
-                'cart', 'shoppingCart', 'basket', 'سبدخرید', 
-                'cartItems', 'userCart', 'products', 'items'
-            ];
-            
+            const possibleKeys = ['cart', 'shoppingCart', 'basket', 'سبدخرید', 'cartItems'];
             let foundData = null;
             let foundKey = null;
             
-            // جستجو در تمام keyهای ممکن
             possibleKeys.forEach(key => {
                 const data = localStorage.getItem(key);
                 if (data && data !== 'null' && data !== '[]' && data !== '{}') {
                     foundData = data;
                     foundKey = key;
-                    console.log(`✅ داده در key '${key}' یافت شد:`, data.substring(0, 100));
                 }
             });
             
-            // اگر هیچ داده‌ای پیدا نشد، کل localStorage را بررسی کن
             if (!foundData) {
-                console.log("🔎 جستجوی در تمام localStorage...");
                 for (let i = 0; i < localStorage.length; i++) {
                     const key = localStorage.key(i);
                     const value = localStorage.getItem(key);
-                    
-                    // اگر مقدار شبیه داده JSON است
                     if (value && (value.includes('{') || value.includes('['))) {
-                        console.log(`📝 key پیدا شده: '${key}'`, value.substring(0, 100));
                         foundData = value;
                         foundKey = key;
                         break;
@@ -103,7 +184,6 @@
                 }
             }
             
-            // پردازش داده‌های پیدا شده
             if (foundData) {
                 processFoundData(foundData, foundKey);
             } else {
@@ -111,52 +191,71 @@
             }
         }
 
-        // پردازش داده‌های پیدا شده
         function processFoundData(data, key) {
             try {
-                console.log(`🔄 پردازش داده‌های '${key}':`, data);
-                
                 const parsed = JSON.parse(data);
-                let cartItems = [];
+                cartItems = [];
                 
-                // تشخیص ساختار داده
                 if (Array.isArray(parsed)) {
-                    console.log("📋 ساختار: آرایه");
                     cartItems = extractItemsFromArray(parsed);
-                } 
-                else if (typeof parsed === 'object') {
-                    console.log("📋 ساختار: آبجکت");
+                } else if (typeof parsed === 'object') {
                     cartItems = extractItemsFromObject(parsed);
                 }
                 
                 if (cartItems.length > 0) {
-                    console.log(`✅ ${cartItems.length} محصول پیدا شد:`, cartItems);
-                    showMessengerSection(cartItems);
+                    showOrderSummary(); // نمایش خلاصه سفارش
+                    showMessengerSection();
                 } else {
-                    console.log("⚠️ داده پیدا شد اما محصولی استخراج نشد");
                     showEmptyCart();
                 }
                 
             } catch (error) {
-                console.error("❌ خطا در پردازش داده:", error);
+                console.error("خطا در پردازش داده:", error);
                 showEmptyCart();
             }
         }
 
-        // استخراج آیتم‌ها از آرایه
+        // نمایش خلاصه سفارش
+        function showOrderSummary() {
+            const orderItemsDiv = document.getElementById('orderItems');
+            const orderSummaryDiv = document.getElementById('orderSummary');
+            const totalPriceDiv = document.getElementById('totalPrice');
+            
+            // پاک کردن محتوای قبلی
+            orderItemsDiv.innerHTML = '';
+            
+            let total = 0;
+            
+            // نمایش هر محصول
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'order-item';
+                itemDiv.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong>
+                        <div style="font-size: 0.9rem; color: #666;">تعداد: ${item.quantity}</div>
+                    </div>
+                    <div>${itemTotal.toLocaleString('fa-IR')} تومان</div>
+                `;
+                orderItemsDiv.appendChild(itemDiv);
+            });
+            
+            // نمایش جمع کل
+            totalPriceDiv.textContent = total.toLocaleString('fa-IR') + ' تومان';
+            
+            // نمایش بخش خلاصه سفارش
+            orderSummaryDiv.style.display = 'block';
+        }
+
         function extractItemsFromArray(arr) {
             const items = [];
-            
             arr.forEach(item => {
                 if (!item) return;
-                
-                // چندین حالت مختلف نام
                 const name = item.name || item.title || item.productName || item.product || 'محصول';
-                
-                // چندین حالت مختلف قیمت
                 const price = item.price || item.cost || item.productPrice || item.value || 0;
-                
-                // چندین حالت مختلف تعداد
                 const quantity = item.quantity || item.count || item.qty || item.amount || 1;
                 
                 if (name && price > 0 && quantity > 0) {
@@ -167,69 +266,45 @@
                     });
                 }
             });
-            
             return items;
         }
 
-        // استخراج آیتم‌ها از آبجکت
         function extractItemsFromObject(obj) {
             const items = [];
             
-            // اگر خود آبجکت شامل فیلدهای محصول باشد
             if (obj.name || obj.title) {
                 const name = obj.name || obj.title;
                 const price = obj.price || obj.cost || 0;
                 const quantity = obj.quantity || obj.count || 1;
-                
                 if (name && price > 0) {
                     items.push({ name, price: Number(price), quantity: Number(quantity) });
                 }
             }
             
-            // اگر آبجکت شامل آرایه‌ای از محصولات باشد
             if (obj.items && Array.isArray(obj.items)) {
                 items.push(...extractItemsFromArray(obj.items));
             }
             if (obj.products && Array.isArray(obj.products)) {
                 items.push(...extractItemsFromArray(obj.products));
             }
-            if (obj.cart && Array.isArray(obj.cart)) {
-                items.push(...extractItemsFromArray(obj.cart));
-            }
-            
-            // اگر آبجکت شامل چندین محصول به صورت key-value باشد
-            Object.keys(obj).forEach(key => {
-                const item = obj[key];
-                if (item && typeof item === 'object') {
-                    const extracted = extractItemsFromObject(item);
-                    if (extracted.length > 0) {
-                        items.push(...extracted);
-                    }
-                }
-            });
             
             return items;
         }
 
-        // نمایش بخش پیام‌رسان
-        function showMessengerSection(cartItems) {
+        function showMessengerSection() {
             document.getElementById('messengerSection').style.display = 'block';
             document.getElementById('emptyCartMessage').style.display = 'none';
             document.getElementById('statusMessage').textContent = 
-                `✅ ${cartItems.length} محصول در سبد خرید شما موجود است`;
-            
-            // ذخیره محصولات برای استفاده بعدی
-            window.cartItems = cartItems;
+                `✅ ${cartItems.length} محصول در سبد خرید`;
         }
 
-        // نمایش پیام خالی
         function showEmptyCart() {
             document.getElementById('messengerSection').style.display = 'none';
+            document.getElementById('orderSummary').style.display = 'none';
             document.getElementById('emptyCartMessage').style.display = 'block';
             document.getElementById('statusMessage').textContent = 'سبد خرید شما خالی است';
         }
 
-        // انتخاب پیام‌رسان
         function selectMessenger(messenger) {
             selectedMessenger = messenger;
             document.getElementById('telegramCard').classList.remove('selected');
@@ -238,21 +313,18 @@
             document.getElementById('sendButton').disabled = false;
         }
 
-        // ارسال سفارش
         function sendOrder() {
-            if (!selectedMessenger || !window.cartItems || window.cartItems.length === 0) {
+            if (!selectedMessenger || cartItems.length === 0) {
                 alert('لطفا ابتدا محصولاتی به سبد خرید اضافه کنید');
                 return;
             }
             
-            // ساخت پیام
             let message = `سلام! سفارش جدید:\n\n`;
             let total = 0;
             
-            window.cartItems.forEach(item => {
+            cartItems.forEach(item => {
                 const itemTotal = item.price * item.quantity;
                 total += itemTotal;
-                
                 message += `📦 ${item.name}\n`;
                 message += `   تعداد: ${item.quantity}\n`;
                 message += `   قیمت: ${itemTotal.toLocaleString('fa-IR')} تومان\n\n`;
@@ -261,22 +333,19 @@
             message += `💰 جمع کل: ${total.toLocaleString('fa-IR')} تومان\n\n`;
             message += `لطفا راهنمایی کنید.`;
             
-            // ساخت لینک
             const encodedMessage = encodeURIComponent(message);
             let url = '';
             
             if (selectedMessenger === 'telegram') {
-                url = `https://t.me/+${phoneNumber}?text=${encodedMessage}`;
+                url = `https://t.me/${TELEGRAM_ID}?text=${encodedMessage}`;
             } else {
-                url = `https://wa.me/+${phoneNumber}?text=${encodedMessage}`;
+                url = `https://wa.me/+${WHATSAPP_NUMBER}?text=${encodedMessage}`;
             }
             
-            // تغییر وضعیت دکمه
             const button = document.getElementById('sendButton');
             button.textContent = 'در حال انتقال...';
             button.disabled = true;
             
-            // باز کردن لینک
             setTimeout(() => {
                 window.open(url, '_blank');
                 button.textContent = '✅ ارسال شد';
@@ -287,43 +356,9 @@
             }, 1000);
         }
 
-        // رفتن به فروشگاه
         function goToShop() {
             window.location.href = 'index.html';
         }
-
-        // اجرا هنگام بارگذاری
-        document.addEventListener('DOMContentLoaded', function() {
-            // ابتدا منتظر بمان تا مطمئن شویم همه چیز لود شده
-            setTimeout(() => {
-                checkAllPossibilities();
-            }, 500);
-        });
-
-        // دکمه بازرسی در کنسول
-        window.inspectCart = function() {
-            console.clear();
-            console.log("🕵️‍♂️ بازرسی localStorage:");
-            console.log("کلیدهای موجود:", Object.keys(localStorage));
-            
-            Object.keys(localStorage).forEach(key => {
-                console.log(`\n📁 Key: "${key}"`);
-                try {
-                    const value = localStorage.getItem(key);
-                    console.log("مقدار:", value.substring(0, 200));
-                    console.log("طول:", value.length);
-                    console.log("نوع:", typeof value);
-                    
-                    // سعی در parse کردن
-                    const parsed = JSON.parse(value);
-                    console.log("✅ Parse موفق:", parsed);
-                } catch(e) {
-                    console.log("❌ Parse ناموفق - احتمالاً string ساده است");
-                }
-            });
-            
-            checkAllPossibilities();
-        };
     </script>
 </body>
 </html>
