@@ -508,14 +508,7 @@ function loadCartFromStorage() {
         }
 
         // در حالت واقعی، این اطلاعات از localStorage گرفته می‌شود
-        function loadCartFromStorage() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                orderItems = JSON.parse(savedCart);
-                displayOrderItems();
-                calculateTotal();
-            }
-        }
+       
     </script>
 </body>
 </html>
