@@ -390,18 +390,20 @@
     </div>
 
     <script>
-        // اطلاعات نمونه سفارش (در حالت واقعی از localStorage می‌آید)
+        // اطلاعات سبد خرید از localStorage
         let orderItems = [];
-
         let selectedMessenger = null;
+        const whatsappNumber = "989965566964"; // شماره واتساپ
+        const telegramUsername = "PG_supporter"; // ایدی تلگرام
 
-// بارگذاری سبد خرید از localStorage
-function loadCartFromStorage() {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        orderItems = JSON.parse(savedCart);
-    }
-}
+        // بارگذاری سبد خرید از localStorage
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                orderItems = JSON.parse(savedCart);
+            }
+        }
+
         // بارگذاری صفحه
         document.addEventListener('DOMContentLoaded', function() {
             loadCartFromStorage();
@@ -416,10 +418,6 @@ function loadCartFromStorage() {
             
             orderItems.forEach(item => {
                 const itemElement = document.createElement('div');
-
-
-
-                
                 itemElement.className = 'order-item';
                 itemElement.innerHTML = `
                     <div class="item-info">
@@ -487,9 +485,9 @@ function loadCartFromStorage() {
             let url = '';
             
             if (selectedMessenger === 'telegram') {
-                url = `https://t.me/+${phoneNumber}?text=${encodedMessage}`;
+                url = `https://t.me/${telegramUsername}?text=${encodedMessage}`;
             } else {
-                url = `https://wa.me/+${phoneNumber}?text=${encodedMessage}`;
+                url = `https://wa.me/+${whatsappNumber}?text=${encodedMessage}`;
             }
             
             // انیمیشن قبل از رفتن
@@ -506,9 +504,6 @@ function loadCartFromStorage() {
                 }, 2000);
             }, 1500);
         }
-
-        // در حالت واقعی، این اطلاعات از localStorage گرفته می‌شود
-       
     </script>
 </body>
 </html>
