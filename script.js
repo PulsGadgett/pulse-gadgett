@@ -1,3 +1,5 @@
+
+
 // نمایش محصولات
 function displayProducts(productsArray) {
     const grid = document.getElementById('productsGrid');
@@ -278,19 +280,52 @@ function updateCartDisplay() {
     }
 }
 
-// ثبت سفارش و هدایت به صفحه checkout
+// ثبت سفارش با انتخاب پلتفرم
 function checkout() {
     if (cart.length === 0) {
         alert('❌ سبد خرید شما خالی است!');
         return;
     }
     
-    // ذخیره سبد خرید در localStorage
-    localStorage.setItem('cart', JSON.stringify(cart));
+    // ساخت پیام سفارش
+    const productNames = cart.map(item => `${item.name} (${item.quantity} عدد)`).join('\n');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     
-    // هدایت به صفحه جدید سفارش
-    window.location.href = 'checkout.html';
+    const message = `🛍️ *سفارش جدید از PulseGadgett* 🛍️\n\n`;
+    const details = `📋 *لیست محصولات:*\n${productNames}\n\n`;
+    const summary = `📊 *تعداد کل:* ${totalItems} محصول\n\n`;
+    const contact = `👤 *لطفا اطلاعات تماس خود را وارد کنید:*\n- نام و نام خانوادگی:\n- شماره تلفن:\n- آدرس:\n\n`;
+    
+    const fullMessage = message + details + summary + contact;
+    
+    // نمایش انتخاب پلتفرم
+    const platform = confirm('لطفا انتخاب کنید:\n\nOK = ارسال به تلگرام\nCancel = ارسال به واتساپ');
+    
+    if (platform) {
+        // ارسال به تلگرام
+        const telegramUrl = `https://t.me/PG_supporter?text=${encodeURIComponent(fullMessage)}`;
+        window.open(telegramUrl, '_blank');
+    } else {
+        // ارسال به واتساپ
+        const whatsappUrl = `https://wa.me/989965566964?text=${encodeURIComponent(fullMessage)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    
+    // خالی کردن سبد خرید
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
 }
+    
+    // خالی کردن سبد خرید
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
+
+    // خالی کردن سبد خرید
+    cart = [];
+    updateCartDisplay();
+    toggleCart();
 
 // اضافه کردن استایل دکمه افزودن به سبد خرید به CSS
 const style = document.createElement('style');
