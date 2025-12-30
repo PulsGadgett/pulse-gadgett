@@ -9,7 +9,6 @@
     <script src="script.js" defer></script>
     
     <style>
-        /* استایل‌های مخصوص صفحه محصول - در صورت نیاز به فایل style.css منتقل شوند */
         .image-zoom-container {
             position: fixed;
             top: 0;
@@ -86,7 +85,8 @@
             <div class="brand">
                 <div class="logo-container">
                     <a href="index.html" style="display: contents;">
-                        <img src="images/logo.jpg" alt="PulseGadgett" class="logo">
+                        <img src="images/logo.jpg" alt="PulseGadgett" class="logo" 
+                             onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
                         <div class="brand-text">
                             <h1>PulseGadgett</h1>
                             <p>ضربان استایل دیجیتال شما</p>
@@ -135,7 +135,7 @@
 
     <!-- کانتینر برای زوم عکس -->
     <div id="imageZoomContainer" class="image-zoom-container">
-        <span class="close-zoom" onclick="closeZoom()">×</span>
+        <span class="close-zoom">×</span>
         <img id="zoomedImage" class="zoomed-image" src="" alt="">
     </div>
 
@@ -176,12 +176,14 @@
             if (!productDetail) return;
             
             if (product) {
+                // Escape کردن آدرس عکس
+                const escapedImage = product.image.replace(/'/g, "\\'");
+                
                 productDetail.innerHTML = `
                     <div class="product-detail">
                         <div class="product-images">
                             <img src="${product.image}" alt="${product.name}" class="main-image" 
-                                 onclick="openZoom('${product.image}')"
-                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDYwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9IiNGM0YzRjMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5تصویر محصول</dGV4dD48L3N2Zz4='">
+                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDYwMCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9IiNGM0YzRjMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ﺖﺳﺍ ﻥﺎﻤﺷ ﺭﺎﻛ ﻪﺑ ﺭﺩ ﻥﺎﺘﺴﻫﺍﺮﻓ</dGV4dD48L3N2Zz4=';">
                             <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
                                 برای مشاهده عکس در سایز واقعی کلیک کنید
                             </p>
@@ -211,7 +213,7 @@
                                 <div class="spec-item">
                                     <span class="spec-label">گارانتی:</span>
                                     <span class="spec-value">${product.description.includes('گارانتی') ? 
-                                        product.description.split('|').find(part => part.includes('گارانتی')) || 'اطلاعات گارانتی' : 
+                                        (product.description.split('|').find(part => part.includes('گارانتی')) || 'اطلاعات گارانتی').replace(/</g, '&lt;').replace(/>/g, '&gt;') : 
                                         'اطلاعات گارانتی موجود نیست'}</span>
                                 </div>
                             </div>
@@ -229,15 +231,20 @@
                     </div>
                 `;
                 
-                // آپدیت title صفحه
                 document.title = `${product.name} - PulseGadgett`;
                 
-                // اضافه کردن event listener به دکمه افزودن به سبد خرید
                 const addButton = document.getElementById('addToCartButton');
                 if (addButton) {
                     addButton.addEventListener('click', function() {
                         const productId = parseInt(this.getAttribute('data-product-id'));
                         addToCart(productId);
+                    });
+                }
+                
+                const mainImage = document.querySelector('.main-image');
+                if (mainImage) {
+                    mainImage.addEventListener('click', function() {
+                        openZoom(product.image);
                     });
                 }
                 
@@ -247,13 +254,19 @@
                         <h2>محصول یافت نشد</h2>
                         <p>متأسفانه محصول مورد نظر پیدا نشد.</p>
                         <p style="margin-top: 20px;">
-                            <button onclick="window.location.href='index.html'" 
-                                    style="background: var(--button-orange); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            <button id="backToShopBtn" style="background: var(--button-orange); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
                                 بازگشت به فروشگاه
                             </button>
                         </p>
                     </div>
                 `;
+                
+                const backBtn = document.getElementById('backToShopBtn');
+                if (backBtn) {
+                    backBtn.addEventListener('click', function() {
+                        window.location.href = 'index.html';
+                    });
+                }
             }
         }
 
@@ -280,14 +293,20 @@
 
         // مقداردهی اولیه Event Listeners برای این صفحه
         function initializeProductPage() {
-            // بستن زوم با کلیک روی background
+            // بستن زوم
             const zoomContainer = document.getElementById('imageZoomContainer');
+            const closeZoomBtn = document.querySelector('.close-zoom');
+            
             if (zoomContainer) {
                 zoomContainer.addEventListener('click', function(e) {
-                    if (e.target === this) {
+                    if (e.target === this || e.target.classList.contains('close-zoom')) {
                         closeZoom();
                     }
                 });
+            }
+            
+            if (closeZoomBtn) {
+                closeZoomBtn.addEventListener('click', closeZoom);
             }
 
             // بستن با کلید ESC
