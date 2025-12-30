@@ -10,27 +10,7 @@
     --text-dark: #3A2D28;
 }
 
-/* تغییر پس‌زمینه کل سایت */
-body {
-    background-color: var(--background-white) !important;
-}
-
-/* تغییر هدر */
-header {
-    background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%) !important;
-}
-
-/* تغییر دکمه‌های اصلی */
-.search-container button,
-.view-details-btn,
-.add-to-cart-btn {
-    background: var(--button-orange) !important;
-}
-
-/* تغییر کارت محصولات */
-.product-card {
-    background: var(--card-cream) !important;
-}
+/* ریست و تنظیمات پایه */
 * {
     margin: 0;
     padding: 0;
@@ -39,9 +19,9 @@ header {
 }
 
 body {
-    background: #f8f9fa;
+    background: var(--background-white);
     line-height: 1.6;
-    color: #333;
+    color: var(--text-dark);
     direction: rtl;
 }
 
@@ -53,23 +33,49 @@ body {
 
 /* هدر */
 header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
     color: white;
     padding: 1.5rem 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.brand h1 {
-    font-size: 2.5rem;
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+}
+
+.logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.2);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.brand-text h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
     margin-bottom: 0.5rem;
-    text-align: center;
+    background: linear-gradient(45deg, #fff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-.brand p {
-    text-align: center;
+.brand-text p {
+    font-size: 1.1rem;
     opacity: 0.9;
+    font-weight: 300;
+    text-align: center;
 }
 
+/* جستجو */
 .search-container {
     display: flex;
     justify-content: center;
@@ -89,7 +95,7 @@ header {
 
 .search-container button {
     padding: 12px 25px;
-    background: #ff6b6b;
+    background: var(--button-orange);
     color: white;
     border: none;
     border-radius: 0 25px 25px 0;
@@ -99,7 +105,46 @@ header {
 }
 
 .search-container button:hover {
-    background: #ff5252;
+    opacity: 0.9;
+}
+
+/* سبد خرید در هدر */
+.header-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.cart-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid var(--accent-yellow);
+    font-weight: 600;
+    color: var(--accent-yellow);
+}
+
+.cart-icon:hover {
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+}
+
+.cart-count {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
 }
 
 /* دسته‌بندی‌ها */
@@ -115,9 +160,9 @@ header {
 .category-btn {
     padding: 10px 20px;
     margin: 0 5px;
-    border: 2px solid #667eea;
+    border: 2px solid var(--category-teal);
     background: white;
-    color: #667eea;
+    color: var(--category-teal);
     border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s;
@@ -126,7 +171,7 @@ header {
 
 .category-btn:hover,
 .category-btn.active {
-    background: #667eea;
+    background: var(--category-teal);
     color: white;
 }
 
@@ -139,7 +184,7 @@ header {
 }
 
 .product-card {
-    background: white;
+    background: var(--card-cream);
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
@@ -173,7 +218,7 @@ header {
     position: absolute;
     top: 10px;
     left: 10px;
-    background: #ff6b6b;
+    background: var(--button-orange);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -185,7 +230,7 @@ header {
 }
 
 .product-category {
-    color: #667eea;
+    color: var(--category-teal);
     font-size: 0.8rem;
     margin-bottom: 5px;
 }
@@ -193,7 +238,7 @@ header {
 .product-name {
     font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #333;
+    color: var(--text-dark);
     height: 60px;
     overflow: hidden;
 }
@@ -232,7 +277,7 @@ header {
 }
 
 .view-details-btn {
-    background: #667eea;
+    background: var(--button-orange);
     color: white;
     border: none;
     padding: 10px 20px;
@@ -244,8 +289,28 @@ header {
 }
 
 .view-details-btn:hover {
-    background: #5a6fd8;
+    opacity: 0.9;
     transform: translateY(-2px);
+}
+
+.add-to-cart-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.add-to-cart-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .no-products {
@@ -276,7 +341,7 @@ header {
 
 .product-title {
     font-size: 2rem;
-    color: #333;
+    color: var(--text-dark);
     margin-bottom: 20px;
     line-height: 1.3;
 }
@@ -308,7 +373,7 @@ header {
 
 .spec-label {
     font-weight: bold;
-    color: #333;
+    color: var(--text-dark);
 }
 
 .spec-value {
@@ -318,7 +383,7 @@ header {
 .product-price-section {
     text-align: center;
     padding: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
     border-radius: 15px;
     color: white;
 }
@@ -331,7 +396,7 @@ header {
 }
 
 .add-to-cart {
-    background: #ff6b6b;
+    background: var(--button-orange);
     color: white;
     border: none;
     padding: 15px 30px;
@@ -342,7 +407,7 @@ header {
 }
 
 .add-to-cart:hover {
-    background: #ff5252;
+    opacity: 0.9;
     transform: translateY(-2px);
 }
 
@@ -389,141 +454,147 @@ header {
     color: #e74c3c;
 }
 
-/* فوتر */
-footer {
-    background: #333;
+/* سایدبار سبد خرید */
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    left: -400px;
+    width: 380px;
+    height: 100vh;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-sidebar.active {
+    left: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid #f8f9fa;
+    background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
     color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
 }
 
-/* رسپانسیو */
-@media (max-width: 768px) {
-    .brand h1 {
-        font-size: 2rem;
-    }
-    
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-    }
-    
-    .categories .container {
-        overflow-x: auto;
-        white-space: nowrap;
-        padding-bottom: 10px;
-    }
-    
-    .category-btn {
-        display: inline-block;
-        margin: 0 3px;
-    }
-    
-    .product-detail {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 20px;
-    }
-    
-    .product-title {
-        font-size: 1.5rem;
-    }
-    
-    .product-price-section .price {
-        font-size: 2rem;
-    }
-    
-    .product-images .main-image {
-        max-width: 100%;
-    }
+.cart-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
 }
 
-@media (max-width: 480px) {
-    .brand h1 {
-        font-size: 1.5rem;
-    }
-    
-    .search-container {
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .search-container input,
-    .search-container button {
-        border-radius: 25px;
-        width: 100%;
-    }
-    
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .product-detail {
-        margin: 20px 0;
-        padding: 15px;
-    }
-    
-    .product-title {
-        font-size: 1.3rem;
-    }
+.close-cart {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
 }
-/* استایل‌های جدید برای هدر و لوگو */
-.logo-container {
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.cart-item {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 15px;
-    margin-bottom: 1rem;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
-.logo {
+.cart-item-image {
     width: 60px;
     height: 60px;
-    border-radius: 10px;
+    border-radius: 8px;
     object-fit: cover;
-    border: 3px solid rgba(255,255,255,0.2);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.brand-text h1 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 2.8rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(45deg, #fff, #e0e7ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.cart-item-info {
+    flex: 1;
 }
 
-.brand-text p {
+.cart-item-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.cart-item-price {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.remove-item {
+    background: var(--button-orange);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.cart-footer {
+    padding: 20px;
+    border-top: 2px solid #f8f9fa;
+    background: #f8f9fa;
+}
+
+.cart-total {
+    text-align: center;
+    margin-bottom: 15px;
     font-size: 1.1rem;
-    opacity: 0.9;
-    font-weight: 300;
 }
 
-/* رسپانسیو برای موبایل */
-@media (max-width: 768px) {
-    .logo-container {
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-    }
-    
-    .brand-text h1 {
-        font-size: 2.2rem;
-    }
-    
-    .logo {
-        width: 50px;
-        height: 50px;
-    }
+.checkout-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
+
+.checkout-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* overlay برای وقتی سبد خرید باز است */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    display: none;
+}
+
+.cart-overlay.active {
+    display: block;
+}
+
 /* استایل بخش پشتیبانی */
 .support-section {
-    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    background: linear-gradient(135deg, var(--footer-brown) 0%, #2A1D18 100%);
     color: white;
     padding: 50px 0;
     text-align: center;
@@ -571,14 +642,87 @@ footer {
     color: white;
 }
 
+.support-btn.telegram {
+    background: linear-gradient(45deg, #0088cc, #1da1f2);
+    color: white;
+}
+
 .support-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     border-color: rgba(255,255,255,0.3);
 }
 
+/* فوتر */
+footer {
+    background: var(--footer-brown);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
 /* رسپانسیو */
 @media (max-width: 768px) {
+    .logo-container {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .brand-text h1 {
+        font-size: 2.2rem;
+    }
+    
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    
+    .categories .container {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 10px;
+    }
+    
+    .category-btn {
+        display: inline-block;
+        margin: 0 3px;
+    }
+    
+    .product-detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .product-title {
+        font-size: 1.5rem;
+    }
+    
+    .product-price-section .price {
+        font-size: 2rem;
+    }
+    
+    .product-images .main-image {
+        max-width: 100%;
+    }
+    
+    .cart-sidebar {
+        width: 320px;
+        left: -320px;
+    }
+    
+    .cart-icon {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
     .support-buttons {
         flex-direction: column;
         align-items: center;
@@ -592,264 +736,33 @@ footer {
         font-size: 1.7rem;
     }
 }
-/* استایل‌های سبد خرید */
-.header-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-}
 
-.cart-icon {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.2);
-    padding: 10px 20px;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid rgba(255,255,255,0.3);
-    font-weight: 600;
-}
-
-.cart-icon:hover {
-    background: rgba(255,255,255,0.3);
-    transform: translateY(-2px);
-}
-
-.cart-count {
-    background: #ff6b6b;
-    color: white;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-/* سایدبار سبد خرید */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    left: -400px;
-    width: 380px;
-    height: 100vh;
-    background: white;
-    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    transition: left 0.3s ease;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-}
-
-.cart-sidebar.active {
-    left: 0;
-}
-
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 2px solid #f8f9fa;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.cart-header h3 {
-    margin: 0;
-    font-size: 1.3rem;
-}
-
-.close-cart {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.cart-items {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-.cart-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    border-bottom: 1px solid #e9ecef;
-    background: #f8f9fa;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.cart-item-image {
-    width: 60px;
-    .support-btn.telegram {
-    background: linear-gradient(45deg, #0088cc, #1da1f2);
-    color: white;
-}
-    height: 60px;
-    border-radius: 8px;
-    object-fit: cover;
-}
-
-.cart-item-info {
-    flex: 1;
-}
-
-.cart-item-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.cart-item-price {
-    color: #e74c3c;
-    font-weight: bold;
-}
-
-.remove-item {
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.8rem;
-}
-
-.cart-footer {
-    padding: 20px;
-    border-top: 2px solid #f8f9fa;
-    background: #f8f9fa;
-}
-
-.cart-total {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-}
-
-.checkout-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.checkout-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* overlay برای وقتی سبد خرید باز است */
-.cart-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
-    display: none;
-}
-
-.cart-overlay.active {
-    display: block;
-}
-
-/* رسپانسیو */
-@media (max-width: 768px) {
-    .cart-sidebar {
-        width: 320px;
-        left: -320px;
+@media (max-width: 480px) {
+    .brand-text h1 {
+        font-size: 1.8rem;
     }
     
-    .cart-icon {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+    .search-container {
+        flex-direction: column;
+        gap: 10px;
     }
-}
-.add-to-cart-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 100%;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.add-to-cart-btn:hover {
-    background: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-/* تغییر دکمه‌های دسته‌بندی */
-.category-btn {
-    background: white !important;
-    border: 2px solid var(--category-teal) !important;
-    color: var(--category-teal) !important;
-}
-
-.category-btn:hover,
-.category-btn.active {
-    background: var(--category-teal) !important;
-    color: white !important;
-}
-
-/* تغییر سبد خرید */
-.cart-icon {
-    background: rgba(255, 255, 255, 0.2) !important;
-    border: 2px solid var(--accent-yellow) !important;
-    color: var(--accent-yellow) !important;
-}
-
-.cart-count {
-    background: var(--accent-yellow) !important;
-    color: var(--text-dark) !important;
-}
-
-/* تغییر بخش پشتیبانی */
-.support-section {
-    background: linear-gradient(135deg, var(--footer-brown) 0%, #2A1D18 100%) !important;
-}
-
-.support-btn.telegram {
-    background: linear-gradient(45deg, #0088cc, #1da1f2) !important;
-    color: white !important;
-}
-}
-
-.support-btn.instagram {
-    background: var(--header-purple) !important;
-}
-
-/* تغییر فوتر */
-footer {
-    background: var(--footer-brown) !important;
-    color: white !important;
-}
-/* دکمه واتساپ */
-.support-btn.whatsapp {
-    background: linear-gradient(45deg, #25D366, #128C7E) !important;
-    color: white !important;
+    
+    .search-container input,
+    .search-container button {
+        border-radius: 25px;
+        width: 100%;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-detail {
+        margin: 20px 0;
+        padding: 15px;
+    }
+    
+    .product-title {
+        font-size: 1.3rem;
+    }
 }
