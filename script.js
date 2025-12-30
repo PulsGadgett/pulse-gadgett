@@ -53,8 +53,7 @@ function createCategoryButtons() {
     const allBtn = container.querySelector('[data-category="all"]');
     if (allBtn) allBtn.classList.add('active');
 }
-
-// نمایش محصولات
+// نمایش محصولات - نسخه جدید با چیدمان مرتب
 function displayProducts(productsArray) {
     const grid = document.getElementById('productsGrid');
     const noProducts = document.getElementById('noProducts');
@@ -78,20 +77,28 @@ function displayProducts(productsArray) {
         productCard.innerHTML = `
             <div class="product-image">
                 <img src="${product.image}" alt="${product.name}" loading="lazy" 
-                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNGM0YzRjMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5تصویر محصول</dGV4dD48L3N2Zz4='">
+                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNGM0YzRjMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5ﺖﺳﺍ ﻥﺎﻤﺷ ﺭﺎﻛ ﻪﺑ ﺭﺩ ﻥﺎﺘﺴﻫﺍﺮﻓ</dGV4dD48L3N2Zz4=';">
                 ${!product.available ? '<div class="product-badge">ناموجود</div>' : ''}
             </div>
             <div class="product-info">
                 <div class="product-category">${product.category}</div>
                 <h3 class="product-name">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
+                
                 <div class="product-details">
-                    <span class="product-code">کد: ${product.code}</span>
-                    <span class="product-price">${product.price}</span>
+                    <div class="product-code">
+                        <span class="code-label">کد محصول:</span>
+                        <span class="code-value">${product.code}</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price-label">قیمت:</span>
+                        <span class="price-value">${product.price}</span>
+                    </div>
                 </div>
+                
                 <div class="product-footer">
                     <span class="product-availability ${product.available ? 'in-stock' : 'out-of-stock'}">
-                        ${product.available ? '✅ موجود' : '❌ ناموجود'}
+                        ${product.available ? '🟢 موجود در انبار' : '🔴 ناموجود'}
                     </span>
                     ${product.available ? 
                         `<button class="add-to-cart-btn" data-product-id="${product.id}">
@@ -103,7 +110,7 @@ function displayProducts(productsArray) {
             </div>
         `;
         
-        // اضافه کردن event listeners برای کلیک
+        // اضافه کردن event listeners
         const productImage = productCard.querySelector('.product-image');
         const productName = productCard.querySelector('.product-name');
         const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
@@ -441,3 +448,4 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartDisplay();
     initializeEventListeners();
 });
+
