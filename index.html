@@ -88,18 +88,23 @@
     </footer>
 
     <!-- سبد خرید -->
-    <div class="cart-footer">
-    <div class="cart-summary">
-        <div class="summary-item">
-            <span>تعداد محصولات:</span>
-            <span id="totalItems">0</span>
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>🛒 سبد خرید شما</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
-        <div class="summary-item">
-            <span>قیمت کل:</span>
-            <span id="totalPrice">۰ تومان</span>
+        <div id="cartItems" class="cart-items">
+            <!-- محصولات اینجا نمایش داده می‌شوند -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">📦 ثبت سفارش</button>
         </div>
     </div>
-    <button class="checkout-btn" onclick="checkout()">
-        <span>📦 ثبت سفارش نهایی</span>
-    </button>
-</div>
+
+    <script src="products-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
