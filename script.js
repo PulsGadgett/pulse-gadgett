@@ -11,45 +11,116 @@ if (localStorage.getItem('cart')) {
     }
 }
 
-// تبدیل قیمت فارسی به عدد انگلیسی
-function parsePersianPrice(priceText) {
-    if (!priceText) return 0;
+// ==================== توابع تبدیل قیمت ====================
+
+// تبدیل اعداد فارسی/عربی به انگلیسی
+function convertPersianToEnglishNumbers(text) {
+    if (!text) return '';
     
-    let cleanText = priceText.toString();
+    const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    
+    let result = text.toString();
+    
+    // تبدیل اعداد فارسی
+    persianNumbers.forEach((persian, index) => {
+        result = result.replace(new RegExp(persian, 'g'), englishNumbers[index]);
+    });
+    
+    // تبدیل اعداد عربی
+    arabicNumbers.forEach((arabic, index) => {
+        result = result.replace(new RegExp(arabic, 'g'), englishNumbers[index]);
+    });
+    
+    return result;
+}
+
+// تبدیل قیمت فارسی به عدد انگلیسی - نسخه اصلاح شده و مطمئن
+function parsePersianPrice(priceText) {
+    if (!priceText || typeof priceText !== 'string') {
+        console.warn('⚠️ قیمت نامعتبر:', priceText);
+        return 0;
+    }
+    
+    console.log('🔍 تبدیل قیمت:', priceText);
+    
+    // تبدیل اعداد فارسی به انگلیسی
+    let cleanText = convertPersianToEnglishNumbers(priceText);
     
     // حذف "تومان" و فاصله‌ها
-    cleanText = cleanText.replace(/تومان/g, '');
-    cleanText = cleanText.replace(/ /g, '');
+    cleanText = cleanText.replace(/تومان/gi, '')
+                         .replace(/ریال/gi, '')
+                         .replace(/ /g, '')
+                         .replace(/‌/g, '') // حذف نیم‌فاصله
+                         .replace(/,/g, '')  // حذف کاما
+                         .replace(/\./g, ''); // حذف نقطه
     
-    // جایگزینی کامای فارسی با انگلیسی
-    cleanText = cleanText.replace(/،/g, ',');
-    cleanText = cleanText.replace(/٫/g, '.');
+    // فقط اعداد را نگه دار
+    cleanText = cleanText.replace(/[^\d]/g, '');
     
-    // حذف تمام کاراکترهای غیرعددی به جز کاما و نقطه
-    cleanText = cleanText.replace(/[^\d,.]/g, '');
-    
-    // اگر کاما به عنوان جداکننده هزارگان است، حذف شود
-    if (cleanText.includes(',') && !cleanText.includes('.')) {
-        cleanText = cleanText.replace(/,/g, '');
+    // اگر خالی شد
+    if (!cleanText) {
+        console.warn('⚠️ قیمت خالی پس از پاکسازی:', priceText);
+        return 0;
     }
     
     // تبدیل به عدد
-    const price = parseFloat(cleanText.replace(/,/g, ''));
-    return isNaN(price) ? 0 : price;
-}
-
-// محاسبه قیمت کل سبد خرید
-function calculateTotalPrice() {
-    return cart.reduce((total, item) => {
-        const price = parsePersianPrice(item.price);
-        return total + (price * item.quantity);
-    }, 0);
+    const price = parseInt(cleanText, 10);
+    
+    if (isNaN(price)) {
+        console.warn('⚠️ تبدیل به عدد ناموفق:', cleanText, 'از:', priceText);
+        return 0;
+    }
+    
+    console.log('✅ قیمت تبدیل شده:', price, 'از:', priceText);
+    return price;
 }
 
 // فرمت کردن قیمت به فارسی
 function formatPrice(price) {
+    if (typeof price !== 'number' || isNaN(price)) {
+        return '۰ تومان';
+    }
     return price.toLocaleString('fa-IR') + ' تومان';
 }
+
+// تابع کمکی برای نمایش ایمن قیمت
+function displayPrice(priceText, quantity = 1) {
+    try {
+        const numericPrice = parsePersianPrice(priceText);
+        const total = numericPrice * quantity;
+        return formatPrice(total);
+    } catch (error) {
+        console.error('❌ خطا در نمایش قیمت:', error);
+        return '۰ تومان';
+    }
+}
+
+// تست تابع تبدیل قیمت
+function testPriceConversion() {
+    console.log('🧪 تست تبدیل قیمت‌ها:');
+    const testCases = [
+        { input: "۶۶۹,۰۰۰ تومان", expected: 669000 },
+        { input: "۵۶۵,۰۰ تومان", expected: 565000 },
+        { input: "۱,۱۷۳,۰۰۰ تومان", expected: 1173000 },
+        { input: "۱۴۸,۰۰۰ تومان", expected: 148000 },
+        { input: "۲۱۰,۰۰۰ تومان", expected: 210000 },
+        { input: "۲۳۹,۰۰۰ تومان", expected: 239000 },
+        { input: "۳۸۱,۰۰۰ تومان", expected: 381000 },
+        { input: "۲۹۶,۰۰۰ تومان", expected: 296000 },
+        { input: "۵۸۶,۰۰۰ تومان", expected: 586000 },
+        { input: "۴۴۲,۰۰۰ تومان", expected: 442000 }
+    ];
+    
+    testCases.forEach((test, index) => {
+        const result = parsePersianPrice(test.input);
+        const success = result === test.expected;
+        console.log(`${success ? '✅' : '❌'} ${index + 1}. "${test.input}" → ${result} ${success ? '' : '(انتظار: ' + test.expected + ')'}`);
+    });
+}
+
+// ==================== توابع اصلی ====================
 
 // ایجاد دکمه‌های دسته‌بندی
 function createCategoryButtons() {
@@ -86,7 +157,7 @@ function displayProducts(productsArray) {
     
     grid.innerHTML = '';
     
-    if (productsArray.length === 0) {
+    if (!productsArray || productsArray.length === 0) {
         noProducts.style.display = 'block';
         return;
     }
@@ -156,7 +227,7 @@ function displayProducts(productsArray) {
     });
 }
 
-// فیلتر محصولات بر اساس دسته‌بندی
+// فیلتر محصولات
 function filterProducts(category, targetButton = null) {
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -309,6 +380,16 @@ function showAddedToCartMessage(productName) {
     }, 2000);
 }
 
+// محاسبه قیمت کل سبد خرید
+function calculateTotalPrice() {
+    let total = 0;
+    cart.forEach(item => {
+        const price = parsePersianPrice(item.price);
+        total += price * item.quantity;
+    });
+    return total;
+}
+
 // آپدیت نمایش سبد خرید
 function updateCartDisplay() {
     const cartItems = document.getElementById('cartItems');
@@ -340,8 +421,7 @@ function updateCartDisplay() {
     }
     
     cart.forEach(item => {
-        const price = parsePersianPrice(item.price);
-        const itemTotal = price * item.quantity;
+        const itemTotal = displayPrice(item.price, item.quantity);
         
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
@@ -366,7 +446,7 @@ function updateCartDisplay() {
                 </div>
                 <div class="cart-item-price" style="display: flex; align-items: center; gap: 8px;">
                     <span class="price-label" style="font-size: 0.8rem; color: #666;">قیمت:</span>
-                    <span class="price-value" style="font-weight: bold; color: #e74c3c;">${formatPrice(itemTotal)}</span>
+                    <span class="price-value" style="font-weight: bold; color: #e74c3c;">${itemTotal}</span>
                 </div>
             </div>
             <button class="remove-item" onclick="removeFromCart(${item.id})" title="حذف" 
@@ -431,9 +511,8 @@ function showMessengerModal() {
     const totalCartPrice = calculateTotalPrice();
     
     const productList = cart.map(item => {
-        const price = parsePersianPrice(item.price);
-        const itemTotal = price * item.quantity;
-        return `• ${item.name} (${item.quantity} عدد) - ${formatPrice(itemTotal)}`;
+        const itemTotal = displayPrice(item.price, item.quantity);
+        return `• ${item.name} (${item.quantity} عدد) - ${itemTotal}`;
     }).join('\n');
     
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -604,10 +683,24 @@ function initializeEventListeners() {
     if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
 }
 
-// بارگذاری اولیه
+// ==================== اجرای اولیه ====================
+
+// اجرای تست تبدیل قیمت هنگام بارگذاری
 document.addEventListener('DOMContentLoaded', function() {
-    createCategoryButtons();
-    displayProducts(products);
-    updateCartDisplay();
-    initializeEventListeners();
+    console.log('🚀 شروع بارگذاری PulseGadgett...');
+    
+    // تست تبدیل قیمت
+    testPriceConversion();
+    
+    // مقداردهی اولیه
+    if (typeof products !== 'undefined') {
+        createCategoryButtons();
+        displayProducts(products);
+        updateCartDisplay();
+        initializeEventListeners();
+        console.log('✅ سایت با موفقیت بارگذاری شد');
+    } else {
+        console.error('❌ products تعریف نشده است!');
+        alert('خطا در بارگذاری محصولات. لطفاً صفحه را refresh کنید.');
+    }
 });
