@@ -1,3 +1,19 @@
 User-agent: *
 Allow: /
+Disallow: /cart
+Disallow: /checkout
+
 Sitemap: https://pulse-gadgett.vercel.app/sitemap.xml
+
+# موتورهای جستجوی خاص
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
