@@ -11,12 +11,39 @@ if (localStorage.getItem('cart')) {
     }
 }
 
+// تبدیل قیمت فارسی به عدد انگلیسی
+function parsePersianPrice(priceText) {
+    if (!priceText) return 0;
+    
+    // حذف تمام کاراکترهای غیرعددی به جز کاما و ممیز
+    let cleanText = priceText.toString();
+    
+    // حذف "تومان" و فاصله‌ها
+    cleanText = cleanText.replace(/تومان/g, '');
+    cleanText = cleanText.replace(/ /g, '');
+    
+    // جایگزینی کامای فارسی با انگلیسی
+    cleanText = cleanText.replace(/،/g, ',');
+    cleanText = cleanText.replace(/٫/g, '.');
+    
+    // حذف تمام کاراکترهای غیرعددی به جز کاما و نقطه
+    cleanText = cleanText.replace(/[^\d,.]/g, '');
+    
+    // اگر کاما به عنوان جداکننده هزارگان است، حذف شود
+    if (cleanText.includes(',') && !cleanText.includes('.')) {
+        cleanText = cleanText.replace(/,/g, '');
+    }
+    
+    // تبدیل به عدد
+    const price = parseFloat(cleanText.replace(/,/g, ''));
+    return isNaN(price) ? 0 : price;
+}
+
 // محاسبه قیمت کل سبد خرید
 function calculateTotalPrice() {
     return cart.reduce((total, item) => {
         // تبدیل قیمت فارسی به عدد انگلیسی
-        const priceText = item.price.replace(/[^\d]/g, '');
-        const price = parseInt(priceText) || 0;
+        const price = parsePersianPrice(item.price);
         return total + (price * item.quantity);
     }, 0);
 }
@@ -305,6 +332,9 @@ function updateCartDisplay() {
     cartCount.textContent = totalQuantity;
     totalItems.textContent = totalQuantity;
     
+    // محاسبه قیمت کل برای نمایش در سبد خرید
+    const totalCartPrice = calculateTotalPrice();
+    
     // آپدیت لیست محصولات
     cartItems.innerHTML = '';
     
@@ -323,8 +353,7 @@ function updateCartDisplay() {
     
     cart.forEach(item => {
         // تبدیل قیمت فارسی به عدد
-        const priceText = item.price.replace(/[^\d]/g, '');
-        const price = parseInt(priceText) || 0;
+        const price = parsePersianPrice(item.price);
         const itemTotal = price * item.quantity;
         
         const cartItem = document.createElement('div');
@@ -360,6 +389,30 @@ function updateCartDisplay() {
         `;
         cartItems.appendChild(cartItem);
     });
+    
+    // اضافه کردن بخش قیمت کل به سبد خرید
+    const cartFooter = document.querySelector('.cart-footer');
+    if (cartFooter) {
+        const existingTotalPrice = document.getElementById('totalPriceDisplay');
+        if (existingTotalPrice) existingTotalPrice.remove();
+        
+        const totalPriceHTML = `
+            <div class="cart-total" id="totalPriceDisplay">
+                <strong>تعداد کل: <span id="totalItems">${totalQuantity}</span> محصول</strong>
+                <div style="margin-top: 10px; font-size: 1.2rem; color: #e74c3c;">
+                    <strong>قیمت کل: ${formatPrice(totalCartPrice)}</strong>
+                </div>
+            </div>
+        `;
+        
+        // جایگزینی cart-total قبلی
+        const oldCartTotal = cartFooter.querySelector('.cart-total');
+        if (oldCartTotal) {
+            oldCartTotal.outerHTML = totalPriceHTML;
+        } else {
+            cartFooter.insertAdjacentHTML('afterbegin', totalPriceHTML);
+        }
+    }
 }
 
 // آپدیت تعداد محصول در سبد خرید
@@ -394,21 +447,29 @@ function showMessengerModal() {
     
     // ایجاد محتوای سفارش
     const productList = cart.map(item => {
-        const priceText = item.price.replace(/[^\d]/g, '');
-        const price = parseInt(priceText) || 0;
+        const price = parsePersianPrice(item.price);
         const itemTotal = price * item.quantity;
-        return `${item.name} - ${item.quantity} عدد - ${formatPrice(itemTotal)}`;
+        return `• ${item.name} (${item.quantity} عدد) - ${formatPrice(itemTotal)}`;
     }).join('\n');
     
-    const message = `سلام من سفارش جدید دارم
+    const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    const message = `📦 سفارش جدید از پالس گجت
 
-لیست محصولات:
+🛍️ لیست محصولات:
 ${productList}
 
-قیمت کل: ${formatPrice(totalCartPrice)}
-تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول
+💰 قیمت کل: ${formatPrice(totalCartPrice)}
+📊 تعداد کل: ${totalQuantity} محصول
 
-لطفا راهنمایی کنید.`‌;
+📞 اطلاعات تماس:
+برای تکمیل سفارش با مشتری تماس بگیرید.`;
+    
+    // Escaping برای template literal
+    const escapedMessage = message
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`')
+        .replace(/\$/g, '\\$');
     
     const modalHTML = `
         <div class="messenger-modal" id="messengerModal">
@@ -420,14 +481,14 @@ ${productList}
                 <div class="modal-body">
                     <p class="modal-description">سفارش خود را از طریق کدام پیام‌رسان ارسال کنید؟</p>
                     <div class="messenger-options">
-                        <button class="messenger-option whatsapp-option" onclick="sendOrderViaWhatsapp(\`${message.replace(/`/g, '\\`')}\`)">
+                        <button class="messenger-option whatsapp-option" onclick="sendOrderViaWhatsapp('${escapedMessage}')">
                             <div class="option-icon">💬</div>
                             <div class="option-content">
                                 <div class="option-title">واتساپ</div>
                                 <div class="option-desc">ارسال مستقیم به پشتیبانی</div>
                             </div>
                         </button>
-                        <button class="messenger-option telegram-option" onclick="sendOrderViaTelegram(\`${message.replace(/`/g, '\\`')}\`)">
+                        <button class="messenger-option telegram-option" onclick="sendOrderViaTelegram('${escapedMessage}')">
                             <div class="option-icon">✈️</div>
                             <div class="option-content">
                                 <div class="option-title">تلگرام</div>
@@ -461,7 +522,12 @@ function closeMessengerModal() {
 
 // ارسال سفارش از طریق واتساپ
 function sendOrderViaWhatsapp(message) {
-    const encodedMessage = encodeURIComponent(message);
+    const decodedMessage = message
+        .replace(/\\\\/g, '\\')
+        .replace(/\\`/g, '`')
+        .replace(/\\\$/g, '$');
+    
+    const encodedMessage = encodeURIComponent(decodedMessage);
     const whatsappUrl = `https://wa.me/989965566964?text=${encodedMessage}`;
     
     window.open(whatsappUrl, '_blank');
@@ -472,7 +538,12 @@ function sendOrderViaWhatsapp(message) {
 
 // ارسال سفارش از طریق تلگرام
 function sendOrderViaTelegram(message) {
-    const encodedMessage = encodeURIComponent(message);
+    const decodedMessage = message
+        .replace(/\\\\/g, '\\')
+        .replace(/\\`/g, '`')
+        .replace(/\\\$/g, '$');
+    
+    const encodedMessage = encodeURIComponent(decodedMessage);
     const telegramUrl = `https://t.me/PG_supporter?text=${encodedMessage}`;
     
     window.open(telegramUrl, '_blank');
@@ -543,11 +614,27 @@ function initializeEventListeners() {
     if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
 }
 
+// تست تابع parsePersianPrice
+function testPriceParsing() {
+    const testPrices = [
+        "۶۶۹,۰۰۰ تومان",
+        "۵۶۵,۰۰ تومان", 
+        "۱,۱۷۳,۰۰۰ تومان",
+        "۱۴۸,۰۰۰ تومان"
+    ];
+    
+    console.log("تست تبدیل قیمت‌های فارسی:");
+    testPrices.forEach(price => {
+        console.log(`${price} -> ${parsePersianPrice(price)}`);
+    });
+}
+
 // بارگذاری اولیه
 document.addEventListener('DOMContentLoaded', function() {
     createCategoryButtons();
     displayProducts(products);
     updateCartDisplay();
     initializeEventListeners();
+    // تست تبدیل قیمت (میتوانید غیرفعال کنید)
+    // testPriceParsing();
 });
-
