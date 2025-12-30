@@ -53,6 +53,7 @@ function createCategoryButtons() {
     const allBtn = container.querySelector('[data-category="all"]');
     if (allBtn) allBtn.classList.add('active');
 }
+
 // نمایش محصولات - نسخه جدید با چیدمان مرتب
 function displayProducts(productsArray) {
     const grid = document.getElementById('productsGrid');
@@ -353,7 +354,7 @@ function updateCartDisplay() {
                 </div>
             </div>
             <button class="remove-item" onclick="removeFromCart(${item.id})" title="حذف" 
-                    style="background: #ff6b6b; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
+                    style="background: var(--button-orange); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
                 حذف
             </button>
         `;
@@ -375,13 +376,19 @@ function updateQuantity(productId, change) {
     }
 }
 
-// ثبت سفارش
+// ثبت سفارش با انتخاب پیام‌رسان
 function checkout() {
     if (cart.length === 0) {
         alert('سبد خرید شما خالی است!');
         return;
     }
     
+    // نمایش مدال انتخاب پیام‌رسان
+    showMessengerModal();
+}
+
+// نمایش مدال انتخاب پیام‌رسان
+function showMessengerModal() {
     // محاسبه قیمت کل
     const totalCartPrice = calculateTotalPrice();
     
@@ -391,24 +398,119 @@ function checkout() {
         const price = parseInt(priceText) || 0;
         const itemTotal = price * item.quantity;
         return `${item.name} - ${item.quantity} عدد - ${formatPrice(itemTotal)}`;
-    }).join('%0A');
+    }).join('\n');
     
-    const message = `سفارش جدید از پالس گجت%0A%0A📋 لیست محصولات:%0A${productList}%0A%0A💰 قیمت کل: ${formatPrice(totalCartPrice)}%0A🛍️ تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول%0A%0Aبرای اطلاعات بیشتر با مشتری تماس بگیرید.`;
+    const message = `سفارش جدید از پالس گجت
+
+📋 لیست محصولات:
+${productList}
+
+💰 قیمت کل: ${formatPrice(totalCartPrice)}
+🛍️ تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول
+
+برای اطلاعات بیشتر با مشتری تماس بگیرید.`;
     
-    // باز کردن واتساپ با پیام سفارش
-    const whatsappUrl = `https://wa.me/989965566964?text=${message}`;
+    const modalHTML = `
+        <div class="messenger-modal" id="messengerModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>انتخاب روش ارسال سفارش</h3>
+                    <button class="modal-close" onclick="closeMessengerModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description">سفارش خود را از طریق کدام پیام‌رسان ارسال کنید؟</p>
+                    <div class="messenger-options">
+                        <button class="messenger-option whatsapp-option" onclick="sendOrderViaWhatsapp(\`${message.replace(/`/g, '\\`')}\`)">
+                            <div class="option-icon">💬</div>
+                            <div class="option-content">
+                                <div class="option-title">واتساپ</div>
+                                <div class="option-desc">ارسال مستقیم به پشتیبانی</div>
+                            </div>
+                        </button>
+                        <button class="messenger-option telegram-option" onclick="sendOrderViaTelegram(\`${message.replace(/`/g, '\\`')}\`)">
+                            <div class="option-icon">✈️</div>
+                            <div class="option-content">
+                                <div class="option-title">تلگرام</div>
+                                <div class="option-desc">ارسال از طریق تلگرام</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-overlay" onclick="closeMessengerModal()"></div>
+    `;
+    
+    // حذف مدال قبلی اگر وجود دارد
+    const oldModal = document.getElementById('messengerModal');
+    const oldOverlay = document.querySelector('.modal-overlay');
+    if (oldModal) oldModal.remove();
+    if (oldOverlay) oldOverlay.remove();
+    
+    // اضافه کردن مدال جدید
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+}
+
+// بستن مدال
+function closeMessengerModal() {
+    const modal = document.getElementById('messengerModal');
+    const overlay = document.querySelector('.modal-overlay');
+    if (modal) modal.remove();
+    if (overlay) overlay.remove();
+}
+
+// ارسال سفارش از طریق واتساپ
+function sendOrderViaWhatsapp(message) {
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/989965566964?text=${encodedMessage}`;
+    
     window.open(whatsappUrl, '_blank');
+    clearCartAfterOrder();
+    closeMessengerModal();
+    showOrderSuccessMessage('واتساپ');
+}
+
+// ارسال سفارش از طریق تلگرام
+function sendOrderViaTelegram(message) {
+    const encodedMessage = encodeURIComponent(message);
+    const telegramUrl = `https://t.me/PG_supporter?text=${encodedMessage}`;
     
-    // خالی کردن سبد خرید
+    window.open(telegramUrl, '_blank');
+    clearCartAfterOrder();
+    closeMessengerModal();
+    showOrderSuccessMessage('تلگرام');
+}
+
+// خالی کردن سبد خرید بعد از ثبت سفارش
+function clearCartAfterOrder() {
     cart = [];
     localStorage.removeItem('cart');
     updateCartDisplay();
-    toggleCart();
+    toggleCart(); // بستن سایدبار سبد خرید
+}
+
+// نمایش پیام موفقیت ثبت سفارش
+function showOrderSuccessMessage(messenger) {
+    const successHTML = `
+        <div class="order-success-message">
+            <div class="success-content">
+                <div class="success-icon">✅</div>
+                <div class="success-text">
+                    <div class="success-title">سفارش شما ثبت شد!</div>
+                    <div class="success-desc">لطفاً پیام را در ${messenger} ارسال کنید.</div>
+                </div>
+                <button class="success-close" onclick="this.parentElement.parentElement.remove()">×</button>
+            </div>
+        </div>
+    `;
     
-    // نمایش پیام موفقیت
+    document.body.insertAdjacentHTML('beforeend', successHTML);
+    
+    // حذف خودکار بعد از 5 ثانیه
     setTimeout(() => {
-        alert('سفارش شما با موفقیت ثبت شد! لطفاً در واتساپ پیام خود را ارسال کنید.');
-    }, 500);
+        const message = document.querySelector('.order-success-message');
+        if (message) message.remove();
+    }, 5000);
 }
 
 // مقداردهی اولیه Event Listeners
@@ -448,4 +550,3 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartDisplay();
     initializeEventListeners();
 });
-
