@@ -6,6 +6,21 @@ if (localStorage.getItem('cart')) {
     cart = JSON.parse(localStorage.getItem('cart'));
 }
 
+// محاسبه قیمت کل سبد خرید
+function calculateTotalPrice() {
+    return cart.reduce((total, item) => {
+        // تبدیل قیمت فارسی به عدد انگلیسی
+        const priceText = item.price.replace(/[^\d]/g, '');
+        const price = parseInt(priceText) || 0;
+        return total + (price * item.quantity);
+    }, 0);
+}
+
+// فرمت کردن قیمت به فارسی
+function formatPrice(price) {
+    return price.toLocaleString('fa-IR') + ' تومان';
+}
+
 // نمایش محصولات
 function displayProducts(productsArray) {
     const grid = document.getElementById('productsGrid');
@@ -31,18 +46,17 @@ function displayProducts(productsArray) {
                     <div class="product-category">${product.category}</div>
                     <h3 class="product-name" onclick="goToProduct(${product.id})" style="cursor: pointer;">${product.name}</h3>
                     <p class="product-description">${product.description}</p>
-                    <div class="product-meta">
-                        <span class="product-code">📦 کد: ${product.code}</span>
-                        <span class="product-price">💰 ${product.price}</span>
+                    <div class="product-details">
+                        <span class="product-code">کد: ${product.code}</span>
+                        <span class="product-price">${product.price}</span>
                     </div>
-                    <div class="product-actions">
+                    <div class="product-footer">
                         <span class="product-availability ${product.available ? 'in-stock' : 'out-of-stock'}">
                             ${product.available ? '✅ موجود' : '❌ ناموجود'}
                         </span>
-                        <button class="view-details-btn" onclick="goToProduct(${product.id})">🔍 جزئیات</button>
                         ${product.available ? 
                             `<button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart(${product.id})">
-                                🛒 افزودن
+                                🛒 افزودن به سبد خرید
                             </button>` : 
                             ''
                         }
@@ -56,7 +70,6 @@ function displayProducts(productsArray) {
 
 // فیلتر محصولات بر اساس دسته‌بندی
 function filterProducts(category) {
-    // آپدیت دکمه‌های فعال
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('active');
     });
@@ -101,7 +114,6 @@ function toggleCart() {
     const cartSidebar = document.getElementById('cartSidebar');
     cartSidebar.classList.toggle('active');
     
-    // ایجاد overlay
     let overlay = document.getElementById('cartOverlay');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -128,9 +140,7 @@ function addToCart(productId) {
             });
         }
         
-        // ذخیره در localStorage
         localStorage.setItem('cart', JSON.stringify(cart));
-        
         updateCartDisplay();
         showAddedToCartMessage(product.name);
     }
@@ -145,32 +155,21 @@ function removeFromCart(productId) {
 
 // نمایش پیام اضافه شدن به سبد خرید
 function showAddedToCartMessage(productName) {
-    // ایجاد نوتفیکیشن زیبا
-    const notification = document.createElement('div');
-    notification.className = 'cart-notification';
-    notification.innerHTML = `
+    const message = document.createElement('div');
+    message.className = 'cart-notification';
+    message.innerHTML = `
         <div class="notification-content">
             <span class="notification-icon">✅</span>
-            <div class="notification-text">
-                <strong>${productName}</strong>
-                <small>به سبد خرید اضافه شد</small>
-            </div>
+            <span class="notification-text">${productName} به سبد خرید اضافه شد</span>
         </div>
     `;
     
-    document.body.appendChild(notification);
-    
-    // انیمیشن
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
+    document.body.appendChild(message);
     
     setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
+        message.classList.add('fade-out');
+        setTimeout(() => message.remove(), 300);
+    }, 2000);
 }
 
 // آپدیت نمایش سبد خرید
@@ -178,11 +177,16 @@ function updateCartDisplay() {
     const cartItems = document.getElementById('cartItems');
     const cartCount = document.getElementById('cartCount');
     const totalItems = document.getElementById('totalItems');
+    const totalPrice = document.getElementById('totalPrice');
     
     // آپدیت تعداد محصولات
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalQuantity;
     totalItems.textContent = totalQuantity;
+    
+    // آپدیت قیمت کل
+    const totalCartPrice = calculateTotalPrice();
+    totalPrice.textContent = formatPrice(totalCartPrice);
     
     // آپدیت لیست محصولات
     cartItems.innerHTML = '';
@@ -191,104 +195,157 @@ function updateCartDisplay() {
         cartItems.innerHTML = `
             <div class="empty-cart">
                 <div class="empty-cart-icon">🛒</div>
-                <h4>سبد خرید شما خالی است</h4>
-                <p>محصولاتی را به سبد خرید اضافه کنید</p>
+                <p class="empty-cart-text">سبد خرید شما خالی است</p>
+                <p class="empty-cart-subtext">محصولاتی را به سبد خرید اضافه کنید</p>
             </div>
         `;
         return;
     }
     
     cart.forEach(item => {
+        // تبدیل قیمت فارسی به عدد
+        const priceText = item.price.replace(/[^\d]/g, '');
+        const price = parseInt(priceText) || 0;
+        const itemTotal = price * item.quantity;
+        
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
-            <div class="cart-item-content">
+            <div class="cart-item-header">
                 <img src="${item.image}" alt="${item.name}" class="cart-item-image">
                 <div class="cart-item-info">
-                    <div class="cart-item-header">
-                        <h4 class="cart-item-name">${item.name}</h4>
-                        <button class="remove-item" onclick="removeFromCart(${item.id})" title="حذف">
-                            ✕
-                        </button>
-                    </div>
-                    <div class="cart-item-details">
-                        <span class="cart-item-price">${item.price}</span>
-                        <span class="cart-item-quantity">تعداد: ${item.quantity}</span>
-                    </div>
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-category">${item.category}</div>
                 </div>
             </div>
+            <div class="cart-item-details">
+                <div class="cart-item-quantity">
+                    <span>تعداد:</span>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <span class="quantity-value">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </div>
+                </div>
+                <div class="cart-item-price">
+                    <span class="price-label">قیمت:</span>
+                    <span class="price-value">${formatPrice(itemTotal)}</span>
+                </div>
+            </div>
+            <button class="remove-item" onclick="removeFromCart(${item.id})" title="حذف">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
         `;
         cartItems.appendChild(cartItem);
     });
 }
 
-// نمایش دیالوگ انتخاب پیام‌رسان
-function showMessengerDialog() {
-    const dialog = document.createElement('div');
-    dialog.className = 'messenger-dialog';
-    dialog.innerHTML = `
-        <div class="dialog-overlay" onclick="closeMessengerDialog()"></div>
-        <div class="dialog-content">
-            <h3>📱 انتخاب پیام‌رسان</h3>
-            <p>از طریق کدام پیام‌رسان می‌خواهید سفارش دهید؟</p>
-            
-            <div class="messenger-options">
-                <button class="messenger-option whatsapp-option" onclick="checkoutWithMessenger('whatsapp')">
-                    <span class="option-icon">💬</span>
-                    <span class="option-text">
-                        <strong>واتساپ</strong>
-                        <small>ارسال سریع به واتساپ</small>
-                    </span>
-                </button>
-                
-                <button class="messenger-option telegram-option" onclick="checkoutWithMessenger('telegram')">
-                    <span class="option-icon">📱</span>
-                    <span class="option-text">
-                        <strong>تلگرام</strong>
-                        <small>ارسال به تلگرام</small>
-                    </span>
-                </button>
-            </div>
-            
-            <button class="dialog-cancel" onclick="closeMessengerDialog()">انصراف</button>
-        </div>
-    `;
-    
-    document.body.appendChild(dialog);
-    setTimeout(() => {
-        dialog.classList.add('show');
-    }, 10);
-}
-
-// بستن دیالوگ
-function closeMessengerDialog() {
-    const dialog = document.querySelector('.messenger-dialog');
-    if (dialog) {
-        dialog.classList.remove('show');
-        setTimeout(() => {
-            dialog.remove();
-        }, 300);
+// آپدیت تعداد محصول در سبد خرید
+function updateQuantity(productId, change) {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+        item.quantity += change;
+        if (item.quantity < 1) {
+            removeFromCart(productId);
+        } else {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
     }
 }
 
-// ثبت سفارش با پیام‌رسان انتخابی
-function checkoutWithMessenger(messenger) {
+// ثبت سفارش با انتخاب پیام‌رسان
+function checkout() {
     if (cart.length === 0) {
-        alert('❌ سبد خرید شما خالی است!');
+        showCheckoutModal('سبد خرید شما خالی است!', 'error');
         return;
     }
     
+    // محاسبه قیمت کل
+    const totalCartPrice = calculateTotalPrice();
+    
     // ایجاد محتوای سفارش
-    const productNames = cart.map(item => `• ${item.name} (${item.quantity} عدد)`).join('\n');
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cart.reduce((sum, item) => {
-        const price = parseInt(item.price.replace(/[^0-9]/g, ''));
-        return sum + (price * item.quantity);
-    }, 0);
+    const productList = cart.map(item => {
+        const priceText = item.price.replace(/[^\d]/g, '');
+        const price = parseInt(priceText) || 0;
+        const itemTotal = price * item.quantity;
+        return `${item.name} - ${item.quantity} عدد - ${formatPrice(itemTotal)}`;
+    }).join('\n');
     
-    const message = `✨ سفارش جدید از PulseGadgett ✨\n\n📋 لیست محصولات:\n${productNames}\n\n📊 جمع کل:\n• تعداد: ${totalItems} محصول\n• مبلغ کل: ${totalPrice.toLocaleString()} تومان\n\n📍 آدرس سایت: pulse-gadgett.vercel.app\n\n🙏 لطفا برای تکمیل سفارش راهنمایی کنید.`;
+    const message = `سفارش جدید از پالس گجت
+
+📋 لیست محصولات:
+${productList}
+
+💰 قیمت کل: ${formatPrice(totalCartPrice)}
+🛍️ تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول
+
+برای اطلاعات بیشتر با مشتری تماس بگیرید.`;
     
-    let url = '';
+    // نمایش مدال انتخاب پیام‌رسان
+    showMessengerModal(message);
+}
+
+// نمایش مدال انتخاب پیام‌رسان
+function showMessengerModal(message) {
+    const modalHTML = `
+        <div class="messenger-modal" id="messengerModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>انتخاب روش ارسال سفارش</h3>
+                    <button class="modal-close" onclick="closeMessengerModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description">سفارش خود را از طریق کدام پیام‌رسان ارسال کنید؟</p>
+                    <div class="messenger-options">
+                        <button class="messenger-option whatsapp-option" onclick="sendOrder('whatsapp', \`${message}\`)">
+                            <div class="option-icon">💬</div>
+                            <div class="option-content">
+                                <div class="option-title">واتساپ</div>
+                                <div class="option-desc">ارسال مستقیم به پشتیبانی</div>
+                            </div>
+                        </button>
+                        <button class="messenger-option telegram-option" onclick="sendOrder('telegram', \`${message}\`)">
+                            <div class="option-icon">📱</div>
+                            <div class="option-content">
+                                <div class="option-title">تلگرام</div>
+                                <div class="option-desc">ارسال از طریق تلگرام</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // حذف مدال قبلی اگر وجود دارد
+    const oldModal = document.getElementById('messengerModal');
+    if (oldModal) oldModal.remove();
+    
+    // اضافه کردن مدال جدید
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // اضافه کردن overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.onclick = closeMessengerModal;
+    document.body.appendChild(overlay);
+}
+
+// بستن مدال
+function closeMessengerModal() {
+    const modal = document.getElementById('messengerModal');
+    const overlay = document.querySelector('.modal-overlay');
+    if (modal) modal.remove();
+    if (overlay) overlay.remove();
+}
+
+// ارسال سفارش از طریق پیام‌رسان
+function sendOrder(messenger, message) {
+    let url;
+    
     if (messenger === 'whatsapp') {
         url = `https://wa.me/989965566964?text=${encodeURIComponent(message)}`;
     } else if (messenger === 'telegram') {
@@ -296,306 +353,40 @@ function checkoutWithMessenger(messenger) {
     }
     
     if (url) {
-        closeMessengerDialog();
-        setTimeout(() => {
-            window.open(url, '_blank');
-            // خالی کردن سبد خرید
-            cart = [];
-            localStorage.removeItem('cart');
-            updateCartDisplay();
-            toggleCart();
-        }, 500);
+        window.open(url, '_blank');
+        
+        // خالی کردن سبد خرید
+        cart = [];
+        localStorage.removeItem('cart');
+        updateCartDisplay();
+        toggleCart();
+        closeMessengerModal();
     }
 }
 
-// ثبت سفارش (نسخه قدیمی)
-function checkout() {
-    showMessengerDialog();
+// نمایش مدال خطا/موفقیت
+function showCheckoutModal(message, type = 'success') {
+    const modalHTML = `
+        <div class="checkout-modal ${type}">
+            <div class="checkout-modal-content">
+                <div class="checkout-modal-icon">${type === 'success' ? '✅' : '❌'}</div>
+                <div class="checkout-modal-text">${message}</div>
+                <button class="checkout-modal-btn" onclick="this.parentElement.parentElement.remove()">باشه</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // حذف خودکار بعد از 3 ثانیه
+    setTimeout(() => {
+        const modal = document.querySelector('.checkout-modal');
+        if (modal) modal.remove();
+    }, 3000);
 }
 
 // بارگذاری اولیه
 document.addEventListener('DOMContentLoaded', function() {
     displayProducts(products);
     updateCartDisplay();
-    
-    // اضافه کردن استایل‌های جدید
-    addCustomStyles();
 });
-
-// اضافه کردن استایل‌های سفارشی
-function addCustomStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        /* استایل‌های جدید */
-        .product-meta {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 0.9rem;
-        }
-        
-        .product-code {
-            color: #666;
-        }
-        
-        .product-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 15px;
-        }
-        
-        .add-to-cart-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            flex: 1;
-        }
-        
-        .view-details-btn {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        /* نوتفیکیشن */
-        .cart-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            padding: 15px;
-            z-index: 10000;
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
-            max-width: 300px;
-        }
-        
-        .cart-notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .notification-icon {
-            font-size: 1.5rem;
-            color: #27ae60;
-        }
-        
-        .notification-text {
-            flex: 1;
-        }
-        
-        .notification-text small {
-            display: block;
-            color: #666;
-            font-size: 0.8rem;
-        }
-        
-        /* دیالوگ انتخاب پیام‌رسان */
-        .messenger-dialog {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-        }
-        
-        .messenger-dialog.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .dialog-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-        }
-        
-        .dialog-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transition: transform 0.3s;
-        }
-        
-        .messenger-dialog.show .dialog-content {
-            transform: translate(-50%, -50%) scale(1);
-        }
-        
-        .dialog-content h3 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .dialog-content p {
-            text-align: center;
-            color: #666;
-            margin-bottom: 25px;
-        }
-        
-        .messenger-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .messenger-option {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: right;
-        }
-        
-        .whatsapp-option {
-            background: linear-gradient(45deg, #25D366, #128C7E);
-            color: white;
-        }
-        
-        .telegram-option {
-            background: linear-gradient(45deg, #0088cc, #0088cc);
-            color: white;
-        }
-        
-        .messenger-option:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .option-icon {
-            font-size: 1.5rem;
-        }
-        
-        .option-text {
-            flex: 1;
-        }
-        
-        .option-text small {
-            display: block;
-            opacity: 0.9;
-            font-size: 0.8rem;
-        }
-        
-        .dialog-cancel {
-            width: 100%;
-            padding: 12px;
-            background: #f8f9fa;
-            color: #666;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .dialog-cancel:hover {
-            background: #e9ecef;
-        }
-        
-        /* سبد خرید خالی */
-        .empty-cart {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-        
-        .empty-cart-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-        
-        .empty-cart h4 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        /* آیتم سبد خرید */
-        .cart-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 5px;
-        }
-        
-        .cart-item-name {
-            font-size: 0.9rem;
-            flex: 1;
-            margin: 0;
-        }
-        
-        .remove-item {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .cart-item-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #666;
-        }
-        
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            .product-actions {
-                flex-direction: column;
-            }
-            
-            .messenger-option {
-                padding: 12px;
-            }
-            
-            .cart-notification {
-                left: 20px;
-                right: 20px;
-                max-width: none;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
