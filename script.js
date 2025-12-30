@@ -400,15 +400,15 @@ function showMessengerModal() {
         return `${item.name} - ${item.quantity} عدد - ${formatPrice(itemTotal)}`;
     }).join('\n');
     
-    const message = `سفارش جدید از پالس گجت
+    const message = `سلام من سفارش جدید دارم
 
-📋 لیست محصولات:
+لیست محصولات:
 ${productList}
 
-💰 قیمت کل: ${formatPrice(totalCartPrice)}
-🛍️ تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول
+قیمت کل: ${formatPrice(totalCartPrice)}
+تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول
 
-برای اطلاعات بیشتر با مشتری تماس بگیرید.`;
+لطفا راهنمایی کنید.`‌;
     
     const modalHTML = `
         <div class="messenger-modal" id="messengerModal">
@@ -550,3 +550,4 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartDisplay();
     initializeEventListeners();
 });
+
