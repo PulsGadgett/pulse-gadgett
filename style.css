@@ -174,7 +174,14 @@ header {
     background: var(--category-teal);
     color: white;
 }
-/* === بخش محصولات === */
+
+/* محصولات - GRID VIEW */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 30px 0;
+}
 
 .product-card {
     background: var(--card-cream);
@@ -189,7 +196,7 @@ header {
 }
 
 .product-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-8px);
     box-shadow: 0 15px 30px rgba(0,0,0,0.15);
 }
 
@@ -380,25 +387,11 @@ header {
     box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
 }
 
-/* رسپانسیو */
-@media (max-width: 768px) {
-    .product-name {
-        font-size: 1rem;
-        height: 3.2em;
-    }
-    
-    .product-description {
-        font-size: 0.8rem;
-        height: 3.8em;
-    }
-    
-    .product-price .price-value {
-        font-size: 1.1rem;
-    }
-    
-    .product-details {
-        padding: 10px;
-    }
+.no-products {
+    text-align: center;
+    padding: 60px 0;
+    font-size: 1.2rem;
+    color: #666;
 }
 
 /* استایل‌های صفحه محصول */
@@ -743,6 +736,54 @@ footer {
     margin-top: 40px;
 }
 
+/* استایل‌های مخصوص صفحه محصول - اضافه شده */
+.image-zoom-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: zoom-out;
+}
+
+.zoomed-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+.close-zoom {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: rgba(0,0,0,0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-category-badge {
+    display: inline-block;
+    background: var(--category-teal);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
 /* رسپانسیو */
 @media (max-width: 768px) {
     .logo-container {
@@ -816,6 +857,25 @@ footer {
     .support-section h3 {
         font-size: 1.7rem;
     }
+    
+    /* رسپانسیو برای کپشن محصولات */
+    .product-name {
+        font-size: 1rem;
+        height: 3.2em;
+    }
+    
+    .product-description {
+        font-size: 0.8rem;
+        height: 3.8em;
+    }
+    
+    .product-price .price-value {
+        font-size: 1.1rem;
+    }
+    
+    .product-details {
+        padding: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -847,4 +907,3 @@ footer {
         font-size: 1.3rem;
     }
 }
-
