@@ -262,17 +262,22 @@ function updateCartDisplay() {
         }
         
         cart.forEach(item => {
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            cartItem.innerHTML = `
-                <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                <div class="cart-item-info">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">${item.price}</div>
-                    <div style="font-size: 0.8rem; color: #666;">تعداد: ${item.quantity}</div>
-                </div>
-                <button class="remove-item" onclick="removeFromCart(${item.id})">🗑️</button>
-            `;
+// در تابع updateCartDisplay، به جای کارت ساده، این قالب را استفاده کنید:
+const cartItem = `
+<div class="cart-item glass-card" data-category="${item.category}">
+    <img src="${item.image}" alt="${item.name}" class="cart-item-image hover-zoom">
+    <div class="cart-item-details">
+        <h4>${item.name}</h4>
+        <p class="item-price">${item.price}</p>
+        <div class="quantity-controls">
+            <button onclick="decreaseQuantity(${item.id})">-</button>
+            <span>${item.quantity}</span>
+            <button onclick="increaseQuantity(${item.id})">+</button>
+        </div>
+    </div>
+    <button class="remove-item-btn" onclick="removeFromCart(${item.id})">🗑️</button>
+</div>
+`;
             cartItems.appendChild(cartItem);
         });
     }
@@ -347,3 +352,4 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
