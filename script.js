@@ -3,7 +3,12 @@ let cart = [];
 
 // بارگذاری سبد خرید از localStorage
 if (localStorage.getItem('cart')) {
-    cart = JSON.parse(localStorage.getItem('cart'));
+    try {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    } catch (e) {
+        cart = [];
+        localStorage.removeItem('cart');
+    }
 }
 
 // محاسبه قیمت کل سبد خرید
@@ -21,10 +26,40 @@ function formatPrice(price) {
     return price.toLocaleString('fa-IR') + ' تومان';
 }
 
+// ایجاد دکمه‌های دسته‌بندی
+function createCategoryButtons() {
+    const container = document.getElementById('category-buttons');
+    if (!container) return;
+    
+    // استخراج دسته‌بندی‌های منحصر به فرد
+    const categories = ['همه', ...new Set(products.map(product => product.category))];
+    
+    container.innerHTML = '';
+    
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = 'category-btn';
+        button.textContent = category === 'همه' ? 'همه محصولات' : category;
+        button.dataset.category = category === 'همه' ? 'all' : category;
+        
+        button.addEventListener('click', (e) => {
+            filterProducts(category === 'همه' ? 'all' : category, e.target);
+        });
+        
+        container.appendChild(button);
+    });
+    
+    // فعال کردن دکمه "همه" به صورت پیش‌فرض
+    const allBtn = container.querySelector('[data-category="all"]');
+    if (allBtn) allBtn.classList.add('active');
+}
+
 // نمایش محصولات
 function displayProducts(productsArray) {
     const grid = document.getElementById('productsGrid');
     const noProducts = document.getElementById('noProducts');
+    
+    if (!grid || !noProducts) return;
     
     grid.innerHTML = '';
     
@@ -36,44 +71,76 @@ function displayProducts(productsArray) {
     noProducts.style.display = 'none';
     
     productsArray.forEach(product => {
-        const productCard = `
-            <div class="product-card" data-category="${product.category}">
-                <div class="product-image" onclick="goToProduct(${product.id})" style="cursor: pointer;">
-                    <img src="${product.image}" alt="${product.name}" loading="lazy">
-                    ${!product.available ? '<div class="product-badge">ناموجود</div>' : ''}
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        productCard.dataset.category = product.category;
+        
+        productCard.innerHTML = `
+            <div class="product-image">
+                <img src="${product.image}" alt="${product.name}" loading="lazy" 
+                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI4MCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNGM0YzRjMiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5تصویر محصول</dGV4dD48L3N2Zz4='">
+                ${!product.available ? '<div class="product-badge">ناموجود</div>' : ''}
+            </div>
+            <div class="product-info">
+                <div class="product-category">${product.category}</div>
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-description">${product.description}</p>
+                <div class="product-details">
+                    <span class="product-code">کد: ${product.code}</span>
+                    <span class="product-price">${product.price}</span>
                 </div>
-                <div class="product-info">
-                    <div class="product-category">${product.category}</div>
-                    <h3 class="product-name" onclick="goToProduct(${product.id})" style="cursor: pointer;">${product.name}</h3>
-                    <p class="product-description">${product.description}</p>
-                    <div class="product-details">
-                        <span class="product-code">کد: ${product.code}</span>
-                        <span class="product-price">${product.price}</span>
-                    </div>
-                    <div class="product-footer">
-                        <span class="product-availability ${product.available ? 'in-stock' : 'out-of-stock'}">
-                            ${product.available ? '✅ موجود' : '❌ ناموجود'}
-                        </span>
-                        ${product.available ? 
-                            `<button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart(${product.id})">
-                                🛒 افزودن به سبد خرید
-                            </button>` : 
-                            ''
-                        }
-                    </div>
+                <div class="product-footer">
+                    <span class="product-availability ${product.available ? 'in-stock' : 'out-of-stock'}">
+                        ${product.available ? '✅ موجود' : '❌ ناموجود'}
+                    </span>
+                    ${product.available ? 
+                        `<button class="add-to-cart-btn" data-product-id="${product.id}">
+                            🛒 افزودن به سبد خرید
+                        </button>` : 
+                        ''
+                    }
                 </div>
             </div>
         `;
-        grid.innerHTML += productCard;
+        
+        // اضافه کردن event listeners برای کلیک
+        const productImage = productCard.querySelector('.product-image');
+        const productName = productCard.querySelector('.product-name');
+        const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
+        
+        [productImage, productName].forEach(element => {
+            if (element) {
+                element.style.cursor = 'pointer';
+                element.addEventListener('click', () => goToProduct(product.id));
+            }
+        });
+        
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToCart(product.id);
+            });
+        }
+        
+        grid.appendChild(productCard);
     });
 }
 
 // فیلتر محصولات بر اساس دسته‌بندی
-function filterProducts(category) {
+function filterProducts(category, targetButton = null) {
+    // حذف active از همه دکمه‌ها
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    event.target.classList.add('active');
+    
+    // اضافه کردن active به دکمه کلیک شده
+    if (targetButton) {
+        targetButton.classList.add('active');
+    } else {
+        // اگر targetButton مشخص نشد، دکمه مربوطه را پیدا کن
+        const button = document.querySelector(`[data-category="${category === 'all' ? 'all' : category}"]`);
+        if (button) button.classList.add('active');
+    }
     
     if (category === 'all') {
         displayProducts(products);
@@ -85,7 +152,15 @@ function filterProducts(category) {
 
 // جستجوی محصولات
 function searchProducts() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const searchInput = document.getElementById('searchInput');
+    if (!searchInput) return;
+    
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    
+    if (searchTerm === '') {
+        displayProducts(products);
+        return;
+    }
     
     const filteredProducts = products.filter(product => 
         product.name.toLowerCase().includes(searchTerm) ||
@@ -97,13 +172,6 @@ function searchProducts() {
     displayProducts(filteredProducts);
 }
 
-// جستجو با Enter
-document.getElementById('searchInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        searchProducts();
-    }
-});
-
 // رفتن به صفحه محصول
 function goToProduct(productId) {
     window.location.href = `product.html?id=${productId}`;
@@ -112,38 +180,36 @@ function goToProduct(productId) {
 // نمایش/مخفی کردن سبد خرید
 function toggleCart() {
     const cartSidebar = document.getElementById('cartSidebar');
-    cartSidebar.classList.toggle('active');
+    const overlay = document.getElementById('cartOverlay');
     
-    let overlay = document.getElementById('cartOverlay');
-    if (!overlay) {
-        overlay = document.createElement('div');
-        overlay.id = 'cartOverlay';
-        overlay.className = 'cart-overlay';
-        overlay.onclick = toggleCart;
-        document.body.appendChild(overlay);
-    }
+    if (!cartSidebar || !overlay) return;
+    
+    cartSidebar.classList.toggle('active');
     overlay.classList.toggle('active');
+    
+    // جلوگیری از اسکرول body وقتی سبد خرید باز است
+    document.body.style.overflow = cartSidebar.classList.contains('active') ? 'hidden' : '';
 }
 
 // اضافه کردن محصول به سبد خرید
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
-    if (product) {
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({
-                ...product,
-                quantity: 1
-            });
-        }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartDisplay();
-        showAddedToCartMessage(product.name);
+    if (!product) return;
+    
+    const existingItem = cart.find(item => item.id === productId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            ...product,
+            quantity: 1
+        });
     }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartDisplay();
+    showAddedToCartMessage(product.name);
 }
 
 // حذف محصول از سبد خرید
@@ -155,6 +221,52 @@ function removeFromCart(productId) {
 
 // نمایش پیام اضافه شدن به سبد خرید
 function showAddedToCartMessage(productName) {
+    // ایجاد استایل موقت برای نوتیفیکیشن
+    if (!document.querySelector('#cartNotificationStyle')) {
+        const style = document.createElement('style');
+        style.id = 'cartNotificationStyle';
+        style.textContent = `
+            .cart-notification {
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #4CAF50;
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                animation: slideDown 0.3s ease;
+                max-width: 400px;
+                width: 90%;
+            }
+            .notification-content {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .notification-icon {
+                font-size: 18px;
+            }
+            .notification-text {
+                font-weight: 500;
+            }
+            @keyframes slideDown {
+                from { top: -100px; opacity: 0; }
+                to { top: 20px; opacity: 1; }
+            }
+            .cart-notification.fade-out {
+                animation: fadeOut 0.3s ease forwards;
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
     const message = document.createElement('div');
     message.className = 'cart-notification';
     message.innerHTML = `
@@ -177,16 +289,13 @@ function updateCartDisplay() {
     const cartItems = document.getElementById('cartItems');
     const cartCount = document.getElementById('cartCount');
     const totalItems = document.getElementById('totalItems');
-    const totalPrice = document.getElementById('totalPrice');
+    
+    if (!cartItems || !cartCount || !totalItems) return;
     
     // آپدیت تعداد محصولات
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalQuantity;
     totalItems.textContent = totalQuantity;
-    
-    // آپدیت قیمت کل
-    const totalCartPrice = calculateTotalPrice();
-    totalPrice.textContent = formatPrice(totalCartPrice);
     
     // آپدیت لیست محصولات
     cartItems.innerHTML = '';
@@ -194,9 +303,11 @@ function updateCartDisplay() {
     if (cart.length === 0) {
         cartItems.innerHTML = `
             <div class="empty-cart">
-                <div class="empty-cart-icon">🛒</div>
-                <p class="empty-cart-text">سبد خرید شما خالی است</p>
-                <p class="empty-cart-subtext">محصولاتی را به سبد خرید اضافه کنید</p>
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🛒</div>
+                    <p style="font-size: 18px; color: #666; margin-bottom: 10px;">سبد خرید شما خالی است</p>
+                    <p style="font-size: 14px; color: #999;">محصولاتی را به سبد خرید اضافه کنید</p>
+                </div>
             </div>
         `;
         return;
@@ -211,31 +322,32 @@ function updateCartDisplay() {
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
-            <div class="cart-item-header">
+            <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
                 <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                <div class="cart-item-info">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-category">${item.category}</div>
+                <div class="cart-item-info" style="flex: 1;">
+                    <div class="cart-item-name" style="font-weight: bold; margin-bottom: 5px; font-size: 0.9rem;">${item.name}</div>
+                    <div class="cart-item-category" style="color: #666; font-size: 0.8rem;">${item.category}</div>
                 </div>
             </div>
-            <div class="cart-item-details">
-                <div class="cart-item-quantity">
-                    <span>تعداد:</span>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                        <span class="quantity-value">${item.quantity}</span>
-                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-right: 10px;">
+                <div class="cart-item-quantity" style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 0.8rem; color: #666;">تعداد:</span>
+                    <div class="quantity-controls" style="display: flex; align-items: center; gap: 5px;">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)" 
+                                style="width: 25px; height: 25px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">-</button>
+                        <span class="quantity-value" style="min-width: 20px; text-align: center;">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)" 
+                                style="width: 25px; height: 25px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">+</button>
                     </div>
                 </div>
-                <div class="cart-item-price">
-                    <span class="price-label">قیمت:</span>
-                    <span class="price-value">${formatPrice(itemTotal)}</span>
+                <div class="cart-item-price" style="display: flex; align-items: center; gap: 8px;">
+                    <span class="price-label" style="font-size: 0.8rem; color: #666;">قیمت:</span>
+                    <span class="price-value" style="font-weight: bold; color: #e74c3c;">${formatPrice(itemTotal)}</span>
                 </div>
             </div>
-            <button class="remove-item" onclick="removeFromCart(${item.id})" title="حذف">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12"/>
-                </svg>
+            <button class="remove-item" onclick="removeFromCart(${item.id})" title="حذف" 
+                    style="background: #ff6b6b; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
+                حذف
             </button>
         `;
         cartItems.appendChild(cartItem);
@@ -256,10 +368,10 @@ function updateQuantity(productId, change) {
     }
 }
 
-// ثبت سفارش با انتخاب پیام‌رسان
+// ثبت سفارش
 function checkout() {
     if (cart.length === 0) {
-        showCheckoutModal('سبد خرید شما خالی است!', 'error');
+        alert('سبد خرید شما خالی است!');
         return;
     }
     
@@ -272,121 +384,60 @@ function checkout() {
         const price = parseInt(priceText) || 0;
         const itemTotal = price * item.quantity;
         return `${item.name} - ${item.quantity} عدد - ${formatPrice(itemTotal)}`;
-    }).join('\n');
+    }).join('%0A');
     
-    const message = `سفارش جدید از پالس گجت
-
-📋 لیست محصولات:
-${productList}
-
-💰 قیمت کل: ${formatPrice(totalCartPrice)}
-🛍️ تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول
-
-برای اطلاعات بیشتر با مشتری تماس بگیرید.`;
+    const message = `سفارش جدید از پالس گجت%0A%0A📋 لیست محصولات:%0A${productList}%0A%0A💰 قیمت کل: ${formatPrice(totalCartPrice)}%0A🛍️ تعداد کل: ${cart.reduce((sum, item) => sum + item.quantity, 0)} محصول%0A%0Aبرای اطلاعات بیشتر با مشتری تماس بگیرید.`;
     
-    // نمایش مدال انتخاب پیام‌رسان
-    showMessengerModal(message);
-}
-
-// نمایش مدال انتخاب پیام‌رسان
-function showMessengerModal(message) {
-    const modalHTML = `
-        <div class="messenger-modal" id="messengerModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>انتخاب روش ارسال سفارش</h3>
-                    <button class="modal-close" onclick="closeMessengerModal()">×</button>
-                </div>
-                <div class="modal-body">
-                    <p class="modal-description">سفارش خود را از طریق کدام پیام‌رسان ارسال کنید؟</p>
-                    <div class="messenger-options">
-                        <button class="messenger-option whatsapp-option" onclick="sendOrder('whatsapp', \`${message}\`)">
-                            <div class="option-icon">💬</div>
-                            <div class="option-content">
-                                <div class="option-title">واتساپ</div>
-                                <div class="option-desc">ارسال مستقیم به پشتیبانی</div>
-                            </div>
-                        </button>
-                        <button class="messenger-option telegram-option" onclick="sendOrder('telegram', \`${message}\`)">
-                            <div class="option-icon">📱</div>
-                            <div class="option-content">
-                                <div class="option-title">تلگرام</div>
-                                <div class="option-desc">ارسال از طریق تلگرام</div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+    // باز کردن واتساپ با پیام سفارش
+    const whatsappUrl = `https://wa.me/989965566964?text=${message}`;
+    window.open(whatsappUrl, '_blank');
     
-    // حذف مدال قبلی اگر وجود دارد
-    const oldModal = document.getElementById('messengerModal');
-    if (oldModal) oldModal.remove();
+    // خالی کردن سبد خرید
+    cart = [];
+    localStorage.removeItem('cart');
+    updateCartDisplay();
+    toggleCart();
     
-    // اضافه کردن مدال جدید
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // اضافه کردن overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    overlay.onclick = closeMessengerModal;
-    document.body.appendChild(overlay);
-}
-
-// بستن مدال
-function closeMessengerModal() {
-    const modal = document.getElementById('messengerModal');
-    const overlay = document.querySelector('.modal-overlay');
-    if (modal) modal.remove();
-    if (overlay) overlay.remove();
-}
-
-// ارسال سفارش از طریق پیام‌رسان
-function sendOrder(messenger, message) {
-    let url;
-    
-    if (messenger === 'whatsapp') {
-        url = `https://wa.me/989965566964?text=${encodeURIComponent(message)}`;
-    } else if (messenger === 'telegram') {
-        url = `https://t.me/share/url?url=${encodeURIComponent('https://pulse-gadgett.vercel.app')}&text=${encodeURIComponent(message)}`;
-    }
-    
-    if (url) {
-        window.open(url, '_blank');
-        
-        // خالی کردن سبد خرید
-        cart = [];
-        localStorage.removeItem('cart');
-        updateCartDisplay();
-        toggleCart();
-        closeMessengerModal();
-    }
-}
-
-// نمایش مدال خطا/موفقیت
-function showCheckoutModal(message, type = 'success') {
-    const modalHTML = `
-        <div class="checkout-modal ${type}">
-            <div class="checkout-modal-content">
-                <div class="checkout-modal-icon">${type === 'success' ? '✅' : '❌'}</div>
-                <div class="checkout-modal-text">${message}</div>
-                <button class="checkout-modal-btn" onclick="this.parentElement.parentElement.remove()">باشه</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // حذف خودکار بعد از 3 ثانیه
+    // نمایش پیام موفقیت
     setTimeout(() => {
-        const modal = document.querySelector('.checkout-modal');
-        if (modal) modal.remove();
-    }, 3000);
+        alert('سفارش شما با موفقیت ثبت شد! لطفاً در واتساپ پیام خود را ارسال کنید.');
+    }, 500);
+}
+
+// مقداردهی اولیه Event Listeners
+function initializeEventListeners() {
+    // جستجو
+    const searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchProducts();
+            }
+        });
+    }
+    
+    if (searchButton) {
+        searchButton.addEventListener('click', searchProducts);
+    }
+    
+    // سبد خرید
+    const cartIcon = document.getElementById('cartIcon');
+    const closeCartButton = document.getElementById('closeCartButton');
+    const checkoutButton = document.getElementById('checkoutButton');
+    const cartOverlay = document.getElementById('cartOverlay');
+    
+    if (cartIcon) cartIcon.addEventListener('click', toggleCart);
+    if (closeCartButton) closeCartButton.addEventListener('click', toggleCart);
+    if (checkoutButton) checkoutButton.addEventListener('click', checkout);
+    if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
 }
 
 // بارگذاری اولیه
 document.addEventListener('DOMContentLoaded', function() {
+    createCategoryButtons();
     displayProducts(products);
     updateCartDisplay();
+    initializeEventListeners();
 });
