@@ -853,6 +853,21 @@ footer {
     background: linear-gradient(45deg, #25D366, #128C7E) !important;
     color: white !important;
 }
+/* استایل مدرن شیشه‌ای برای سایدبار */
+.glass-sidebar {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-left: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+}
+
+/* استایل برای تم تیره */
+.dark-sidebar {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    color: #e2e8f0;
+    border-left: 1px solid #718096;
+}
 
 
 
