@@ -173,16 +173,30 @@ function showAddedToCartMessage(productName) {
     }, 3000);
 }
 
+// محاسبه قیمت کل سبد خرید
+function calculateTotalPrice() {
+    return cart.reduce((total, item) => {
+        // استخراج عدد از رشته قیمت (حذف کاراکترهای غیرعددی)
+        const price = parseFloat(item.price.replace(/[^0-9]/g, ''));
+        return total + (price * item.quantity);
+    }, 0);
+}
+
 // آپدیت نمایش سبد خرید
 function updateCartDisplay() {
     const cartItems = document.getElementById('cartItems');
     const cartCount = document.getElementById('cartCount');
     const totalItems = document.getElementById('totalItems');
+    const totalPriceElement = document.getElementById('totalPrice');
     
     // آپدیت تعداد محصولات
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     cartCount.textContent = totalQuantity;
     totalItems.textContent = totalQuantity;
+    
+    // آپدیت قیمت کل
+    const totalPrice = calculateTotalPrice();
+    totalPriceElement.textContent = totalPrice.toLocaleString() + ' تومان';
     
     // آپدیت لیست محصولات
     cartItems.innerHTML = '';
@@ -229,7 +243,7 @@ function showMessengerDialog() {
     dialog.innerHTML = `
         <div class="dialog-overlay" onclick="closeMessengerDialog()"></div>
         <div class="dialog-content">
-            <h3>📱 انتخاب پیام‌رسان</h3>
+            <h3>انتخاب پیام‌رسان</h3>
             <p>از طریق کدام پیام‌رسان می‌خواهید سفارش دهید؟</p>
             
             <div class="messenger-options">
@@ -274,25 +288,22 @@ function closeMessengerDialog() {
 // ثبت سفارش با پیام‌رسان انتخابی
 function checkoutWithMessenger(messenger) {
     if (cart.length === 0) {
-        alert('❌ سبد خرید شما خالی است!');
+        alert('سبد خرید شما خالی است!');
         return;
     }
     
-    // ایجاد محتوای سفارش
-    const productNames = cart.map(item => `• ${item.name} (${item.quantity} عدد)`).join('\n');
+    // ایجاد محتوای سفارش (بدون ایموجی)
+    const productNames = cart.map(item => `- ${item.name} (${item.quantity} عدد)`).join('\n');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cart.reduce((sum, item) => {
-        const price = parseInt(item.price.replace(/[^0-9]/g, ''));
-        return sum + (price * item.quantity);
-    }, 0);
+    const totalPrice = calculateTotalPrice();
     
-    const message = `✨ سفارش جدید از PulseGadgett ✨\n\n📋 لیست محصولات:\n${productNames}\n\n📊 جمع کل:\n• تعداد: ${totalItems} محصول\n• مبلغ کل: ${totalPrice.toLocaleString()} تومان\n\n📍 آدرس سایت: pulse-gadgett.vercel.app\n\n🙏 لطفا برای تکمیل سفارش راهنمایی کنید.`;
+    const message = `سفارش جدید از PulseGadget\n\nلیست محصولات:\n${productNames}\n\nجمع کل:\nتعداد: ${totalItems} محصول\nمبلغ کل: ${totalPrice.toLocaleString()} تومان\n\nآدرس سایت: pulse-gadget.vercel.app\n\nلطفا برای تکمیل سفارش راهنمایی کنید.`;
     
     let url = '';
     if (messenger === 'whatsapp') {
         url = `https://wa.me/989965566964?text=${encodeURIComponent(message)}`;
     } else if (messenger === 'telegram') {
-        url = `https://t.me/share/url?url=${encodeURIComponent('https://pulse-gadgett.vercel.app')}&text=${encodeURIComponent(message)}`;
+        url = `https://t.me/share/url?url=${encodeURIComponent('https://pulse-gadget.vercel.app')}&text=${encodeURIComponent(message)}`;
     }
     
     if (url) {
@@ -364,6 +375,32 @@ function addCustomStyles() {
             border-radius: 20px;
             cursor: pointer;
             font-size: 0.9rem;
+        }
+        
+        /* بخش قیمت کل در سبد خرید */
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .total-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .total-label {
+            color: #666;
+        }
+        
+        .total-amount {
+            color: #667eea;
+            font-size: 1.2rem;
         }
         
         /* نوتفیکیشن */
