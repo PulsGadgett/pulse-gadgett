@@ -6,28 +6,43 @@
     <title>PulseGadgett - فروشگاه تخصصی لوازم جانبی موبایل</title>
     <meta name="description" content="PulseGadgett - مرجع تخصصی لوازم جانبی موبایل شامل شارژر، گلس، هندزفری، اسپیکر و سایر گجت‌ها">
     <meta name="keywords" content="PulseGadgett, لوازم جانبی موبایل, شارژر, گلس, هندزفری, اسپیکر, گجت">
+    <meta name="author" content="PulseGadgett">
     <meta name="google-site-verification" content="3JOViO_oxcfTxiTRDLHkBEt5aLTjjWZNmAxJqiu9N08" />
     
-    <!-- Structured Data -->
+    <!-- Structured Data (بهبود یافته) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Store",
         "name": "PulseGadgett",
         "description": "فروشگاه تخصصی لوازم جانبی موبایل",
-        "url": "https://pulsegadgett.netlify.app",
-        "brand": "PulseGadgett"
+        "url": "https://pulse-gadgett.vercel.app",
+        "image": "https://pulse-gadgett.vercel.app/images/logo.jpg",
+        "telephone": "+989965566964",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IR",
+            "addressRegion": "تهران"
+        },
+        "priceRange": "$$",
+        "openingHours": "Mo-Su 09:00-21:00"
     }
     </script>
     
+    <!-- بارگذاری اولیه اسکریپت‌ها -->
+    <script src="products-data.js" defer></script>
+    <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <header>
         <div class="container">
             <div class="brand">
                 <div class="logo-container">
-                    <img src="images/logo.jpg" alt="PulseGadgett" class="logo">
+                    <!-- اضافه کردن فایل جایگزین اگر لوگو موجود نبود -->
+                    <img src="images/logo.jpg" alt="PulseGadgett" class="logo" 
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aHR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
                     <div class="brand-text">
                         <h1>PulseGadgett</h1>
                         <p>ضربان استایل دیجیتال شما</p>
@@ -36,12 +51,13 @@
             </div>
             
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="جستجوی محصولات...">
-                <button onclick="searchProducts()">🔍 جستجو</button>
+                <input type="text" id="searchInput" placeholder="جستجوی محصولات..." 
+                       onkeypress="if(event.key === 'Enter') searchProducts()">
+                <button id="searchButton">🔍 جستجو</button>
             </div>
 
             <div class="header-actions">
-                <div class="cart-icon" onclick="toggleCart()">
+                <div class="cart-icon" id="cartIcon">
                     🛒 سبد خرید
                     <span id="cartCount" class="cart-count">0</span>
                 </div>
@@ -71,13 +87,13 @@
             <h3>📞 پشتیبانی آنلاین</h3>
             <p>برای مشاوره و خرید با ما در ارتباط باشید</p>
             <div class="support-buttons">
-    <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank">
-        ✈️ تلگرام
-    </a>
-    <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank">
-        💬 واتساپ
-    </a>
-</div>
+                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
+                    ✈️ تلگرام
+                </a>
+                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer">
+                    💬 واتساپ
+                </a>
+            </div>
         </div>
     </section>
 
@@ -91,7 +107,7 @@
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3>🛒 سبد خرید شما</h3>
-            <button class="close-cart" onclick="toggleCart()">✕</button>
+            <button class="close-cart" id="closeCartButton">✕</button>
         </div>
         <div id="cartItems" class="cart-items">
             <!-- محصولات اینجا نمایش داده می‌شوند -->
@@ -100,11 +116,10 @@
             <div class="cart-total">
                 <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
             </div>
-            <button class="checkout-btn" onclick="checkout()">📦 ثبت سفارش</button>
+            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
         </div>
     </div>
-
-    <script src="products-data.js"></script>
-    <script src="script.js"></script>
+    
+    <div id="cartOverlay" class="cart-overlay"></div>
 </body>
 </html>
