@@ -1139,3 +1139,62 @@ footer {
         font-size: 1.3rem;
     }
 }
+/* استایل ناوبری اصلی */
+.main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.main-nav a {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.main-nav a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    border-color: var(--accent-yellow);
+}
+
+.main-nav a.active {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: var(--accent-yellow);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* رسپانسیو برای ناوبری */
+@media (max-width: 768px) {
+    .main-nav {
+        gap: 10px;
+        margin: 15px 0;
+    }
+    
+    .main-nav a {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .main-nav a {
+        width: 200px;
+        justify-content: center;
+    }
+}
