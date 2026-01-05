@@ -351,81 +351,80 @@ body {
   font-size: 1.2rem;
 }
 
-/* ========== پشتیبانی ========== */
+/* ===== بخش پشتیبانی ===== */
 .support-section {
-  background: linear-gradient(135deg, var(--accent) 0%, #7A5BEE 100%);
-  color: white;
-  padding: 3rem 0;
-  text-align: center;
-  margin-top: 3rem;
-  border-radius: 12px;
+    background: linear-gradient(135deg, var(--background) 0%, #fff 100%);
+    padding: 3rem 0;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border);
 }
 
 .support-container {
-  max-width: 800px;
+    text-align: center;
 }
 
 .support-title {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
+    color: var(--text);
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
 }
 
 .support-text {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
 }
 
 .support-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .support-btn {
-  display: inline-block;
-  padding: 0.9rem 2rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    justify-content: center;
 }
 
 .support-btn.telegram {
-  background: rgba(0, 136, 204, 0.9);
+    background-color: #0088cc;
+    color: white;
 }
 
 .support-btn.whatsapp {
-  background: rgba(37, 211, 102, 0.9);
+    background-color: #25D366;
+    color: white;
 }
 
 .support-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* ========== فوتر ========== */
+/* ===== فوتر ===== */
 .site-footer {
-  background-color: var(--text);
-  color: white;
-  text-align: center;
-  padding: 1.5rem 0;
-  margin-top: 3rem;
+    background-color: var(--text);
+    color: white;
+    padding: 2rem 0;
+    margin-top: 3rem;
 }
 
 .footer-container {
-  max-width: 800px;
+    text-align: center;
 }
 
 .footer-text {
-  opacity: 0.8;
-  font-size: 0.95rem;
+    margin: 0;
+    opacity: 0.9;
 }
 
 /* ========== سایدبار سبد خرید ========== */
@@ -740,4 +739,5 @@ body {
     color: white;
     border-color: var(--primary);
 }
+
 
