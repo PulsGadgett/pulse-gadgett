@@ -36,49 +36,56 @@
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
+    <!-- هدر اصلی با کلاس‌های جدید برای استایل دهی -->
     <header class="site-header">
-        <div class="container">
+        <div class="container header-container">
+            <!-- بخش برند و لوگو -->
             <div class="brand">
                 <div class="logo-container">
-                    <!-- اضافه کردن فایل جایگزین اگر لوگو موجود نبود -->
                     <img src="images/logo.jpg" alt="PulseGadgett" class="logo" 
                          onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aHR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
                     <div class="brand-text">
-                        <h1>PulseGadgett</h1>
-                        <p>ضربان استایل دیجیتال شما</p>
+                        <h1 class="site-title">PulseGadgett</h1>
+                        <p class="site-tagline">ضربان استایل دیجیتال شما</p>
                     </div>
                 </div>
             </div>
-            <!-- اضافه کردن این کد در هدر، بعد از .brand -->
-<nav class="main-nav">
-    <a href="index.html">🏠 خانه</a>
-    <a href="about.html">ℹ️ درباره ما</a>
-    <a href="contact.html">📞 ارتباط</a>
-    <a href="faq.html">❓ سوالات</a>
-</nav>
+
+            <!-- ناوبری اصلی -->
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link active">🏠 خانه</a>
+                <a href="about.html" class="nav-link">ℹ️ درباره ما</a>
+                <a href="contact.html" class="nav-link">📞 ارتباط</a>
+                <a href="faq.html" class="nav-link">❓ سوالات</a>
+            </nav>
+
+            <!-- جستجو -->
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="جستجوی محصولات..." 
+                <input type="text" id="searchInput" class="search-input" 
+                       placeholder="جستجوی محصولات..." 
                        onkeypress="if(event.key === 'Enter') searchProducts()">
-                <button id="searchButton">🔍 جستجو</button>
+                <button id="searchButton" class="search-btn">🔍</button>
             </div>
 
+            <!-- سبد خرید -->
             <div class="header-actions">
-                <div class="cart-icon" id="cartIcon">
-                    🛒 سبد خرید
+                <button class="cart-button" id="cartIcon">
+                    🛒 سبد خرید 
                     <span id="cartCount" class="cart-count">0</span>
-                   <button class="cart-button">🛒 سبد خرید (<span id="cart-count">0</span>)</button>
-                </div>
+                </button>
             </div>
         </div>
     </header>
 
+    <!-- دسته‌بندی‌ها -->
     <nav class="categories">
         <div class="container" id="category-buttons">
             <!-- دکمه‌های دسته‌بندی به صورت خودکار اینجا ساخته می‌شوند -->
         </div>
     </nav>
 
-    <main class="container">
+    <!-- محتوای اصلی - محصولات -->
+    <main class="container main-content">
         <div class="products-grid" id="productsGrid">
             <!-- محصولات اینجا نمایش داده می‌شوند -->
         </div>
@@ -88,11 +95,11 @@
         </div>
     </main>
 
-    <!-- بخش پشتیبانی -->
+    <!-- پشتیبانی -->
     <section class="support-section">
-        <div class="container">
-            <h3>📞 پشتیبانی آنلاین</h3>
-            <p>برای مشاوره و خرید با ما در ارتباط باشید</p>
+        <div class="container support-container">
+            <h3 class="support-title">📞 پشتیبانی آنلاین</h3>
+            <p class="support-text">برای مشاوره و خرید با ما در ارتباط باشید</p>
             <div class="support-buttons">
                 <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
                     ✈️ تلگرام
@@ -104,16 +111,17 @@
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p>© PulseGadgett - ضربان استایل دیجیتال شما</p>
+    <!-- فوتر -->
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
         </div>
     </footer>
 
-    <!-- سبد خرید -->
+    <!-- سایدبار سبد خرید -->
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
-            <h3>🛒 سبد خرید شما</h3>
+            <h3 class="cart-title">🛒 سبد خرید شما</h3>
             <button class="close-cart" id="closeCartButton">✕</button>
         </div>
         <div id="cartItems" class="cart-items">
@@ -130,5 +138,3 @@
     <div id="cartOverlay" class="cart-overlay"></div>
 </body>
 </html>
-
-
