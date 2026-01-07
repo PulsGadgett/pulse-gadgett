@@ -3,512 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درباره پالس‌گجت - داستان ما</title>
-    <meta name="description" content="داستان پالس‌گجت - تخصص ما در لوازم جانبی موبایل، ماموریت و ارزش‌های ما">
+    <title>درباره ما - PulseGadgett</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "AboutPage",
-        "name": "درباره پالس‌گجت",
-        "description": "تاریخچه، ماموریت و ارزش‌های فروشگاه پالس‌گجت",
-        "url": "https://pulse-gadgett.vercel.app/about.html",
-        "publisher": {
-            "@type": "Organization",
-            "name": "پالس‌گجت",
-            "logo": "https://pulse-gadgett.vercel.app/images/logo.jpg",
-            "foundingDate": "2025-12-12",
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+989965566964",
-                "contactType": "پشتیبانی"
-            }
-        }
-    }
-    </script>
-    
-    <style>
-        /* استایل‌های مخصوص صفحه درباره ما */
-        .page-header {
-            text-align: center;
-            padding: 60px 0 40px;
-            background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
-            color: white;
-            border-radius: 0 0 30px 30px;
-            margin-bottom: 40px;
-        }
-        
-        .page-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-        
-        .page-header .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        .story-section {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            border-right: 5px solid var(--category-teal);
-        }
-        
-        .section-title {
-            color: var(--text-dark);
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .section-title .icon {
-            width: 40px;
-            height: 40px;
-            background: var(--category-teal);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        .story-text {
-            color: #555;
-            line-height: 1.9;
-            font-size: 1.1rem;
-            text-align: justify;
-            margin-bottom: 20px;
-        }
-        
-        .highlight-box {
-            background: linear-gradient(135deg, var(--card-cream) 0%, #fff5e6 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 30px 0;
-            border-right: 5px solid var(--accent-yellow);
-        }
-        
-        .highlight-box p {
-            color: var(--text-dark);
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin: 0;
-        }
-        
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .value-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        
-        .value-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--header-purple);
-            box-shadow: 0 10px 25px rgba(138, 107, 255, 0.15);
-        }
-        
-        .value-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 1.8rem;
-            color: white;
-        }
-        
-        .value-card h3 {
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        .value-card p {
-            color: #666;
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-        
-        .brands-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-        }
-        
-        .brands-title {
-            text-align: center;
-            color: var(--text-dark);
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-        }
-        
-        .brands-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .brand-tag {
-            background: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: 600;
-            color: var(--text-dark);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .brand-tag:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            background: var(--header-purple);
-            color: white;
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--header-purple);
-            margin-bottom: 10px;
-            display: block;
-        }
-        
-        .stat-label {
-            color: var(--text-dark);
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            .page-header {
-                padding: 40px 0 30px;
-            }
-            
-            .page-header h1 {
-                font-size: 2rem;
-            }
-            
-            .story-section {
-                padding: 25px;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .values-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .brands-section {
-                padding: 25px;
-            }
-            
-            .stat-card {
-                padding: 20px 15px;
-            }
-            
-            .stat-number {
-                font-size: 2rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="common.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <!-- هدر -->
-    <header>
-        <div class="container">
-            <div class="brand">
-                <div class="logo-container">
-                    <a href="index.html" style="display: contents;">
-                        <img src="images/logo.jpg" alt="PulseGadgett" class="logo">
-                        <div class="brand-text">
-                            <h1>PulseGadgett</h1>
-                            <p>ضربان استایل دیجیتال شما</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- ناوبری اصلی -->
-            <nav class="main-nav">
-                <a href="index.html">🏠 خانه</a>
-                <a href="about.html" class="active">ℹ️ درباره ما</a>
-                <a href="contact.html">📞 ارتباط</a>
-                <a href="faq.html">❓ سوالات</a>
-            </nav>
-            
-            <!-- سبد خرید -->
-            <div class="header-actions">
-                <div class="cart-icon" id="cartIcon">
-                    🛒 سبد خرید
-                    <span id="cartCount" class="cart-count">0</span>
-                </div>
-            </div>
-        </div>
+    <header class="site-header">
+        <!-- همان هدر اصلی index.html -->
     </header>
 
-    <!-- هدر صفحه -->
-    <div class="page-header">
-        <div class="container">
-            <h1>درباره پالس‌گجت</h1>
-            <p class="subtitle">
-                داستان ما از آذر ۱۴۰۴ شروع شد و تا امروز ادامه داره... 
-                همراه ما باشید تا بیشتر دربارمون بدونید
-            </p>
+    <main class="container content-page">
+        <div class="content-header" data-animate="fade-up">
+            <h1 data-typewriter data-speed="60">درباره PulseGadgett</h1>
+            <p class="content-subtitle">از ایده تا اجرا، داستان ما</p>
         </div>
-    </div>
 
-    <main class="container">
-        <!-- داستان ما -->
-        <section class="story-section">
-            <h2 class="section-title">
-                <span class="icon">📖</span>
-                داستان ما
-            </h2>
+        <div class="content-card" data-animate="fade-up" data-delay="200">
+            <h2>🎯 مأموریت ما</h2>
+            <p>در PulseGadgett، باور داریم که تکنولوژی باید در دسترس همه باشد. ما با ارائه بهترین لوازم جانبی موبایل با قیمت‌های منصفانه، سعی در بهبود تجربه دیجیتال کاربران داریم.</p>
             
-            <p class="story-text">
-                پالس‌گجت در ۲۱ آذر ۱۴۰۴ با یک ایده ساده متولد شد: 
-                <strong>چرا باید برای پیدا کردن یک گجت خوب، از این فروشگاه به اون فروشگاه بدویم؟</strong>
-            </p>
-            
-            <p class="story-text">
-                ما معتقدیم هر کسی لیاقت داره که بهترین لوازم جانبی رو برای دستگاه‌های دیجیتالش داشته باشه. 
-                بدون اینکه مجبور باشه کیفیت رو فدای قیمت کنه یا برعکس.
-            </p>
-            
-            <div class="highlight-box">
-                <p>
-                    ✨ <strong>ماموریت ما:</strong> اینه که شما بدون نیاز به گشتن در ده‌ها سایت و فروشگاه، 
-                    همه چیزی که برای استایل دیجیتالتون لازم دارید رو توی یکجا پیدا کنید. 
-                    از یک کابل شارژ ساده تا هندزفری حرفه‌ای.
-                </p>
-            </div>
-        </section>
-        
-        <!-- ارزش‌های ما -->
-        <section class="story-section">
-            <h2 class="section-title">
-                <span class="icon">⭐</span>
-                چرا پالس‌گجت؟
-            </h2>
-            
-            <p class="story-text">
-                ما فقط یه فروشگاه آنلاین نیستیم. ما یه همراه امین برای انتخاب‌های درست شما هستیم.
-            </p>
-            
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon">🛡️</div>
-                    <h3>تضمین اصالت</h3>
-                    <p>
-                        با برندهای بین‌المللی کار می‌کنیم که به کیفیتشون اعتماد داریم 
-                        و این اعتماد رو به صورت گارانتی به شما هم تقدیم می‌کنیم.
-                    </p>
+            <div class="feature-list">
+                <div class="feature-item" data-child-animate>
+                    <div class="feature-icon">🚀</div>
+                    <div class="feature-text">
+                        <h3>کیفیت بی‌همتا</h3>
+                        <p>تمامی محصولات با استانداردهای جهانی تولید و تأیید می‌شوند</p>
+                    </div>
                 </div>
-                
-                <div class="value-card">
-                    <div class="value-icon">🤝</div>
-                    <h3>همراهی تا رضایت</h3>
-                    <p>
-                        از لحظه اولین پیام تا وقتی که مطمئن بشیم از خریدتون راضی هستید، 
-                        کنارتون خواهیم بود. این قول مایه!
-                    </p>
+                <div class="feature-item" data-child-animate>
+                    <div class="feature-icon">💎</div>
+                    <div class="feature-text">
+                        <h3>ضمانت اصل بودن</h3>
+                        <p>تضمین ۱۰۰٪ اصل بودن کالا با ارائه گارانتی معتبر</p>
+                    </div>
                 </div>
-                
-                <div class="value-card">
-                    <div class="value-icon">🎯</div>
-                    <h3>انتخاب بی‌دردسر</h3>
-                    <p>
-                        همه محصولات رو در محیط حرفه‌ای عکاسی کردیم تا بتونید 
-                        دقیقاً همون چیزی رو ببینید که دریافت می‌کنید.
-                    </p>
-                </div>
-                
-                <div class="value-card">
-                    <div class="value-icon">💬</div>
-                    <h3>پشتیبانی واقعی</h3>
-                    <p>
-                        پشتیبانی ۲۴ ساعته نه یه شعار، که یه تعهده. 
-                        توی واتساپ، تلگرام و اینستاگرام همیشه در دسترسیم.
-                    </p>
+                <div class="feature-item" data-child-animate>
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">
+                        <h3>ارسال سریع</h3>
+                        <p>تحویل در کمترین زمان ممکن در سراسر کشور</p>
+                    </div>
                 </div>
             </div>
-        </section>
-        
-        <!-- برندهای همکار -->
-        <section class="brands-section">
-            <h2 class="brands-title">🤝 با بهترین‌ها کار می‌کنیم</h2>
-            <p class="story-text" style="text-align: center; margin-bottom: 30px;">
-                افتخار می‌کنیم که با برندهای معتبر بین‌المللی همکاری داریم. 
-                برندهایی که سال‌هاست اعتماد مشتریان رو به خودشون جلب کردند:
-            </p>
-            
-            <div class="brands-list">
-                <span class="brand-tag">budi</span>
-                <span class="brand-tag">Mcdodo</span>
-                <span class="brand-tag">Baseus</span>
-                <span class="brand-tag">JOKADE</span>
-                <span class="brand-tag">Apple</span>
-                <span class="brand-tag">Samsung</span>
-                <span class="brand-tag">Xiaomi</span>
-                <span class="brand-tag">V-Smart</span>
-                <span class="brand-tag">JBL</span>
-            </div>
-        </section>
-        
-        <!-- آمار و ارقام -->
-        <section class="story-section">
-            <h2 class="section-title">
-                <span class="icon">📊</span>
-                ما در یک نگاه
-            </h2>
-            
-            <p class="story-text">
-                توی این مدت کوتاه، کلی خاطره شیرین و تجربه خوب ساختیم. 
-                اینا هم بعضی از عدد و رقم‌هامون:
-            </p>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">+۲۰۰</span>
-                    <span class="stat-label">محصول متنوع</span>
+        </div>
+
+        <div class="content-card" data-animate="fade-up" data-delay="400">
+            <h2>📊 آمار و ارقام</h2>
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div class="stat-item" style="text-align: center;">
+                    <h3 data-counter data-target="5000" style="font-size: 2.5rem; color: var(--primary);">0</h3>
+                    <p>محصول فروخته شده</p>
                 </div>
-                
-                <div class="stat-card">
-                    <span class="stat-number">۲۴/۷</span>
-                    <span class="stat-label">پشتیبانی آنلاین</span>
+                <div class="stat-item" style="text-align: center;">
+                    <h3 data-counter data-target="98" style="font-size: 2.5rem; color: var(--secondary);">0</h3>
+                    <p>رضایت مشتری</p>
                 </div>
-                
-                <div class="stat-card">
-                    <span class="stat-number">۱۰+</span>
-                    <span class="stat-label">برند معتبر</span>
+                <div class="stat-item" style="text-align: center;">
+                    <h3 data-counter data-target="24" style="font-size: 2.5rem; color: var(--accent);">0</h3>
+                    <p>ساعت پشتیبانی</p>
                 </div>
-                
-                <div class="stat-card">
-                    <span class="stat-number">۱۰۰٪</span>
-                    <span class="stat-label">تعهد به کیفیت</span>
+                <div class="stat-item" style="text-align: center;">
+                    <h3 data-counter data-target="150" style="font-size: 2.5rem; color: var(--light);">0</h3>
+                    <p>محصول متنوع</p>
                 </div>
             </div>
-            
-            <div class="highlight-box" style="margin-top: 40px;">
-                <p>
-                    🎯 <strong>چشم‌انداز ما:</strong> تبدیل شدن به مرجع شماره یک لوازم جانبی موبایل در ایران. 
-                    جایی که هر کسی بدون تردید، برای تکمیل استایل دیجیتالش بهش اعتماد کنه.
-                </p>
+        </div>
+
+        <div class="content-card" data-animate="fade-up" data-delay="600">
+            <h2>👥 تیم ما</h2>
+            <div class="team-grid">
+                <div class="team-member" data-child-animate>
+                    <img src="images/team1.jpg" alt="مدیرعامل" class="member-photo">
+                    <div class="member-info">
+                        <h3>علی محمدی</h3>
+                        <span class="member-role">مدیرعامل و مؤسس</span>
+                        <p>با ۱۰ سال تجربه در حوزه تکنولوژی</p>
+                        <div class="member-contact">
+                            <a href="#" class="contact-icon">📧</a>
+                            <a href="#" class="contact-icon">💼</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- سایر اعضای تیم -->
             </div>
-        </section>
-        
-        <!-- دکمه بازگشت -->
-        <div class="back-button">
-            <button onclick="window.location.href='index.html'">← بازگشت به فروشگاه</button>
         </div>
     </main>
 
-    <!-- سبد خرید -->
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h3>🛒 سبد خرید شما</h3>
-            <button class="close-cart" id="closeCartButton">✕</button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            <!-- محصولات اینجا نمایش داده می‌شوند -->
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
-            </div>
-            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
-        </div>
-    </div>
-    
-    <div id="cartOverlay" class="cart-overlay"></div>
+    <!-- پشتیبانی و فوتر مانند index.html -->
 
-    <!-- بخش پشتیبانی -->
-    <section class="support-section">
-        <div class="container">
-            <h3>📞 هنوز سوالی دارید؟</h3>
-            <p>با خیال راحت از ما بپرسید</p>
-            <div class="support-buttons">
-                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
-                    ✈️ تلگرام
-                </a>
-                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer">
-                    💬 واتساپ
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© PulseGadgett - ضربان استایل دیجیتال شما | تأسیس ۱۴۰۴</p>
-        </div>
-    </footer>
-
-    <script src="products-data.js"></script>
-    <script src="script.js"></script>
-    
+    <script src="common.js"></script>
     <script>
-        // مقداردهی اولیه برای این صفحه
+        // انیمیشن‌های خاص صفحه درباره ما
         document.addEventListener('DOMContentLoaded', function() {
-            updateCartDisplay();
-            
-            // Event Listeners برای سبد خرید
-            const cartIcon = document.getElementById('cartIcon');
-            const closeCartButton = document.getElementById('closeCartButton');
-            const checkoutButton = document.getElementById('checkoutButton');
-            const cartOverlay = document.getElementById('cartOverlay');
-
-            if (cartIcon) cartIcon.addEventListener('click', toggleCart);
-            if (closeCartButton) closeCartButton.addEventListener('click', toggleCart);
-            if (checkoutButton) checkoutButton.addEventListener('click', checkout);
-            if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
+            // اضافه کردن افکت‌های اضافی
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.querySelector('.feature-icon').style.animation = 'float 0.5s ease';
+                });
+            });
         });
     </script>
 </body>
