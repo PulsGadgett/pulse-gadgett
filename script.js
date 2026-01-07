@@ -647,3 +647,170 @@ window.filterProducts = filterProducts;
 window.closeMessengerModal = closeMessengerModal;
 window.sendOrderViaWhatsapp = sendOrderViaWhatsapp;
 window.sendOrderViaTelegram = sendOrderViaTelegram;
+
+// ==================== توابع انیمیشن ====================
+
+// فعال‌سازی انیمیشن هنگام اسکرول
+function initScrollAnimations() {
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                
+                // افکت تاخیر برای فرزندان
+                const children = entry.target.querySelectorAll('[data-delay]');
+                children.forEach((child, index) => {
+                    const delay = child.getAttribute('data-delay') || index * 100;
+                    setTimeout(() => {
+                        child.classList.add('animate');
+                    }, delay);
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    animatedElements.forEach(el => observer.observe(el));
+}
+
+// افکت تایپ برای عنوان‌ها
+function typeWriterEffect(element, text, speed = 50) {
+    let i = 0;
+    element.textContent = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    
+    type();
+}
+
+// افکت شیکر برای دکمه‌ها
+function addShakeEffect(element) {
+    element.addEventListener('click', function(e) {
+        if (this.classList.contains('add-to-cart-btn')) {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 200);
+        }
+    });
+}
+
+// افکت پرتاب به سبد خرید
+function addThrowToCartEffect(button, productCard) {
+    button.addEventListener('click', function() {
+        const cardRect = productCard.getBoundingClientRect();
+        const cartIcon = document.getElementById('cartIcon');
+        const cartRect = cartIcon.getBoundingClientRect();
+        
+        // ایجاد المنت پرتابی
+        const throwElement = document.createElement('div');
+        throwElement.className = 'throw-to-cart';
+        throwElement.style.cssText = `
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            left: ${cardRect.left + cardRect.width/2}px;
+            top: ${cardRect.top + cardRect.height/2}px;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255,107,74,0.5);
+        `;
+        
+        document.body.appendChild(throwElement);
+        
+        // انیمیشن پرتاب
+        const animation = throwElement.animate([
+            {
+                left: `${cardRect.left + cardRect.width/2}px`,
+                top: `${cardRect.top + cardRect.height/2}px`,
+                transform: 'translate(-50%, -50%) scale(1)',
+                opacity: 1
+            },
+            {
+                left: `${cartRect.left + cartRect.width/2}px`,
+                top: `${cartRect.top + cartRect.height/2}px`,
+                transform: 'translate(-50%, -50%) scale(0.3)',
+                opacity: 0.5
+            }
+        ], {
+            duration: 600,
+            easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        });
+        
+        animation.onfinish = () => {
+            throwElement.remove();
+            
+            // افکت ضربه به سبد خرید
+            cartIcon.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                cartIcon.style.transform = '';
+            }, 300);
+        };
+    });
+}
+
+// اعمال افکت‌ها روی کارت محصولات
+function enhanceProductCards() {
+    document.querySelectorAll('.product-card').forEach((card, index) => {
+        // تاخیر انیمیشن
+        card.style.animationDelay = `${index * 0.1}s`;
+        
+        // افکت پرتاب به سبد خرید
+        const addButton = card.querySelector('.add-to-cart-btn');
+        if (addButton) {
+            addShakeEffect(addButton);
+            addThrowToCartEffect(addButton, card);
+        }
+        
+        // افکت hover برای کل کارت
+        card.addEventListener('mouseenter', () => {
+            card.style.zIndex = '10';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.zIndex = '';
+        });
+    });
+}
+
+// ==================== مقداردهی اولیه انیمیشن‌ها ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // شروع انیمیشن‌ها
+    initScrollAnimations();
+    enhanceProductCards();
+    
+    // افکت برای عنوان سایت
+    const siteTitle = document.querySelector('.site-title');
+    if (siteTitle) {
+        const originalText = siteTitle.textContent;
+        typeWriterEffect(siteTitle, originalText, 80);
+    }
+    
+    // افکت برای دکمه‌های دسته‌بندی
+    document.querySelectorAll('.category-btn').forEach((btn, index) => {
+        btn.style.animationDelay = `${index * 0.05}s`;
+    });
+});
+
+// CSS اضافی برای افکت پرتاب
+const throwStyles = document.createElement('style');
+throwStyles.textContent = `
+    .throw-to-cart {
+        pointer-events: none !important;
+    }
+`;
+document.head.appendChild(throwStyles);
