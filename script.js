@@ -336,6 +336,36 @@ function showEnhancedNotification(message, type = 'success', duration = 2500) {
 }
 
 // جایگزینی تابع نوتیفیکیشن اصلی
+// این تابع باید قبل از هر استفاده‌ای تعریف شود
+function showNotification(message, type = 'success', duration = 2500) {
+    // کپی همان تابع قبلی showEnhancedNotification یا showNotification
+    // حذف نوتیفیکیشن قبلی
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.classList.add('fade-out');
+        setTimeout(() => existingNotification.remove(), 300);
+    }
+    
+    // ایجاد نوتیفیکیشن جدید
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <span class="notification-icon">${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : type === 'info' ? 'ℹ️' : '❌'}</span>
+        <span class="notification-text">${message}</span>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // حذف خودکار بعد از 2.5 ثانیه
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, duration);
+}
+
+// یا اگر تابع showEnhancedNotification دارید:
+// window.showNotification = showEnhancedNotification;
 const originalShowNotification = showNotification;
 showNotification = showEnhancedNotification;
 
@@ -698,3 +728,4 @@ window.testNotification = function() {
 };
 
 console.log('✅ توابع اسکریپت در اسکوپ گلوبال بارگذاری شدند');
+
