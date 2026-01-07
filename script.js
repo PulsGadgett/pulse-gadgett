@@ -675,3 +675,26 @@ loadingStyles.textContent = `
 document.head.appendChild(loadingStyles);
 
 console.log('✨ انیمیشن‌های پیشرفته PulseGadgett بارگذاری شدند!');
+
+// ==================== اکسپورت توابع به اسکوپ گلوبال ====================
+
+// اطمینان از دسترسی جهانی به توابع ضروری
+window.showNotification = showNotification || showEnhancedNotification;
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.updateQuantity = updateQuantity;
+window.toggleCart = toggleCart;
+window.checkout = checkout;
+window.searchProducts = searchProducts;
+window.filterProducts = filterProducts;
+window.goToProduct = goToProduct;
+window.closeMessengerModal = closeMessengerModal;
+window.sendOrderViaWhatsapp = sendOrderViaWhatsapp;
+window.sendOrderViaTelegram = sendOrderViaTelegram;
+
+// تابع test برای بررسی
+window.testNotification = function() {
+    showNotification('این یک تست است!', 'success');
+};
+
+console.log('✅ توابع اسکریپت در اسکوپ گلوبال بارگذاری شدند');
