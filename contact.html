@@ -3,393 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ارتباط با پالس‌گجت - همیشه کنارتونیم</title>
-    <meta name="description" content="راه‌های ارتباط با تیم پشتیبانی پالس‌گجت - ما ۲۴ ساعته منتظر صدای گرمتون هستیم">
+    <title>تماس با ما - PulseGadgett</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ContactPage",
-        "name": "ارتباط با پالس‌گجت",
-        "description": "صفحه تماس با تیم پشتیبانی پالس‌گجت",
-        "url": "https://pulse-gadgett.vercel.app/contact.html",
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+989965566964",
-            "contactType": "پشتیبانی",
-            "availableLanguage": ["Persian"],
-            "hoursAvailable": {
-                "@type": "OpeningHoursSpecification",
-                "opens": "00:00",
-                "closes": "23:59",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-            }
-        }
-    }
-    </script>
-    
-    <style>
-        /* استایل‌های مخصوص صفحه تماس */
-        .page-title {
-            text-align: center;
-            margin: 40px 0 30px;
-            color: var(--text-dark);
-            font-size: 2.2rem;
-            position: relative;
-        }
-        
-        .page-title:after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 4px;
-            background: var(--button-orange);
-            margin: 15px auto;
-            border-radius: 2px;
-        }
-        
-        .contact-intro {
-            text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            max-width: 800px;
-            margin-right: auto;
-            margin-left: auto;
-            padding: 0 20px;
-        }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        
-        .contact-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-right: 5px solid var(--header-purple);
-        }
-        
-        .contact-section h2 {
-            color: var(--text-dark);
-            margin-bottom: 25px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .contact-method {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .contact-method:hover {
-            transform: translateX(-5px);
-            background: #e9ecef;
-        }
-        
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--header-purple);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            color: white;
-            flex-shrink: 0;
-        }
-        
-        .contact-details {
-            flex: 1;
-        }
-        
-        .contact-details h3 {
-            margin-bottom: 5px;
-            color: var(--text-dark);
-            font-size: 1.1rem;
-        }
-        
-        .contact-details p {
-            color: #666;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .contact-link {
-            color: var(--category-teal);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 5px;
-            transition: color 0.3s;
-        }
-        
-        .contact-link:hover {
-            color: var(--header-purple);
-        }
-        
-        .support-note {
-            background: linear-gradient(135deg, var(--card-cream) 0%, #fff5e6 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 40px 0;
-            border-right: 5px solid var(--accent-yellow);
-            text-align: center;
-        }
-        
-        .support-note h3 {
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        .support-note p {
-            color: #666;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-        
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-            
-            .contact-section {
-                padding: 20px;
-            }
-            
-            .page-title {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="common.css">
 </head>
 <body>
-    <!-- هدر -->
-    <header>
-        <div class="container">
-            <div class="brand">
-                <div class="logo-container">
-                    <a href="index.html" style="display: contents;">
-                        <img src="images/logo.jpg" alt="PulseGadgett" class="logo">
-                        <div class="brand-text">
-                            <h1>PulseGadgett</h1>
-                            <p>ضربان استایل دیجیتال شما</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- ناوبری اصلی -->
-            <nav class="main-nav">
-                <a href="index.html">🏠 خانه</a>
-                <a href="about.html">ℹ️ درباره ما</a>
-                <a href="contact.html" class="active">📞 ارتباط</a>
-                <a href="faq.html">❓ سوالات</a>
-            </nav>
-            
-            <!-- سبد خرید -->
-            <div class="header-actions">
-                <div class="cart-icon" id="cartIcon">
-                    🛒 سبد خرید
-                    <span id="cartCount" class="cart-count">0</span>
-                </div>
-            </div>
-        </div>
+    <header class="site-header">
+        <!-- هدر اصلی -->
     </header>
 
-    <main class="container">
-        <h1 class="page-title">📞 با ما در ارتباط باشید</h1>
-        
-        <p class="contact-intro">
-            تیم پالس‌گجت همیشه کنارتونه! از لحظه‌ای که اولین پیامتون رو می‌گیریم تا وقتی که مطمئن بشیم از سفارشتون راضی هستید، حواسمون بهتون هست. 
-            هر سوال، پیشنهاد یا مشکلی دارید، با خیال راحت بپرسید.
-        </p>
-        
-        <div class="contact-grid">
-            <!-- روش‌های ارتباطی -->
-            <div class="contact-section">
-                <h2>💬 راه‌های ارتباط مستقیم</h2>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">📱</div>
-                    <div class="contact-details">
-                        <h3>پشتیبانی واتساپ</h3>
-                        <p>پاسخگویی سریع در واتساپ</p>
-                        <a href="https://wa.me/+989965566964" class="contact-link" target="_blank">
-                            روی این لینک کلیک کنید
-                        </a>
+    <main class="container content-page">
+        <div class="content-header" data-animate="fade-up">
+            <h1 data-typewriter>📞 تماس با ما</h1>
+            <p class="content-subtitle">آماده پاسخگویی به سوالات شما هستیم</p>
+        </div>
+
+        <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <!-- فرم تماس -->
+            <div class="content-card" data-animate="fade-right">
+                <h2>پیام بفرستید</h2>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">نام کامل</label>
+                        <input type="text" id="name" class="form-control" required>
                     </div>
-                </div>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">✈️</div>
-                    <div class="contact-details">
-                        <h3>پشتیبانی تلگرام</h3>
-                        <p>ارتباط از طریق تلگرام</p>
-                        <a href="https://t.me/PG_supporter" class="contact-link" target="_blank">
-                            @PG_supporter
-                        </a>
+                    <div class="form-group">
+                        <label for="email">ایمیل</label>
+                        <input type="email" id="email" class="form-control" required>
                     </div>
-                </div>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">📢</div>
-                    <div class="contact-details">
-                        <h3>کانال تلگرام</h3>
-                        <p>جدیدترین محصولات و تخفیف‌ها</p>
-                        <a href="https://t.me/PulseGadgett" class="contact-link" target="_blank">
-                            @PulseGadgett
-                        </a>
+                    <div class="form-group">
+                        <label for="phone">شماره تماس</label>
+                        <input type="tel" id="phone" class="form-control">
                     </div>
-                </div>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">📷</div>
-                    <div class="contact-details">
-                        <h3>صفحه اینستاگرام</h3>
-                        <p>مطالب جذاب و استوری‌های روزانه</p>
-                        <a href="https://instagram.com/pulsegadgett" class="contact-link" target="_blank">
-                            @pulsegadgett
-                        </a>
+                    <div class="form-group">
+                        <label for="message">پیام شما</label>
+                        <textarea id="message" class="form-control" required></textarea>
                     </div>
-                </div>
+                    <button type="submit" class="submit-btn btn-ripple">
+                        📨 ارسال پیام
+                    </button>
+                </form>
             </div>
-            
+
             <!-- اطلاعات تماس -->
-            <div class="contact-section">
-                <h2>⏰ اطلاعات تماس</h2>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">🕒</div>
-                    <div class="contact-details">
-                        <h3>ساعات کاری</h3>
-                        <p><strong>پشتیبانی ۲۴ ساعته</strong></p>
-                        <p>همیشه در دسترس هستیم</p>
+            <div class="content-card" data-animate="fade-left">
+                <h2>اطلاعات تماس</h2>
+                <div class="contact-info">
+                    <div class="contact-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f8f8f8; border-radius: 12px; transition: all 0.3s ease;">
+                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            📍
+                        </div>
+                        <div>
+                            <h3 style="margin: 0 0 0.3rem 0;">آدرس</h3>
+                            <p style="margin: 0; color: #666;">تهران، خیابان ولیعصر، پلاک ۱۲۳</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f8f8f8; border-radius: 12px; transition: all 0.3s ease;">
+                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--secondary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                            📱
+                        </div>
+                        <div>
+                            <h3 style="margin: 0 0 0.3rem 0;">تلفن</h3>
+                            <p style="margin: 0; color: #666;">۰۲۱-۱۲۳۴۵۶۷۸</p>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">📞</div>
-                    <div class="contact-details">
-                        <h3>شماره تماس</h3>
-                        <p><strong>+۹۸ ۹۹۶۵۵۶۶۹۶۴</strong></p>
-                        <p>از ساعت ۹ صبح تا ۹ شب</p>
-                    </div>
-                </div>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">📧</div>
-                    <div class="contact-details">
-                        <h3>اطلاعات عمومی</h3>
-                        <p>تأسیس: ۲۱ آذر ۱۴۰۴</p>
-                        <p>همیشه در خدمت شما</p>
-                    </div>
-                </div>
-                
-                <div class="contact-method">
-                    <div class="contact-icon">💳</div>
-                    <div class="contact-details">
-                        <h3>درگاه پرداخت</h3>
-                        <p><strong>۵۰۲۲ ۲۹۱۵ ۸۲۵۴ ۰۸۰۱</strong></p>
-                        <p>به نام دانیال کریمی</p>
-                    </div>
-                </div>
+
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>روز</th>
+                            <th>ساعات کاری</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>شنبه تا چهارشنبه</td>
+                            <td>۸:۰۰ - ۱۷:۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>پنج‌شنبه</td>
+                            <td>۸:۰۰ - ۱۴:۰۰</td>
+                        </tr>
+                        <tr>
+                            <td>جمعه</td>
+                            <td>تعطیل</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-        
-        <div class="support-note">
-            <h3>✨ نکته مهم درباره پرداخت</h3>
-            <p>
-                برای اینکه هم خیال شما راحت باشه و هم ما بتونیم به خوبی امانت‌داری کنیم، 
-                <strong>لطفا وقتی تمامی مراحل ثبت سفارشتون انجام و تایید شد اقدام به پرداخت کنید.</strong>
-                ما تا لحظه رضایت شما، کنارتون خواهیم بود!
-            </p>
-        </div>
-        
-        <!-- دکمه بازگشت -->
-        <div class="back-button">
-            <button onclick="window.location.href='index.html'">← بازگشت به فروشگاه</button>
         </div>
     </main>
 
-    <!-- سبد خرید -->
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h3>🛒 سبد خرید شما</h3>
-            <button class="close-cart" id="closeCartButton">✕</button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            <!-- محصولات اینجا نمایش داده می‌شوند -->
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
-            </div>
-            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
-        </div>
-    </div>
-    
-    <div id="cartOverlay" class="cart-overlay"></div>
+    <!-- پشتیبانی و فوتر -->
 
-    <!-- بخش پشتیبانی -->
-    <section class="support-section">
-        <div class="container">
-            <h3>📞 هنوز سوالی دارید؟</h3>
-            <p>با خیال راحت از ما بپرسید</p>
-            <div class="support-buttons">
-                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
-                    ✈️ تلگرام
-                </a>
-                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer">
-                    💬 واتساپ
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© PulseGadgett - ضربان استایل دیجیتال شما | تأسیس ۱۴۰۴</p>
-        </div>
-    </footer>
-
-    <script src="products-data.js"></script>
-    <script src="script.js"></script>
-    
+    <script src="common.js"></script>
     <script>
-        // مقداردهی اولیه برای این صفحه
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartDisplay();
+        // مدیریت فرم تماس
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Event Listeners برای سبد خرید
-            const cartIcon = document.getElementById('cartIcon');
-            const closeCartButton = document.getElementById('closeCartButton');
-            const checkoutButton = document.getElementById('checkoutButton');
-            const cartOverlay = document.getElementById('cartOverlay');
-
-            if (cartIcon) cartIcon.addEventListener('click', toggleCart);
-            if (closeCartButton) closeCartButton.addEventListener('click', toggleCart);
-            if (checkoutButton) checkoutButton.addEventListener('click', checkout);
-            if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
+            const submitBtn = this.querySelector('.submit-btn');
+            submitBtn.classList.add('submitting');
+            
+            // شبیه‌سازی ارسال
+            setTimeout(() => {
+                PulseAnimations.showNotification('پیام شما با موفقیت ارسال شد!', 'success');
+                submitBtn.classList.remove('submitting');
+                submitBtn.innerHTML = '📨 ارسال پیام';
+                this.reset();
+            }, 2000);
         });
     </script>
 </body>
