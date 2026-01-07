@@ -3,620 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوالات متداول پالس‌گجت - پاسخ به تمام سوالات شما</title>
-    <meta name="description" content="پاسخ به سوالات پرتکرار درباره خرید، ارسال، گارانتی و بازگرداندن کالا در پالس‌گجت">
+    <title>سوالات متداول - PulseGadgett</title>
     <link rel="stylesheet" href="style.css">
-    
-    <!-- FAQ Schema برای SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "چطور میتونم به پالس‌گجت اعتماد کنم؟",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "محصولات در محیط حرفه‌ای عکاسی شدن، امکان پرداخت درب منزل دارید، گارانتی معتبر ارائه می‌شه و از لحظه سفارش تا تحویل همراهتون هستیم."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "آیا امکان خرید عمده وجود داره؟",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "بله، شما می‌تونید به هر تعدادی که می‌خواید از محصولات سفارش بدید. برای خرید عمده مستقیماً با پشتیبانی در تماس باشید."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "زمان تحویل سفارشات چقدر است؟",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "تهران: ۱-۲ روز کاری | شهرستان: ۵-۱۵ روز کاری (بستگی به مقصد داره)"
-                }
-            }
-        ]
-    }
-    </script>
-    
-    <style>
-        /* استایل‌های مخصوص صفحه FAQ */
-        .faq-header {
-            text-align: center;
-            padding: 50px 0 40px;
-            background: linear-gradient(135deg, var(--category-teal) 0%, #00b3a1 100%);
-            color: white;
-            border-radius: 0 0 30px 30px;
-            margin-bottom: 40px;
-        }
-        
-        .faq-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            font-weight: 800;
-        }
-        
-        .faq-header .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        .faq-intro {
-            text-align: center;
-            color: #666;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            max-width: 700px;
-            margin-right: auto;
-            margin-left: auto;
-            padding: 0 20px;
-        }
-        
-        .faq-category {
-            margin-bottom: 50px;
-        }
-        
-        .category-title {
-            color: var(--text-dark);
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--header-purple);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .category-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--header-purple);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            color: white;
-        }
-        
-        .faq-item {
-            background: white;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
-            border-right: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .faq-item:hover {
-            border-right-color: var(--accent-yellow);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .faq-question {
-            width: 100%;
-            padding: 20px 25px;
-            background: none;
-            border: none;
-            text-align: right;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        
-        .faq-question:hover {
-            background: #f8f9fa;
-        }
-        
-        .faq-question .icon {
-            font-size: 1.2rem;
-            transition: transform 0.3s;
-            color: var(--category-teal);
-        }
-        
-        .faq-question.active .icon {
-            transform: rotate(180deg);
-        }
-        
-        .faq-answer {
-            padding: 0 25px;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            color: #555;
-            line-height: 1.8;
-        }
-        
-        .faq-answer.show {
-            padding: 0 25px 25px;
-            max-height: 500px;
-        }
-        
-        .faq-answer p {
-            margin-bottom: 15px;
-        }
-        
-        .faq-answer ul, .faq-answer ol {
-            margin-right: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .faq-answer li {
-            margin-bottom: 8px;
-        }
-        
-        .highlight-note {
-            background: linear-gradient(135deg, var(--card-cream) 0%, #fff5e6 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 40px 0;
-            border-right: 5px solid var(--button-orange);
-        }
-        
-        .highlight-note h3 {
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .highlight-note p {
-            color: #555;
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-        
-        .contact-prompt {
-            text-align: center;
-            background: linear-gradient(135deg, var(--header-purple) 0%, #7A5BEE 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 20px;
-            margin: 50px 0 30px;
-        }
-        
-        .contact-prompt h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-        
-        .contact-prompt p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 25px;
-            max-width: 700px;
-            margin-right: auto;
-            margin-left: auto;
-            line-height: 1.8;
-        }
-        
-        /* رسپانسیو */
-        @media (max-width: 768px) {
-            .faq-header {
-                padding: 40px 0 30px;
-            }
-            
-            .faq-header h1 {
-                font-size: 2rem;
-            }
-            
-            .category-title {
-                font-size: 1.5rem;
-            }
-            
-            .category-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.1rem;
-            }
-            
-            .faq-question {
-                padding: 15px 20px;
-                font-size: 1rem;
-            }
-            
-            .contact-prompt {
-                padding: 30px 20px;
-            }
-            
-            .contact-prompt h3 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="common.css">
 </head>
 <body>
-    <!-- هدر -->
-    <header>
-        <div class="container">
-            <div class="brand">
-                <div class="logo-container">
-                    <a href="index.html" style="display: contents;">
-                        <img src="images/logo.jpg" alt="PulseGadgett" class="logo">
-                        <div class="brand-text">
-                            <h1>PulseGadgett</h1>
-                            <p>ضربان استایل دیجیتال شما</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- ناوبری اصلی -->
-            <nav class="main-nav">
-                <a href="index.html">🏠 خانه</a>
-                <a href="about.html">ℹ️ درباره ما</a>
-                <a href="contact.html">📞 ارتباط</a>
-                <a href="faq.html" class="active">❓ سوالات</a>
-            </nav>
-            
-            <!-- سبد خرید -->
-            <div class="header-actions">
-                <div class="cart-icon" id="cartIcon">
-                    🛒 سبد خرید
-                    <span id="cartCount" class="cart-count">0</span>
-                </div>
-            </div>
-        </div>
+    <header class="site-header">
+        <!-- هدر اصلی -->
     </header>
 
-    <!-- هدر صفحه -->
-    <div class="faq-header">
-        <div class="container">
-            <h1>سوالات متداول</h1>
-            <p class="subtitle">
-                همه سوالاتی که ممکنه داشته باشین، اینجا جوابشون رو پیدا می‌کنید. 
-                اگر جوابتون رو پیدا نکردید، با ما در تماس باشید!
-            </p>
-        </div>
-    </div>
-
-    <main class="container">
-        <p class="faq-intro">
-            اینجا سوالاتی که بیشتر ازمون پرسیده می‌شه رو جمع‌آوری کردیم. 
-            با کلیک روی هر سوال، جوابش رو می‌بینید. بازم سوالی داشتید؟ خجالت نکشید بپرسید! 😊
-        </p>
-
-        <!-- دسته‌بندی: خرید و سفارش -->
-        <div class="faq-category">
-            <h2 class="category-title">
-                <span class="category-icon">🛒</span>
-                خرید و سفارش
-            </h2>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    چطور میتونم به پالس‌گجت اعتماد کنم؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>ما چند تا نشانه براتون داریم که خیالتون رو راحت کنه:</p>
-                    <ul>
-                        <li>✅ <strong>عکس‌های واقعی:</strong> تمام محصولات رو خودمون در محیط حرفه‌ای عکاسی کردیم. همون چیزی رو می‌بینید که تحویل می‌گیرید.</li>
-                        <li>✅ <strong>پرداخت امن:</strong> هزینه سفارشات تهران رو می‌تونید موقع دریافت محصول پرداخت کنید. خیالتون راحت!</li>
-                        <li>✅ <strong>گارانتی معتبر:</strong> هر محصول گارانتی مخصوص خودش رو داره که توی توضیحات محصول نوشته شده.</li>
-                        <li>✅ <strong>همراهی تا آخر:</strong> از لحظه سفارش تا وقتی که مطمئن بشیم راضی هستید، کنارتونیم.</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    آیا امکان خرید عمده وجود داره؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>آره حتما! شما می‌تونید به هر تعدادی که می‌خواید از محصولات ما سفارش بدید.</p>
-                    <p>برای خرید عمده یا کسب‌وکار:</p>
-                    <ol>
-                        <li>مستقیماً با پشتیبانی توی واتساپ یا تلگرام در تماس باشید</li>
-                        <li>لیست محصولات مورد نظرتون رو اعلام کنید</li>
-                        <li>قیمت ویژه عمده براتون اعلام می‌شه</li>
-                    </ol>
-                    <p>ما با تیم‌ها و کسب‌وکارها هم همکاری می‌کنیم! 😊</p>
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    من از چه کسی باید سوالاتم رو بپرسم؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>شما می‌تونید سوالات خودتون رو از طریق هر کدوم از این راه‌ها از ما بپرسید:</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                        <div style="background: #f0f7ff; padding: 15px; border-radius: 10px; text-align: center;">
-                            <div style="font-size: 1.5rem; margin-bottom: 10px;">💬</div>
-                            <strong>واتساپ</strong><br>
-                            <a href="https://wa.me/+989965566964" style="color: var(--category-teal);">کلیک کنید</a>
-                        </div>
-                        <div style="background: #f0f7ff; padding: 15px; border-radius: 10px; text-align: center;">
-                            <div style="font-size: 1.5rem; margin-bottom: 10px;">✈️</div>
-                            <strong>تلگرام</strong><br>
-                            @PG_supporter
-                        </div>
-                        <div style="background: #f0f7ff; padding: 15px; border-radius: 10px; text-align: center;">
-                            <div style="font-size: 1.5rem; margin-bottom: 10px;">📷</div>
-                            <strong>اینستاگرام</strong><br>
-                            @pulsegadgett
-                        </div>
-                    </div>
-                    <p style="margin-top: 15px;">ترجیحاً واتساپ یا تلگرام چون سریع‌تر جواب می‌دیم! ⚡</p>
-                </div>
-            </div>
+    <main class="container content-page">
+        <div class="content-header" data-animate="fade-up">
+            <h1 data-typewriter>❓ سوالات متداول</h1>
+            <p class="content-subtitle">پاسخ سوالات پرتکرار شما</p>
         </div>
 
-        <!-- دسته‌بندی: ارسال و تحویل -->
-        <div class="faq-category">
-            <h2 class="category-title">
-                <span class="category-icon">🚚</span>
-                ارسال و تحویل
-            </h2>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    زمان تحویل سفارشات چقدر است؟
-                    <span class="icon">▼</span>
-                </button>
+        <div class="faq-container">
+            <div class="faq-item" data-animate="fade-up" data-delay="100">
+                <div class="faq-question">
+                    <h3>چطور می‌توانم سفارشم را پیگیری کنم؟</h3>
+                    <span class="toggle-icon">➕</span>
+                </div>
                 <div class="faq-answer">
-                    <p>زمان تحویل بستگی به مقصد داره:</p>
-                    <ul>
-                        <li>🏙️ <strong>تهران:</strong> سفارشات داخل تهران در عرض یک الی دو روز کاری به دستتون می‌رسه</li>
-                        <li>🗺️ <strong>شهرستان:</strong> در هر نقطه‌ای از ایران عزیزمون که باشید، سفارشتون در عرض پنج الی پونزده روز کاری به دستتون می‌رسه</li>
-                    </ul>
-                    <p>توجه: روزهای تعطیل رسمی محاسبه نمی‌شن. اگه عجله داشتید، موقع سفارش حتما بهمون بگید! ⏰</p>
+                    <p>پس از ثبت سفارش، کد رهگیری برای شما ارسال می‌شود. می‌توانید از طریق این کد در بخش "پیگیری سفارش" وضعیت سفارش خود را مشاهده کنید.</p>
                 </div>
             </div>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    هزینه ارسال چطور محاسبه می‌شه؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>هزینه ارسال طبق تعرفه شرکت پست محاسبه می‌شه و به دو چیز بستگی داره:</p>
-                    <ol>
-                        <li>محصولی که سفارش می‌دید (وزن و حجم)</li>
-                        <li>مقصد مورد نظرتون (شهر یا استان)</li>
-                    </ol>
-                    <p>بعد از اینکه سفارشتون ثبت شد، ادمین ما هزینه دقیق رو براتون اعلام می‌کنه. می‌تونید از طریق سامانه پست هم مقایسه کنید تا خیالتون راحت باشه! 🔍</p>
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    آیا امکان پرداخت در محل دارم؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>بله! برای سفارشات داخل تهران، این امکان رو دارید.</p>
-                    <p>📦 <strong>روش کار:</strong></p>
-                    <ol>
-                        <li>سفارشتون رو توی سایت ثبت می‌کنید</li>
-                        <li>روش پرداخت "دریافت در محل" رو انتخاب می‌کنید</li>
-                        <li>سفارش براتون ارسال می‌شه</li>
-                        <li>موقع تحویل، هزینه رو به مأمور پست پرداخت می‌کنید</li>
-                    </ol>
-                    <p>برای شهرستان متأسفانه این امکان فعلاً وجود نداره و باید آنلاین پرداخت کنید. 💳</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- دسته‌بندی: گارانتی و بازگرداندن -->
-        <div class="faq-category">
-            <h2 class="category-title">
-                <span class="category-icon">🛡️</span>
-                گارانتی و بازگرداندن
-            </h2>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    مدت گارانتی محصولات چقدر است؟
-                    <span class="icon">▼</span>
-                </button>
+            <div class="faq-item" data-animate="fade-up" data-delay="200">
+                <div class="faq-question">
+                    <h3>مدت زمان تحویل چقدر است؟</h3>
+                    <span class="toggle-icon">➕</span>
+                </div>
                 <div class="faq-answer">
-                    <p>مدت گارانتی هر محصول توی توضیحات همون محصول ذکر شده. معمولاً:</p>
-                    <ul>
-                        <li>🎧 <strong>هندزفری و هدست:</strong> ۳ تا ۶ ماه</li>
-                        <li>🔌 <strong>شارژر و کابل:</strong> ۳ تا ۱۲ ماه</li>
-                        <li>📱 <strong>قاب و لوازم جانبی:</strong> ۱ تا ۶ ماه</li>
-                    </ul>
-                    <p>دقت کنید: گارانتی شامل آسیب‌های فیزیکی (شکستگی، آب خوردگی و...) نمی‌شه. فقط ایرادات کارکردی رو پوشش می‌ده.</p>
+                    <p>برای تهران ۲۴ ساعت و برای سایر شهرها ۲-۴ روز کاری می‌باشد.</p>
                 </div>
             </div>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    اگر از محصول راضی نباشم چیکار کنم؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>اول از همه ناراحت نشید! ما اینجاییم که مشکل رو حل کنیم. 🛠️</p>
-                    <p><strong>مراحل بازگرداندن:</strong></p>
-                    <ol>
-                        <li>تا ۷ روز پس از دریافت، می‌تونید کالا رو بازگردونید</li>
-                        <li>کالا باید سالم و بدون استفاده باشه</li>
-                        <li>همه لوازم کامل (بسته‌بندی، دفترچه و...) همراهش باشه</li>
-                        <li>با پشتیبانی تماس بگیرید تا راهنماییتون کنیم</li>
-                    </ol>
-                    <p><strong>توجه:</strong> هزینه ارسال برگشت بر عهده مشتری هست. بهتره قبل از خرید مطمئن بشید! 🤝</p>
-                </div>
-            </div>
-            
-            <div class="faq-item">
-                <button class="faq-question">
-                    چطور از گارانتی استفاده کنم؟
-                    <span class="icon">▼</span>
-                </button>
-                <div class="faq-answer">
-                    <p>اگر محصولتون مشکل کارکردی داشت:</p>
-                    <ol>
-                        <li>📸 از مشکل عکس یا فیلم بگیرید</li>
-                        <li>💬 با پشتیبانی توی واتساپ/تلگرام تماس بگیرید</li>
-                        <li>📦 محصول رو برامون بفرستید (هزینه ارسال رو بعداً بهتون برمی‌گردونیم)</li>
-                        <li>🔧 محصول رو بررسی و تعمیر می‌کنیم</li>
-                        <li>📦 محصول سالم شده رو براتون می‌فرستیم</li>
-                    </ol>
-                    <p>کل فرآیند معمولاً ۱۰-۱۵ روز کاری طول می‌کشه. صبور باشید! ⏳</p>
-                </div>
-            </div>
-        </div>
 
-        <div class="highlight-note">
-            <h3>✨ نکته مهم درباره پرداخت</h3>
-            <p>
-                <strong>۵۰۲۲ ۲۹۱۵ ۸۲۵۴ ۰۸۰۱ - به نام دانیال کریمی</strong><br><br>
-                برای اینکه هم خیال شما راحت باشه و هم ما بتونیم به خوبی امانت‌داری کنیم، 
-                لطفا وقتی <strong>تمامی مراحل ثبت سفارشتون انجام و تایید شد</strong> اقدام به پرداخت کنید. 
-                تا اون موقع هم ما کنارتون هستیم! 🤝
-            </p>
-        </div>
-
-        <!-- درخواست تماس -->
-        <div class="contact-prompt">
-            <h3>هنوز جواب سوالتون رو پیدا نکردید؟</h3>
-            <p>اشکالی نداره! ما اینجاییم تا بهتون کمک کنیم. با خیال راحت از ما بپرسید، حتی اگه سوالتون شخصی یا تکراری باشه.</p>
-            <div class="support-buttons">
-                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer" style="background: white; color: var(--header-purple);">
-                    ✈️ از تلگرام بپرسید
-                </a>
-                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer" style="background: white; color: var(--header-purple);">
-                    💬 از واتساپ بپرسید
-                </a>
+            <div class="faq-item" data-animate="fade-up" data-delay="300">
+                <div class="faq-question">
+                    <h3>گارانتی محصولات چگونه است؟</h3>
+                    <span class="toggle-icon">➕</span>
+                </div>
+                <div class="faq-answer">
+                    <p>تمامی محصولات دارای گارانتی ۶ ماهه تا ۲ ساله هستند. اطلاعات دقیق در صفحه هر محصول موجود است.</p>
+                </div>
             </div>
-        </div>
-        
-        <!-- دکمه بازگشت -->
-        <div class="back-button">
-            <button onclick="window.location.href='index.html'">← بازگشت به فروشگاه</button>
         </div>
     </main>
 
-    <!-- سبد خرید -->
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h3>🛒 سبد خرید شما</h3>
-            <button class="close-cart" id="closeCartButton">✕</button>
-        </div>
-        <div id="cartItems" class="cart-items">
-            <!-- محصولات اینجا نمایش داده می‌شوند -->
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
-            </div>
-            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
-        </div>
-    </div>
-    
-    <div id="cartOverlay" class="cart-overlay"></div>
+    <!-- پشتیبانی و فوتر -->
 
-    <!-- بخش پشتیبانی -->
-    <section class="support-section">
-        <div class="container">
-            <h3>📞 پاسخگوی شما هستیم</h3>
-            <p>از طریق راه‌های زیر با ما در ارتباط باشید</p>
-            <div class="support-buttons">
-                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
-                    ✈️ تلگرام
-                </a>
-                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer">
-                    💬 واتساپ
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© PulseGadgett - ضربان استایل دیجیتال شما | تأسیس ۱۴۰۴</p>
-        </div>
-    </footer>
-
-    <script src="products-data.js"></script>
-    <script src="script.js"></script>
-    
+    <script src="common.js"></script>
     <script>
-        // اسکریپت FAQ
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCartDisplay();
-            
-            // Event Listeners برای سبد خرید
-            const cartIcon = document.getElementById('cartIcon');
-            const closeCartButton = document.getElementById('closeCartButton');
-            const checkoutButton = document.getElementById('checkoutButton');
-            const cartOverlay = document.getElementById('cartOverlay');
-
-            if (cartIcon) cartIcon.addEventListener('click', toggleCart);
-            if (closeCartButton) closeCartButton.addEventListener('click', toggleCart);
-            if (checkoutButton) checkoutButton.addEventListener('click', checkout);
-            if (cartOverlay) cartOverlay.addEventListener('click', toggleCart);
-            
-            // FAQ Accordion
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    const answer = this.nextElementSibling;
-                    const icon = this.querySelector('.icon');
-                    
-                    // بستن بقیه
-                    document.querySelectorAll('.faq-answer.show').forEach(item => {
-                        if (item !== answer) {
-                            item.classList.remove('show');
-                            item.previousElementSibling.classList.remove('active');
-                        }
-                    });
-                    
-                    // باز/بسته کردن فعلی
-                    answer.classList.toggle('show');
-                    this.classList.toggle('active');
-                    
-                    // انیمیشن آیکون
-                    if (answer.classList.contains('show')) {
-                        icon.textContent = '▲';
-                    } else {
-                        icon.textContent = '▼';
-                    }
+        // مدیریت FAQ
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const item = this.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                // بستن همه
+                document.querySelectorAll('.faq-item').forEach(faq => {
+                    faq.classList.remove('active');
                 });
+                
+                // باز کردن مورد انتخاب شده
+                if (!isActive) {
+                    item.classList.add('active');
+                }
             });
-            
-            // باز کردن اولین سوال
-            if (faqQuestions.length > 0) {
-                faqQuestions[0].click();
-            }
         });
     </script>
 </body>
