@@ -216,8 +216,12 @@ function initActiveNav() {
             link.classList.add('active');
             
             // افکت پالس برای لینک فعال
-            setInterval(() => {
-                link.classList.toggle('pulse-subtle');
+            const intervalId = setInterval(() => {
+                if (document.body.contains(link)) {
+                    link.classList.toggle('pulse-subtle');
+                } else {
+                    clearInterval(intervalId);
+                }
             }, 3000);
         }
         
@@ -236,37 +240,93 @@ function initActiveNav() {
 
 // ==================== انیمیشن‌های متن ====================
 
-// افکت تایپ برای عناوین
+// افکت تایپ برای عناوین - نسخه ایمن و ساده
 function initTypewriterEffects() {
-    const typeElements = document.querySelectorAll('[data-typewriter]');
+    console.log('🔤 راه‌اندازی افکت تایپ‌نویس...');
     
-    typeElements.forEach(element => {
-        const text = element.textContent;
-        const speed = element.dataset.speed || 50;
+    const typeElements = document.querySelectorAll('[data-typewriter]');
+    if (!typeElements.length) return;
+    
+    typeElements.forEach((element, index) => {
+        // تأخیر پلکانی
+        setTimeout(() => {
+            safeTypewriterEffect(element);
+        }, index * 300);
+    });
+}
+
+// تابع ایمن برای افکت تایپ
+function safeTypewriterEffect(element) {
+    if (!element || !document.body.contains(element)) return;
+    
+    try {
+        const originalText = element.textContent || element.innerText;
+        if (!originalText.trim()) return;
         
-        element.textContent = '';
-        element.style.position = 'relative';
+        // ذخیره متن اصلی
+        element.dataset.originalText = originalText;
         
-        const cursor = document.createElement('span');
-        cursor.className = 'typewriter-cursor';
-        cursor.textContent = '|';
-        cursor.style.animation = 'blink 1s infinite';
+        // پاک کردن محتوا
+        element.innerHTML = '';
         
-        element.appendChild(cursor);
+        // ایجاد کانتینر برای متن
+        const textSpan = document.createElement('span');
+        textSpan.className = 'typing-text';
+        element.appendChild(textSpan);
         
-        let i = 0;
-        function type() {
-            if (i < text.length) {
-                cursor.insertAdjacentHTML('beforebegin', text.charAt(i));
-                i++;
-                setTimeout(type, speed);
+        // ایجاد کرسور
+        const cursorSpan = document.createElement('span');
+        cursorSpan.className = 'typing-cursor';
+        cursorSpan.textContent = '|';
+        cursorSpan.style.cssText = `
+            display: inline-block;
+            animation: blink 1s infinite;
+            margin-right: 2px;
+            color: #FF6B4A;
+            font-weight: bold;
+        `;
+        element.appendChild(cursorSpan);
+        
+        // تنظیم سرعت
+        const speed = parseInt(element.dataset.speed) || 60;
+        const variation = 20;
+        
+        let charIndex = 0;
+        
+        function typeNextChar() {
+            if (!document.body.contains(element)) return;
+            
+            if (charIndex < originalText.length) {
+                textSpan.textContent += originalText.charAt(charIndex);
+                charIndex++;
+                
+                const nextSpeed = speed + (Math.random() * variation - variation/2);
+                setTimeout(typeNextChar, nextSpeed);
             } else {
-                setTimeout(() => cursor.remove(), 500);
+                setTimeout(() => {
+                    if (cursorSpan && cursorSpan.parentNode) {
+                        cursorSpan.style.animation = 'none';
+                        cursorSpan.style.opacity = '0';
+                        cursorSpan.style.transition = 'opacity 0.3s ease';
+                        
+                        setTimeout(() => {
+                            if (cursorSpan.parentNode) cursorSpan.remove();
+                        }, 300);
+                    }
+                }, 800);
             }
         }
         
-        setTimeout(type, Math.random() * 1000);
-    });
+        // شروع تایپ
+        setTimeout(typeNextChar, 500);
+        
+    } catch (error) {
+        console.error('خطا در افکت تایپ:', error);
+        // بازیابی متن اصلی در صورت خطا
+        if (element && element.dataset.originalText) {
+            element.textContent = element.dataset.originalText;
+        }
+    }
 }
 
 // افکت شمارش برای اعداد
@@ -641,6 +701,11 @@ function injectAnimationStyles() {
         
         .has-value {
             border-color: #00C9B1 !important;
+        }
+        
+        /* تایپ‌نویس */
+        .typing-cursor {
+            animation: blink 1s infinite;
         }
         
         /* بهینه‌سازی */
