@@ -1,16 +1,5 @@
 // ==================== انیمیشن‌های مشترک برای تمام صفحات ====================
 
-// پالت رنگی سایت
-const siteColors = {
-    primary: '#FF6B4A',
-    secondary: '#00C9B1',
-    accent: '#8A6BFF',
-    background: '#FFF9F0',
-    text: '#3A2D28',
-    light: '#FFD166',
-    border: '#E0D6CC'
-};
-
 // ==================== توابع انیمیشن پایه ====================
 
 // فعال‌سازی انیمیشن هنگام اسکرول
@@ -93,7 +82,6 @@ function initRippleEffects() {
     const rippleElements = document.querySelectorAll('.btn-ripple, button:not(.no-ripple), .btn, .action-btn');
     
     rippleElements.forEach(element => {
-        // فقط روی دکمه‌هایی که خاصیت disabled ندارند
         if (!element.disabled && !element.classList.contains('no-ripple')) {
             addRippleEffect(element);
         }
@@ -107,7 +95,7 @@ function initCardHoverEffects() {
     cards.forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-10px)';
-            this.style.boxShadow = `0 20px 40px rgba(${hexToRgb(siteColors.primary)}, 0.15)`;
+            this.style.boxShadow = '0 20px 40px rgba(255, 107, 74, 0.15)';
         });
         
         card.addEventListener('mouseleave', function() {
@@ -117,7 +105,7 @@ function initCardHoverEffects() {
     });
 }
 
-// تبدیل HEX به RGB
+// تبدیل HEX به RGB (اگر نیاز بود)
 function hexToRgb(hex) {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? 
@@ -169,7 +157,7 @@ function initPageEntrance() {
 
 // ==================== نوتیفیکیشن مشترک ====================
 
-function showNotification(message, type = 'info', duration = 3000) {
+function showCommonNotification(message, type = 'info', duration = 3000) {
     // حذف نوتیفیکیشن قبلی
     const existing = document.querySelector('.site-notification');
     if (existing) {
@@ -277,7 +265,6 @@ function initTypewriterEffects() {
             }
         }
         
-        // شروع با تأخیر تصادفی
         setTimeout(type, Math.random() * 1000);
     });
 }
@@ -399,10 +386,10 @@ function initAnimatedBackgrounds() {
     
     gradientElements.forEach(element => {
         element.style.background = `linear-gradient(-45deg, 
-            ${siteColors.primary}20, 
-            ${siteColors.secondary}20, 
-            ${siteColors.accent}20, 
-            ${siteColors.light}20
+            #FF6B4A20, 
+            #00C9B120, 
+            #8A6BFF20, 
+            #FFD16620
         )`;
         element.style.backgroundSize = '400% 400%';
         element.style.animation = 'gradientShift 15s ease infinite';
@@ -412,7 +399,7 @@ function initAnimatedBackgrounds() {
 // ==================== تابع مقداردهی اولیه ====================
 
 function initAllAnimations() {
-    console.log('✨ راه‌اندازی انیمیشن‌های PulseGadgett...');
+    console.log('✨ راه‌اندازی انیمیشن‌های مشترک PulseGadgett...');
     
     // انیمیشن‌های اصلی
     initScrollAnimations();
@@ -431,19 +418,19 @@ function initAllAnimations() {
     // اعمال استایل‌های CSS
     injectAnimationStyles();
     
-    console.log('✅ انیمیشن‌ها راه‌اندازی شدند!');
+    console.log('✅ انیمیشن‌های مشترک راه‌اندازی شدند!');
 }
 
 // ==================== تزریق استایل‌های CSS ====================
 
 function injectAnimationStyles() {
-    if (document.querySelector('#pulse-animations-styles')) return;
+    if (document.querySelector('#pulse-common-animations-styles')) return;
     
     const styles = document.createElement('style');
-    styles.id = 'pulse-animations-styles';
+    styles.id = 'pulse-common-animations-styles';
     
     styles.textContent = `
-        /* انیمیشن‌های پایه */
+        /* انیمیشن‌های مشترک */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -494,7 +481,7 @@ function injectAnimationStyles() {
             100% { transform: rotate(360deg); }
         }
         
-        /* کلاس‌های انیمیشن */
+        /* کلاس‌های انیمیشن مشترک */
         [data-animate] {
             opacity: 0;
         }
@@ -520,7 +507,7 @@ function injectAnimationStyles() {
         .animate-delay-300 { animation-delay: 0.3s; }
         .animate-delay-500 { animation-delay: 0.5s; }
         
-        /* نوتیفیکیشن */
+        /* نوتیفیکیشن مشترک */
         .site-notification {
             position: fixed;
             top: 30px;
@@ -578,19 +565,19 @@ function injectAnimationStyles() {
             border-radius: 0 0 12px 12px;
         }
         
-        /* رنگ نوتیفیکیشن‌ها */
+        /* رنگ نوتیفیکیشن‌ها با پالت اصلی */
         .notification-success { 
-            background: linear-gradient(135deg, ${siteColors.secondary}, ${siteColors.secondary}cc);
+            background: linear-gradient(135deg, #00C9B1, #00C9B1cc);
         }
         .notification-error { 
-            background: linear-gradient(135deg, ${siteColors.primary}, ${siteColors.primary}cc);
+            background: linear-gradient(135deg, #FF6B4A, #FF6B4Acc);
         }
         .notification-warning { 
-            background: linear-gradient(135deg, ${siteColors.light}, ${siteColors.light}cc);
-            color: ${siteColors.text};
+            background: linear-gradient(135deg, #FFD166, #FFD166cc);
+            color: #3A2D28;
         }
         .notification-info { 
-            background: linear-gradient(135deg, ${siteColors.accent}, ${siteColors.accent}cc);
+            background: linear-gradient(135deg, #8A6BFF, #8A6BFFcc);
         }
         
         /* لینک فعال */
@@ -606,7 +593,7 @@ function injectAnimationStyles() {
             transform: translateX(-50%);
             width: 30px;
             height: 3px;
-            background: ${siteColors.primary};
+            background: #FF6B4A;
             border-radius: 2px;
             animation: pulse-subtle 2s infinite;
         }
@@ -638,7 +625,7 @@ function injectAnimationStyles() {
         
         .hover-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(${hexToRgb(siteColors.primary)}, 0.15);
+            box-shadow: 0 20px 40px rgba(255, 107, 74, 0.15);
         }
         
         /* انیمیشن شناور */
@@ -648,12 +635,12 @@ function injectAnimationStyles() {
         
         /* فرم */
         .focused label {
-            color: ${siteColors.primary};
+            color: #FF6B4A;
             transform: translateY(-20px) scale(0.9);
         }
         
         .has-value {
-            border-color: ${siteColors.secondary} !important;
+            border-color: #00C9B1 !important;
         }
         
         /* بهینه‌سازی */
@@ -679,13 +666,13 @@ function injectAnimationStyles() {
 document.addEventListener('DOMContentLoaded', initAllAnimations);
 
 // برای دسترسی از صفحات دیگر
-window.PulseAnimations = {
+window.PulseCommonAnimations = {
     initAllAnimations,
-    showNotification,
+    showCommonNotification,
     initScrollAnimations,
     initRippleEffects,
     initTypewriterEffects,
     initCounterAnimations
 };
 
-console.log('📦 کتابخانه انیمیشن PulseGadgett بارگذاری شد');
+console.log('📦 کتابخانه انیمیشن‌های مشترک PulseGadgett بارگذاری شد');
