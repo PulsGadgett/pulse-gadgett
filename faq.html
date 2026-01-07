@@ -4,75 +4,403 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سوالات متداول - PulseGadgett</title>
-    <link rel="stylesheet" href="common.css">
-<script src="common.js" defer></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="common.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        /* استایل‌های مخصوص FAQ */
+        .faq-page {
+            min-height: 80vh;
+            padding: 4rem 0;
+        }
+        
+        .faq-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .faq-header h1 {
+            color: #FF6B4A;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .faq-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid #E0D6CC;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active {
+            box-shadow: 0 10px 30px rgba(255, 107, 74, 0.1);
+            border-color: #FF6B4A;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FFF9F0;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active .faq-question {
+            background: linear-gradient(135deg, #FF6B4A, #ff8b6b);
+            color: white;
+        }
+        
+        .faq-question h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .faq-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            margin-right: 1rem;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 1.5rem;
+            max-height: 1000px;
+        }
+        
+        .faq-answer p {
+            margin: 0;
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .contact-promo {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #FFF9F0, #ffffff);
+            border-radius: 15px;
+            border: 2px dashed #00C9B1;
+        }
+        
+        .contact-promo h3 {
+            color: #3A2D28;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-promo p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .faq-page {
+                padding: 2rem 0;
+            }
+            
+            .faq-header h1 {
+                font-size: 2rem;
+            }
+            
+            .faq-question {
+                padding: 1.2rem;
+            }
+            
+            .faq-question h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- هدر -->
     <header class="site-header">
-        <!-- هدر اصلی -->
+        <div class="container header-container">
+            <div class="brand">
+                <div class="logo-container">
+                    <img src="images/logo.jpg" alt="PulseGadgett" class="logo" 
+                         onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
+                    <div class="brand-text">
+                        <h1 class="site-title">PulseGadgett</h1>
+                        <p class="site-tagline">ضربان استایل دیجیتال شما</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">🏠 خانه</a>
+                <a href="about.html" class="nav-link">ℹ️ درباره ما</a>
+                <a href="contact.html" class="nav-link">📞 ارتباط</a>
+                <a href="faq.html" class="nav-link active">❓ سوالات</a>
+            </nav>
+
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" 
+                       placeholder="جستجوی محصولات..." 
+                       onkeypress="if(event.key === 'Enter') window.location.href='index.html'">
+                <button id="searchButton" class="search-btn" onclick="window.location.href='index.html'">🔍</button>
+            </div>
+
+            <div class="header-actions">
+                <button class="cart-button" id="cartIcon" onclick="window.location.href='index.html'">
+                    🛒 سبد خرید 
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
     </header>
 
-    <main class="container content-page">
-        <div class="content-header" data-animate="fade-up">
-            <h1 data-typewriter>❓ سوالات متداول</h1>
-            <p class="content-subtitle">پاسخ سوالات پرتکرار شما</p>
+    <!-- دسته‌بندی‌ها (برای سازگاری) -->
+    <nav class="categories">
+        <div class="container" id="category-buttons">
+            <button class="category-btn" onclick="window.location.href='index.html'">🏠 بازگشت به فروشگاه</button>
+        </div>
+    </nav>
+
+    <!-- محتوای اصلی FAQ -->
+    <main class="container faq-page">
+        <div class="faq-header" data-animate="fade-up">
+            <h1 data-typewriter data-speed="70">سوالات متداول</h1>
+            <p>پاسخ سوالات پرتکرار شما در اینجا جمع‌آوری شده است</p>
         </div>
 
         <div class="faq-container">
+            <!-- سوال ۱ -->
             <div class="faq-item" data-animate="fade-up" data-delay="100">
                 <div class="faq-question">
+                    <div class="faq-icon">➕</div>
                     <h3>چطور می‌توانم سفارشم را پیگیری کنم؟</h3>
-                    <span class="toggle-icon">➕</span>
                 </div>
                 <div class="faq-answer">
-                    <p>پس از ثبت سفارش، کد رهگیری برای شما ارسال می‌شود. می‌توانید از طریق این کد در بخش "پیگیری سفارش" وضعیت سفارش خود را مشاهده کنید.</p>
+                    <p>پس از ثبت سفارش، کد رهگیری منحصر به فرد برای شما ارسال می‌شود. می‌توانید از طریق این کد در بخش "پیگیری سفارش" در صفحه اصلی یا از طریق تماس با پشتیبانی، وضعیت سفارش خود را مشاهده کنید. همچنین می‌توانید به صفحه "تماس با ما" مراجعه کرده و با ارائه کد رهگیری، اطلاعات دقیق دریافت کنید.</p>
                 </div>
             </div>
 
+            <!-- سوال ۲ -->
             <div class="faq-item" data-animate="fade-up" data-delay="200">
                 <div class="faq-question">
+                    <div class="faq-icon">➕</div>
                     <h3>مدت زمان تحویل چقدر است؟</h3>
-                    <span class="toggle-icon">➕</span>
                 </div>
                 <div class="faq-answer">
-                    <p>برای تهران ۲۴ ساعت و برای سایر شهرها ۲-۴ روز کاری می‌باشد.</p>
+                    <p>• برای تهران: ۲۴ ساعت کاری<br>
+                       • برای شهرهای بزرگ: ۲-۳ روز کاری<br>
+                       • برای سایر شهرها: ۳-۴ روز کاری<br>
+                       • برای مناطق دورافتاده: ۴-۵ روز کاری<br>
+                       توجه: این زمان‌ها پس از تایید پرداخت محاسبه می‌شوند.</p>
                 </div>
             </div>
 
+            <!-- سوال ۳ -->
             <div class="faq-item" data-animate="fade-up" data-delay="300">
                 <div class="faq-question">
+                    <div class="faq-icon">➕</div>
                     <h3>گارانتی محصولات چگونه است؟</h3>
-                    <span class="toggle-icon">➕</span>
                 </div>
                 <div class="faq-answer">
-                    <p>تمامی محصولات دارای گارانتی ۶ ماهه تا ۲ ساله هستند. اطلاعات دقیق در صفحه هر محصول موجود است.</p>
+                    <p>تمامی محصولات ما دارای گارانتی هستند:<br>
+                       • لوازم جانبی اصلی: ۱۲ ماه گارانتی<br>
+                       • محصولات دیجیتال: ۶ ماه گارانتی<br>
+                       • لوازم مصرفی: ۳ ماه گارانتی<br>
+                       اطلاعات دقیق گارانتی در صفحه هر محصول و بر روی کارتن آن درج شده است.</p>
                 </div>
+            </div>
+
+            <!-- سوال ۴ -->
+            <div class="faq-item" data-animate="fade-up" data-delay="400">
+                <div class="faq-question">
+                    <div class="faq-icon">➕</div>
+                    <h3>چگونه می‌توانم محصولات را پس بگیرم؟</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>شما ۷ روز فرصت دارید تا در صورت عدم رضایت، محصول را مرجوع کنید:<br>
+                       ۱. محصول باید سالم و بدون استفاده باشد<br>
+                       ۲. بسته‌بندی اصلی باید کامل باشد<br>
+                       ۳. فاکتور خرید باید همراه محصول باشد<br>
+                       ۴. برای شروع فرآیند مرجوعی با پشتیبانی تماس بگیرید</p>
+                </div>
+            </div>
+
+            <!-- سوال ۵ -->
+            <div class="faq-item" data-animate="fade-up" data-delay="500">
+                <div class="faq-question">
+                    <div class="faq-icon">➕</div>
+                    <h3>روش‌های پرداخت چیست؟</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>ما روش‌های پرداخت متنوعی داریم:<br>
+                       • پرداخت آنلاین (درگاه بانکی)<br>
+                       • پرداخت در محل (فقط برای تهران)<br>
+                       • کارت به کارت<br>
+                       • کیف پول الکترونیکی<br>
+                       توجه: برای پرداخت در محل، مبلغ اضافه‌ای دریافت نمی‌شود.</p>
+                </div>
+            </div>
+
+            <!-- سوال ۶ -->
+            <div class="faq-item" data-animate="fade-up" data-delay="600">
+                <div class="faq-question">
+                    <div class="faq-icon">➕</div>
+                    <h3>ساعت کاری پشتیبانی چه زمانی است؟</h3>
+                </div>
+                <div class="faq-answer">
+                    <p>پشتیبانی ما در ۷ روز هفته فعال است:<br>
+                       • شنبه تا چهارشنبه: ۹ صبح تا ۹ شب<br>
+                       • پنج‌شنبه: ۹ صبح تا ۶ عصر<br>
+                       • جمعه: ۱۰ صبح تا ۴ عصر<br>
+                       در صورت نیاز فوری خارج از ساعات کاری، از طریق واتساپ می‌توانید پیام بگذارید.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- بخش تماس -->
+        <div class="contact-promo" data-animate="fade-up" data-delay="700">
+            <h3>سوال دیگری دارید؟</h3>
+            <p>اگر پاسخ سوال خود را پیدا نکردید، با خیال راحت با ما تماس بگیرید</p>
+            <div class="support-buttons">
+                <a href="contact.html" class="support-btn telegram" style="background: #FF6B4A;">
+                    📞 تماس با ما
+                </a>
+                <a href="index.html" class="support-btn whatsapp" style="background: #00C9B1;">
+                    🏠 بازگشت به فروشگاه
+                </a>
             </div>
         </div>
     </main>
 
-    <!-- پشتیبانی و فوتر -->
+    <!-- پشتیبانی -->
+    <section class="support-section">
+        <div class="container support-container">
+            <h3 class="support-title">📞 پشتیبانی آنلاین</h3>
+            <p class="support-text">برای مشاوره و خرید با ما در ارتباط باشید</p>
+            <div class="support-buttons">
+                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
+                    ✈️ تلگرام
+                </a>
+                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer">
+                    💬 واتساپ
+                </a>
+            </div>
+        </div>
+    </section>
 
+    <!-- فوتر -->
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
+        </div>
+    </footer>
+
+    <!-- اسکریپت‌ها -->
     <script src="common.js"></script>
     <script>
-        // مدیریت FAQ
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const item = this.parentElement;
-                const isActive = item.classList.contains('active');
-                
-                // بستن همه
-                document.querySelectorAll('.faq-item').forEach(faq => {
-                    faq.classList.remove('active');
+        // مدیریت باز و بسته شدن FAQ
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 صفحه FAQ بارگذاری شد');
+            
+            // مدیریت کلیک روی سوالات
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const faqItem = this.parentElement;
+                    const isActive = faqItem.classList.contains('active');
+                    
+                    // بستن همه موارد
+                    document.querySelectorAll('.faq-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // باز کردن مورد انتخاب شده
+                    if (!isActive) {
+                        faqItem.classList.add('active');
+                    }
                 });
-                
-                // باز کردن مورد انتخاب شده
-                if (!isActive) {
-                    item.classList.add('active');
-                }
             });
+            
+            // باز کردن اولین سوال به صورت پیش‌فرض
+            setTimeout(() => {
+                const firstFaq = document.querySelector('.faq-item');
+                if (firstFaq) {
+                    firstFaq.classList.add('active');
+                }
+            }, 1000);
+            
+            // مدیریت جستجو
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        window.location.href = `index.html?search=${encodeURIComponent(this.value)}`;
+                    }
+                });
+            }
+            
+            if (searchButton) {
+                searchButton.addEventListener('click', function() {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        window.location.href = `index.html?search=${encodeURIComponent(searchTerm)}`;
+                    }
+                });
+            }
+        });
+        
+        // نمایش تعداد سبد خرید
+        function updateCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                const cartCount = document.getElementById('cartCount');
+                if (cartCount) {
+                    cartCount.textContent = totalItems;
+                }
+            } catch (e) {
+                console.log('خطا در خواندن سبد خرید');
+            }
+        }
+        
+        // بروزرسانی تعداد سبد خرید
+        updateCartCount();
+        setInterval(updateCartCount, 5000);
+        
+        // هشدار خروج
+        window.addEventListener('beforeunload', function() {
+            // ذخیره اطلاعات کاربر (اختیاری)
+            const searchTerm = document.getElementById('searchInput')?.value;
+            if (searchTerm) {
+                localStorage.setItem('lastSearch', searchTerm);
+            }
         });
     </script>
 </body>
