@@ -94,7 +94,7 @@ function createCategoryButtons() {
     if (allBtn) allBtn.classList.add('active');
 }
 
-// 3. نمایش محصولات
+// 3. نمایش محصولات (نسخه سازگار با دیتای فعلی)
 function displayProducts(productsArray) {
     const grid = document.getElementById('productsGrid');
     const noProducts = document.getElementById('noProducts');
@@ -115,33 +115,38 @@ function displayProducts(productsArray) {
         productCard.className = 'product-card';
         productCard.dataset.category = product.category;
         
+        const displayPrice = product.priceText || product.price;
+        const stockCount = product.stock !== undefined ? product.stock : (product.available ? 10 : 0);
+        const brandName = product.brand || (product.description ? product.description.split('|')[0]?.trim() : 'PulseGadgett');
+        
         productCard.innerHTML = `
-            ${product.stock === 0 ? '<div class="out-of-stock-badge">ناموجود</div>' : ''}
+            ${stockCount === 0 ? '<div class="out-of-stock-badge">ناموجود</div>' : ''}
             <div class="product-image">
-                <img src="${product.image || 'images/placeholder.jpg'}" alt="${product.name}" loading="lazy">
+                <img src="${product.image || 'images/placeholder.jpg'}" alt="${product.name}" loading="lazy" 
+                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGM0YzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPtio2YrYstmF2YbbjCDYp9mG2K8iLz48L3N2Zz4='">
             </div>
             <div class="product-info">
-                <h3 class="product-title">${product.name}</h3>
-                <div class="product-brand">${product.brand}</div>
-                <p class="product-description">${product.description}</p>
+                <h3 class="product-title">${escapeHtml(product.name)}</h3>
+                <div class="product-brand">${escapeHtml(brandName)}</div>
+                <p class="product-description">${escapeHtml(product.description || '')}</p>
                 
                 <div class="product-details">
-                    <div class="product-price">${product.price.toLocaleString('fa-IR')} تومان</div>
+                    <div class="product-price">${displayPrice}</div>
                     <div class="product-code">کد: ${product.code}</div>
                 </div>
                 
                 <div class="product-actions">
                     <button class="add-to-cart-btn" 
                             data-product-id="${product.id}"
-                            ${product.stock === 0 ? 'disabled' : ''}>
-                        ${product.stock === 0 ? 'ناموجود' : '🛒 افزودن به سبد خرید'}
+                            ${stockCount === 0 ? 'disabled' : ''}>
+                        ${stockCount === 0 ? 'ناموجود' : '🛒 افزودن به سبد خرید'}
                     </button>
                 </div>
             </div>
         `;
         
         const addToCartBtn = productCard.querySelector('.add-to-cart-btn');
-        if (addToCartBtn && product.stock > 0) {
+        if (addToCartBtn && stockCount > 0) {
             addToCartBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 addToCart(product.id);
@@ -156,6 +161,14 @@ function displayProducts(productsArray) {
         
         grid.appendChild(productCard);
     });
+}
+
+// تابع کمکی برای جلوگیری از XSS
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // 4. فیلتر محصولات
@@ -195,8 +208,7 @@ function searchProducts() {
         product.name.toLowerCase().includes(searchTerm) ||
         (product.code && product.code.toLowerCase().includes(searchTerm)) ||
         (product.description && product.description.toLowerCase().includes(searchTerm)) ||
-        (product.category && product.category.toLowerCase().includes(searchTerm)) ||
-        (product.brand && product.brand.toLowerCase().includes(searchTerm))
+        (product.category && product.category.toLowerCase().includes(searchTerm))
     );
     
     displayProducts(filteredProducts);
@@ -223,12 +235,14 @@ function toggleCart() {
 // 8. اضافه کردن محصول به سبد خرید
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
-    if (!product || product.stock === 0) return;
+    const stockCount = product.stock !== undefined ? product.stock : (product.available ? 10 : 0);
+    
+    if (!product || stockCount === 0) return;
     
     const existingItem = cart.find(item => item.id === productId);
     
     if (existingItem) {
-        if (existingItem.quantity >= product.stock) {
+        if (existingItem.quantity >= stockCount) {
             showNotification('این تعداد از محصول در انبار موجود نیست', 'warning');
             return;
         }
@@ -238,11 +252,12 @@ function addToCart(productId) {
             id: product.id,
             name: product.name,
             price: product.price,
+            priceText: product.priceText || product.price,
             image: product.image,
             category: product.category,
             code: product.code,
             quantity: 1,
-            maxStock: product.stock
+            maxStock: stockCount
         });
     }
     
@@ -265,6 +280,7 @@ function updateQuantity(productId, change) {
     if (!item) return;
     
     const product = products.find(p => p.id === productId);
+    const stockCount = product ? (product.stock !== undefined ? product.stock : (product.available ? 10 : 0)) : item.maxStock;
     const newQuantity = item.quantity + change;
     
     if (newQuantity < 1) {
@@ -272,8 +288,8 @@ function updateQuantity(productId, change) {
         return;
     }
     
-    if (product && newQuantity > product.stock) {
-        showNotification(`فقط ${product.stock} عدد از این محصول در انبار موجود است`, 'warning');
+    if (product && newQuantity > stockCount) {
+        showNotification(`فقط ${stockCount} عدد از این محصول در انبار موجود است`, 'warning');
         return;
     }
     
@@ -285,7 +301,12 @@ function updateQuantity(productId, change) {
 // 11. محاسبه قیمت کل سبد خرید
 function calculateTotalPrice() {
     return cart.reduce((total, item) => {
-        const price = parseInt(item.price.replace(/[^0-9]/g, ''));
+        let price = 0;
+        if (typeof item.price === 'number') {
+            price = item.price;
+        } else if (typeof item.price === 'string') {
+            price = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
+        }
         return total + (price * item.quantity);
     }, 0);
 }
@@ -321,29 +342,35 @@ function updateCartDisplay() {
     }
     
     cart.forEach(item => {
-        const itemTotal = (parseInt(item.price.replace(/[^0-9]/g, '')) * item.quantity).toLocaleString('fa-IR') + ' تومان';
+        let itemPrice = 0;
+        if (typeof item.price === 'number') {
+            itemPrice = item.price;
+        } else if (typeof item.price === 'string') {
+            itemPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
+        }
+        const itemTotal = (itemPrice * item.quantity).toLocaleString('fa-IR') + ' تومان';
         
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
             <div class="cart-item-image-container">
-                <img src="${item.image || 'images/placeholder.jpg'}" alt="${item.name}" 
-                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIHJ4PSI4IiBmaWxsPSIjRjNGM0YzIi8+PC9zdmc+'">
+                <img src="${item.image || 'images/placeholder.jpg'}" alt="${escapeHtml(item.name)}" 
+                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iODAiIGhlaWdodD0iODAiIHJ4PSI4IiBmaWxsPSIjRjNGM0YzIi8+PC9zdmc+'>
             </div>
             <div class="cart-item-info">
-                <div class="cart-item-name">${item.name}</div>
-                <div class="cart-item-category">${item.category}</div>
-                <div class="cart-item-code">کد: ${item.code}</div>
+                <div class="cart-item-name">${escapeHtml(item.name)}</div>
+                <div class="cart-item-category">${escapeHtml(item.category || '')}</div>
+                <div class="cart-item-code">کد: ${item.code || ''}</div>
             </div>
             <div class="cart-item-controls">
                 <div class="quantity-controls">
-                    <button class="quantity-btn minus" onclick="updateQuantity('${item.id}', -1)">−</button>
+                    <button class="quantity-btn minus" onclick="updateQuantity(${item.id}, -1)">−</button>
                     <span class="quantity-value">${item.quantity}</span>
-                    <button class="quantity-btn plus" onclick="updateQuantity('${item.id}', 1)">+</button>
+                    <button class="quantity-btn plus" onclick="updateQuantity(${item.id}, 1)">+</button>
                 </div>
                 <div class="cart-item-price">${itemTotal}</div>
             </div>
-            <button class="remove-item-btn" onclick="removeFromCart('${item.id}')" title="حذف">
+            <button class="remove-item-btn" onclick="removeFromCart(${item.id})" title="حذف">
                 ✕
             </button>
         `;
@@ -395,8 +422,14 @@ function showMessengerModal() {
     const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
     
     const productList = cart.map(item => {
-        const itemPrice = parseInt(item.price.replace(/[^0-9]/g, '')) * item.quantity;
-        return `▫️ ${item.name} (${item.quantity} عدد) - ${itemPrice.toLocaleString('fa-IR')} تومان`;
+        let itemPrice = 0;
+        if (typeof item.price === 'number') {
+            itemPrice = item.price;
+        } else if (typeof item.price === 'string') {
+            itemPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
+        }
+        const itemTotal = itemPrice * item.quantity;
+        return `▫️ ${item.name} (${item.quantity} عدد) - ${itemTotal.toLocaleString('fa-IR')} تومان`;
     }).join('\n');
     
     const message = `🛒 سفارش جدید از PulseGadgett
@@ -533,36 +566,6 @@ function initScrollAnimations() {
     }
 }
 
-// افکت موج برای دکمه‌ها
-function addRippleEffect(element) {
-    element.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-        
-        ripple.style.cssText = `
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            transform: scale(0);
-            animation: ripple-animation 0.6s linear;
-            width: ${size}px;
-            height: ${size}px;
-            top: ${y}px;
-            left: ${x}px;
-            pointer-events: none;
-        `;
-        
-        this.style.position = 'relative';
-        this.style.overflow = 'hidden';
-        this.appendChild(ripple);
-        
-        setTimeout(() => ripple.remove(), 600);
-    });
-}
-
 // بهبود افکت‌ها روی کارت محصولات
 function enhanceProductCards() {
     const productCards = document.querySelectorAll('.product-card');
@@ -591,52 +594,6 @@ function enhanceProductCards() {
     });
 }
 
-// انیمیشن برای دکمه‌های دسته‌بندی
-function enhanceCategoryButtons() {
-    const categoryButtons = document.querySelectorAll('.category-btn');
-    
-    categoryButtons.forEach((btn, index) => {
-        btn.style.animationDelay = `${index * 0.05}s`;
-        
-        addRippleEffect(btn);
-        
-        btn.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px) scale(1.05)';
-        });
-        
-        btn.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('active')) {
-                this.style.transform = '';
-            }
-        });
-    });
-}
-
-// انیمیشن برای ورود صفحه
-function initPageEntranceAnimations() {
-    const header = document.querySelector('.site-header');
-    if (header) {
-        header.style.opacity = '0';
-        header.style.transform = 'translateY(-30px)';
-        
-        setTimeout(() => {
-            header.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            header.style.opacity = '1';
-            header.style.transform = 'translateY(0)';
-        }, 200);
-    }
-    
-    const categories = document.querySelector('.categories');
-    if (categories) {
-        categories.style.opacity = '0';
-        
-        setTimeout(() => {
-            categories.style.transition = 'opacity 0.6s ease 0.3s';
-            categories.style.opacity = '1';
-        }, 500);
-    }
-}
-
 // ==================== مقداردهی اولیه ====================
 
 // اجرای اصلی
@@ -649,11 +606,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCartDisplay();
         initializeEventListeners();
         
-        // انیمیشن‌های پیشرفته
+        // انیمیشن‌ها
         initScrollAnimations();
         enhanceProductCards();
-        enhanceCategoryButtons();
-        initPageEntranceAnimations();
         
         console.log('✅ سایت با موفقیت بارگذاری شد');
     } else {
@@ -676,8 +631,5 @@ window.goToProduct = goToProduct;
 window.closeMessengerModal = closeMessengerModal;
 window.sendOrderViaWhatsapp = sendOrderViaWhatsapp;
 window.sendOrderViaTelegram = sendOrderViaTelegram;
-window.addRippleEffect = addRippleEffect;
-window.enhanceProductCards = enhanceProductCards;
-window.initScrollAnimations = initScrollAnimations;
 
 console.log('✨ اسکریپت PulseGadgett بارگذاری شد!');
