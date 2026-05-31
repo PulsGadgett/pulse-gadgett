@@ -1,3 +1,21 @@
+:root {
+  --primary: #FF6B4A;
+  --secondary: #00C9B1;
+  --accent: #8A6BFF;
+  --background: #FFF9F0;
+  --text: #3A2D28;
+  --text-dark: #2a1f1a;
+  --light: #FFD166;
+  --border: #E0D6CC;
+  --success: #00C9B1;
+  --warning: #FFD166;
+  --error: #FF6B4A;
+  --category-teal: #00C9B1;
+  --shadow-sm: 0 2px 8px rgba(58, 45, 40, 0.08);
+  --shadow-md: 0 4px 16px rgba(58, 45, 40, 0.12);
+  --shadow-lg: 0 8px 32px rgba(58, 45, 40, 0.16);
+}
+
 /* ==================== استایل‌های مشترک برای تمام صفحات ==================== */
 
 /* صفحات محتوا (درباره ما، تماس، سوالات) */
