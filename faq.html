@@ -281,5 +281,40 @@
             });
         });
     </script>
+    <script>
+    // اتصال دستی و مستقیم سبد خرید
+    (function() {
+        // پیدا کردن المان‌ها
+        const cartBtn = document.getElementById('cartIcon');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCartBtn = document.getElementById('closeCartButton');
+        
+        // تابع باز کردن
+        function openCart() {
+            if (cartSidebar) cartSidebar.classList.add('active');
+            if (cartOverlay) cartOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // تابع بستن
+        function closeCart() {
+            if (cartSidebar) cartSidebar.classList.remove('active');
+            if (cartOverlay) cartOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // اتصال رویدادها
+        if (cartBtn) {
+            cartBtn.addEventListener('click', openCart);
+            console.log('✅ دکمه سبد خرید متصل شد');
+        } else {
+            console.log('❌ دکمه سبد خرید پیدا نشد');
+        }
+        
+        if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
+        if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+    })();
+</script>
 </body>
 </html>
