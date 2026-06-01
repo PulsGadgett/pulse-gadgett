@@ -9,7 +9,6 @@
     <meta name="author" content="PulseGadgett">
     <meta name="google-site-verification" content="3JOViO_oxcfTxiTRDLHkBEt5aLTjjWZNmAxJqiu9N08" />
     
-    <!-- Structured Data (بهبود یافته) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -29,21 +28,18 @@
     }
     </script>
     
-    <!-- بارگذاری اولیه اسکریپت‌ها -->
-    <script src="products-data.js" defer></script>
-    <script src="script.js" defer></script>
+    <script src="products-data.js"></script>
+    <script src="script.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <!-- هدر اصلی با کلاس‌های جدید برای استایل دهی -->
     <header class="site-header">
         <div class="container header-container">
-            <!-- بخش برند و لوگو -->
             <div class="brand">
                 <div class="logo-container">
                     <img src="images/logo.jpg" alt="PulseGadgett" class="logo" 
-                         onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aHR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
                     <div class="brand-text">
                         <h1 class="site-title">PulseGadgett</h1>
                         <p class="site-tagline">ضربان استایل دیجیتال شما</p>
@@ -51,7 +47,6 @@
                 </div>
             </div>
 
-            <!-- ناوبری اصلی -->
             <nav class="main-nav">
                 <a href="index.html" class="nav-link active">🏠 خانه</a>
                 <a href="about.html" class="nav-link">ℹ️ درباره ما</a>
@@ -59,59 +54,44 @@
                 <a href="faq.html" class="nav-link">❓ سوالات</a>
             </nav>
 
-            <!-- جستجو -->
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" 
                        placeholder="جستجوی محصولات..." 
                        onkeypress="if(event.key === 'Enter') searchProducts()">
-                <button id="searchButton" class="search-btn">🔍</button>
+                <button id="searchButton" class="search-btn" onclick="searchProducts()">🔍</button>
             </div>
 
-            <!-- سبد خرید -->
             <div class="header-actions">
-<button class="cart-button" id="cartIcon" onclick="document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); document.body.style.overflow='hidden';">
-    🛒 سبد خرید 
-    <span id="cartCount" class="cart-count">0</span>
-</button>
+                <button class="cart-button" id="cartIcon" onclick="openCart()">
+                    🛒 سبد خرید 
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- دسته‌بندی‌ها -->
     <nav class="categories">
-        <div class="container" id="category-buttons">
-            <!-- دکمه‌های دسته‌بندی به صورت خودکار اینجا ساخته می‌شوند -->
-        </div>
+        <div class="container" id="category-buttons"></div>
     </nav>
 
-    <!-- محتوای اصلی - محصولات -->
     <main class="container main-content">
-        <div class="products-grid" id="productsGrid">
-            <!-- محصولات اینجا نمایش داده می‌شوند -->
-        </div>
-        
+        <div class="products-grid" id="productsGrid"></div>
         <div id="noProducts" class="no-products" style="display: none;">
             <p>محصولی یافت نشد.</p>
         </div>
     </main>
 
-    <!-- پشتیبانی -->
     <section class="support-section">
         <div class="container support-container">
             <h3 class="support-title">📞 پشتیبانی آنلاین</h3>
             <p class="support-text">برای مشاوره و خرید با ما در ارتباط باشید</p>
             <div class="support-buttons">
-                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank" rel="noopener noreferrer">
-                    ✈️ تلگرام
-                </a>
-                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank" rel="noopener noreferrer">
-                    💬 واتساپ
-                </a>
+                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank">✈️ تلگرام</a>
+                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank">💬 واتساپ</a>
             </div>
         </div>
     </section>
 
-    <!-- فوتر -->
     <footer class="site-footer">
         <div class="container footer-container">
             <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
@@ -122,91 +102,89 @@
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3 class="cart-title">🛒 سبد خرید شما</h3>
-<button class="close-cart" id="closeCartButton" onclick="document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); document.body.style.overflow='';">✕</button>
+            <button class="close-cart" id="closeCartButton" onclick="closeCart()">✕</button>
         </div>
-        <div id="cartItems" class="cart-items">
-            <!-- محصولات اینجا نمایش داده می‌شوند -->
-        </div>
+        <div id="cartItems" class="cart-items"></div>
         <div class="cart-footer">
             <div class="cart-total">
                 <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
             </div>
-            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
+            <button class="checkout-btn" id="checkoutButton" onclick="checkout()">📦 ثبت سفارش</button>
         </div>
     </div>
-    
-    <div id="cartOverlay" class="cart-overlay"></div>
+    <div id="cartOverlay" class="cart-overlay" onclick="closeCart()"></div>
+
     <script>
-    // اتصال دستی دکمه سبد خرید
-    document.addEventListener('DOMContentLoaded', function() {
-        var cartBtn = document.getElementById('cartIcon');
-        var sidebar = document.getElementById('cartSidebar');
-        var overlay = document.getElementById('cartOverlay');
-        var closeBtn = document.getElementById('closeCartButton');
-        
+        // ==================== توابع سبد خرید (مستقل) ====================
         function openCart() {
-            if (sidebar) sidebar.classList.add('active');
-            if (overlay) overlay.classList.add('active');
+            document.getElementById('cartSidebar').classList.add('active');
+            document.getElementById('cartOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
         
         function closeCart() {
-            if (sidebar) sidebar.classList.remove('active');
-            if (overlay) overlay.classList.remove('active');
+            document.getElementById('cartSidebar').classList.remove('active');
+            document.getElementById('cartOverlay').classList.remove('active');
             document.body.style.overflow = '';
         }
         
-        if (cartBtn) cartBtn.addEventListener('click', openCart);
-        if (closeBtn) closeBtn.addEventListener('click', closeCart);
-        if (overlay) overlay.addEventListener('click', closeCart);
-        
-        console.log('🔧 دکمه سبد خرید متصل شد');
-    });
-</script>
-<script>
-    // اتصال مستقیم سبد خرید با متد دستی
-    (function() {
-        const cartBtn = document.getElementById('cartIcon');
-        const cartSidebar = document.getElementById('cartSidebar');
-        const cartOverlay = document.getElementById('cartOverlay');
-        const closeCartBtn = document.getElementById('closeCartButton');
-        
-        // تابع باز کردن - مستقیم مثل کاری که در کنسول جواب داد
-        function openCart() {
-            cartSidebar.classList.add('active');
-            cartOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        function updateCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                const cartCount = document.getElementById('cartCount');
+                if (cartCount) cartCount.textContent = totalItems;
+                const totalItemsSpan = document.getElementById('totalItems');
+                if (totalItemsSpan) totalItemsSpan.textContent = totalItems;
+            } catch(e) {}
         }
         
-        // تابع بستن
-        function closeCart() {
-            cartSidebar.classList.remove('active');
-            cartOverlay.classList.remove('active');
-            document.body.style.overflow = '';
+        function addToCart(productId) {
+            if (typeof window.addToCartOriginal === 'function') {
+                window.addToCartOriginal(productId);
+            } else {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const existing = cart.find(item => item.id === productId);
+                    if (existing) {
+                        existing.quantity += 1;
+                    } else {
+                        cart.push({
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            priceText: product.priceText || product.price,
+                            image: product.image,
+                            quantity: 1
+                        });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateCartCount();
+                    showNotification(product.name + ' به سبد خرید اضافه شد', 'success');
+                }
+            }
         }
         
-        // حذف هرگونه رویداد قبلی و اتصال جدید
-        if (cartBtn) {
-            const newBtn = cartBtn.cloneNode(true);
-            cartBtn.parentNode.replaceChild(newBtn, cartBtn);
-            newBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                openCart();
-            });
+        function showNotification(message, type) {
+            const notif = document.createElement('div');
+            notif.className = 'notification ' + type;
+            notif.innerHTML = '<span>' + message + '</span>';
+            notif.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#00C9B1;color:white;padding:12px 24px;border-radius:8px;z-index:9999;';
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 2500);
         }
         
-        if (closeCartBtn) {
-            closeCartBtn.addEventListener('click', closeCart);
-        }
+        // بروزرسانی اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            setInterval(updateCartCount, 3000);
+        });
         
-        if (cartOverlay) {
-            cartOverlay.addEventListener('click', closeCart);
+        // اتصال به تابع اصلی اگه وجود داشت
+        if (typeof window.originalAddToCart === 'undefined' && typeof addToCart !== 'undefined') {
+            window.addToCartOriginal = addToCart;
         }
-        
-        // تست نهایی
-        console.log('🔗 سبد خرید با روش جدید متصل شد');
-    })();
-</script>
+    </script>
 </body>
 </html>
