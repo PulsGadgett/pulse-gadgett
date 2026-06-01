@@ -122,7 +122,7 @@
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3 class="cart-title">🛒 سبد خرید شما</h3>
-            <button class="close-cart" id="closeCartButton">✕</button>
+<button class="close-cart" id="closeCartButton" onclick="document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); document.body.style.overflow='';">✕</button>
         </div>
         <div id="cartItems" class="cart-items">
             <!-- محصولات اینجا نمایش داده می‌شوند -->
