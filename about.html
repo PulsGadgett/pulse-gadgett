@@ -10,35 +10,62 @@
 </head>
 <body>
     <header class="site-header">
-        <!-- همان هدر اصلی index.html -->
+        <div class="container header-container">
+            <div class="brand">
+                <div class="logo-container">
+                    <img src="images/logo.jpg" alt="PulseGadgett" class="logo" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzg0NkNGOSIvPjxwYXRoIGQ9Ik0zMCAzNS41QzMzLjAzNzYgMzUuNSAzNS41IDMzLjAzNzYgMzUuNSAzMEMzNS41IDI2Ljk2MjQgMzMuMDM3NiAyNC41IDMwIDI0LjVDMjYuOTYyNCAyNC41IDI0LjUgMjYuOTYyNCAyNC41IDMwQzI0LjUgMzMuMDM3NiAyNi45NjI0IDM1LjUgMzAgMzUuNVoiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTIwIDQwTDQwIDMwTDM1IDIwSDE1TDIwIDQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=';">
+                    <div class="brand-text">
+                        <h1 class="site-title">PulseGadgett</h1>
+                        <p class="site-tagline">ضربان استایل دیجیتال شما</p>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">🏠 خانه</a>
+                <a href="about.html" class="nav-link active">ℹ️ درباره ما</a>
+                <a href="contact.html" class="nav-link">📞 ارتباط</a>
+                <a href="faq.html" class="nav-link">❓ سوالات</a>
+            </nav>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="جستجوی محصولات...">
+                <button id="searchButton" class="search-btn">🔍</button>
+            </div>
+            <div class="header-actions">
+                <button class="cart-button" id="cartIcon">
+                    🛒 سبد خرید 
+                    <span id="cartCount" class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
     </header>
 
     <main class="container content-page">
-        <div class="content-header" data-animate="fade-up">
-            <h1 data-typewriter data-speed="60">درباره PulseGadgett</h1>
+        <div class="content-header">
+            <h1>درباره PulseGadgett</h1>
             <p class="content-subtitle">از ایده تا اجرا، داستان ما</p>
         </div>
 
-        <div class="content-card" data-animate="fade-up" data-delay="200">
+        <div class="content-card">
             <h2>🎯 مأموریت ما</h2>
             <p>در PulseGadgett، باور داریم که تکنولوژی باید در دسترس همه باشد. ما با ارائه بهترین لوازم جانبی موبایل با قیمت‌های منصفانه، سعی در بهبود تجربه دیجیتال کاربران داریم.</p>
             
             <div class="feature-list">
-                <div class="feature-item" data-child-animate>
+                <div class="feature-item">
                     <div class="feature-icon">🚀</div>
                     <div class="feature-text">
                         <h3>کیفیت بی‌همتا</h3>
                         <p>تمامی محصولات با استانداردهای جهانی تولید و تأیید می‌شوند</p>
                     </div>
                 </div>
-                <div class="feature-item" data-child-animate>
+                <div class="feature-item">
                     <div class="feature-icon">💎</div>
                     <div class="feature-text">
                         <h3>ضمانت اصل بودن</h3>
                         <p>تضمین ۱۰۰٪ اصل بودن کالا با ارائه گارانتی معتبر</p>
                     </div>
                 </div>
-                <div class="feature-item" data-child-animate>
+                <div class="feature-item">
                     <div class="feature-icon">⚡</div>
                     <div class="feature-text">
                         <h3>ارسال سریع</h3>
@@ -48,62 +75,99 @@
             </div>
         </div>
 
-        <div class="content-card" data-animate="fade-up" data-delay="400">
+        <div class="content-card">
             <h2>📊 آمار و ارقام</h2>
             <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 2rem;">
                 <div class="stat-item" style="text-align: center;">
-                    <h3 data-counter data-target="5000" style="font-size: 2.5rem; color: var(--primary);">0</h3>
+                    <h3 style="font-size: 2.5rem; color: var(--primary);">۵۰۰۰+</h3>
                     <p>محصول فروخته شده</p>
                 </div>
                 <div class="stat-item" style="text-align: center;">
-                    <h3 data-counter data-target="98" style="font-size: 2.5rem; color: var(--secondary);">0</h3>
+                    <h3 style="font-size: 2.5rem; color: var(--secondary);">۹۸٪</h3>
                     <p>رضایت مشتری</p>
                 </div>
                 <div class="stat-item" style="text-align: center;">
-                    <h3 data-counter data-target="24" style="font-size: 2.5rem; color: var(--accent);">0</h3>
-                    <p>ساعت پشتیبانی</p>
+                    <h3 style="font-size: 2.5rem; color: var(--accent);">۲۴ ساعته</h3>
+                    <p>پشتیبانی</p>
                 </div>
                 <div class="stat-item" style="text-align: center;">
-                    <h3 data-counter data-target="150" style="font-size: 2.5rem; color: var(--light);">0</h3>
+                    <h3 style="font-size: 2.5rem; color: var(--warning);">۱۵۰+</h3>
                     <p>محصول متنوع</p>
                 </div>
             </div>
         </div>
 
-        <div class="content-card" data-animate="fade-up" data-delay="600">
+        <div class="content-card">
             <h2>👥 تیم ما</h2>
             <div class="team-grid">
-                <div class="team-member" data-child-animate>
-                    <img src="images/team1.jpg" alt="مدیرعامل" class="member-photo">
+                <div class="team-member">
+                    <div class="member-photo" style="background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                        👨‍💼
+                    </div>
                     <div class="member-info">
                         <h3>علی محمدی</h3>
                         <span class="member-role">مدیرعامل و مؤسس</span>
                         <p>با ۱۰ سال تجربه در حوزه تکنولوژی</p>
-                        <div class="member-contact">
-                            <a href="#" class="contact-icon">📧</a>
-                            <a href="#" class="contact-icon">💼</a>
-                        </div>
                     </div>
                 </div>
-                <!-- سایر اعضای تیم -->
+                <div class="team-member">
+                    <div class="member-photo" style="background: linear-gradient(135deg, var(--secondary), var(--primary)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                        👩‍💻
+                    </div>
+                    <div class="member-info">
+                        <h3>سارا احمدی</h3>
+                        <span class="member-role">مدیر فروش</span>
+                        <p>متخصص در حوزه محصولات دیجیتال</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-photo" style="background: linear-gradient(135deg, var(--accent), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                        📦
+                    </div>
+                    <div class="member-info">
+                        <h3>رضا کریمی</h3>
+                        <span class="member-role">مدیر تدارکات</span>
+                        <p>مسئول تأمین و ارسال محصولات</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- پشتیبانی و فوتر مانند index.html -->
+    <section class="support-section">
+        <div class="container support-container">
+            <h3 class="support-title">📞 پشتیبانی آنلاین</h3>
+            <p class="support-text">برای مشاوره و خرید با ما در ارتباط باشید</p>
+            <div class="support-buttons">
+                <a href="https://t.me/PG_supporter" class="support-btn telegram" target="_blank">✈️ تلگرام</a>
+                <a href="https://wa.me/+989965566964" class="support-btn whatsapp" target="_blank">💬 واتساپ</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
+        </div>
+    </footer>
+
+    <!-- سبد خرید سایدبار -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3 class="cart-title">🛒 سبد خرید شما</h3>
+            <button class="close-cart" id="closeCartButton">✕</button>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
+            </div>
+            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
+        </div>
+    </div>
+    <div id="cartOverlay" class="cart-overlay"></div>
 
     <script src="common.js"></script>
-    <script>
-        // انیمیشن‌های خاص صفحه درباره ما
-        document.addEventListener('DOMContentLoaded', function() {
-            // اضافه کردن افکت‌های اضافی
-            const featureItems = document.querySelectorAll('.feature-item');
-            featureItems.forEach(item => {
-                item.addEventListener('mouseenter', function() {
-                    this.querySelector('.feature-icon').style.animation = 'float 0.5s ease';
-                });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
