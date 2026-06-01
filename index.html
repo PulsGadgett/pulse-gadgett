@@ -8,6 +8,77 @@
     <script src="products-data.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        /* استایل مستقیم سبد خرید - تضمینی */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: white;
+            z-index: 1001;
+            transition: right 0.3s ease;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-sidebar.show {
+            right: 0;
+        }
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+        .cart-overlay.show {
+            display: block;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #FF6B4A, #ff8b6b);
+            color: white;
+        }
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #ddd;
+            background: #f8f8f8;
+        }
+        .checkout-btn {
+            width: 100%;
+            background: #00C9B1;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cart-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -89,8 +160,19 @@
     <div id="cartOverlay" class="cart-overlay"></div>
 
     <script>
-        // ==================== سبد خرید ====================
+        // ==================== سبد خرید با متد ساده ====================
         let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // توابع باز و بسته کردن سایدبار
+        function openCart() {
+            document.getElementById('cartSidebar').classList.add('show');
+            document.getElementById('cartOverlay').classList.add('show');
+        }
+        
+        function closeCart() {
+            document.getElementById('cartSidebar').classList.remove('show');
+            document.getElementById('cartOverlay').classList.remove('show');
+        }
         
         function saveCart() {
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -99,8 +181,10 @@
         
         function updateCartUI() {
             const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
-            document.getElementById('cartCount').innerText = totalItems;
-            document.getElementById('totalItems').innerText = totalItems;
+            const cartCount = document.getElementById('cartCount');
+            const totalItemsSpan = document.getElementById('totalItems');
+            if (cartCount) cartCount.innerText = totalItems;
+            if (totalItemsSpan) totalItemsSpan.innerText = totalItems;
             
             const container = document.getElementById('cartItems');
             if (!container) return;
@@ -111,24 +195,20 @@
             }
             
             container.innerHTML = cart.map(item => {
-                const price = item.priceText || item.price;
-                const total = (parseInt(String(item.price).replace(/[^0-9]/g, '')) * item.quantity).toLocaleString('fa-IR');
+                const priceNum = parseInt(String(item.price).replace(/[^0-9]/g, '')) || 0;
+                const total = (priceNum * item.quantity).toLocaleString('fa-IR');
                 return `
                     <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">${price}</div>
-                            <div>تعداد: ${item.quantity}</div>
-                        </div>
-                        <div style="display:flex; gap:8px;">
+                        <div><strong>${item.name}</strong></div>
+                        <div>قیمت: ${item.priceText || item.price}</div>
+                        <div style="display:flex; gap:8px; align-items:center; margin-top:8px;">
                             <button onclick="changeQty(${item.id}, -1)">-</button>
                             <span>${item.quantity}</span>
                             <button onclick="changeQty(${item.id}, 1)">+</button>
-                            <button onclick="removeFromCart(${item.id})">🗑️</button>
+                            <button onclick="removeFromCart(${item.id})" style="color:red;">🗑️</button>
                         </div>
                         <div>جمع: ${total} تومان</div>
                     </div>
-                    <hr>
                 `;
             }).join('');
         }
@@ -177,16 +257,6 @@
             n.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#00C9B1;color:white;padding:12px 20px;border-radius:8px;z-index:9999;';
             document.body.appendChild(n);
             setTimeout(() => n.remove(), 2000);
-        }
-        
-        function openCart() {
-            document.getElementById('cartSidebar').classList.add('active');
-            document.getElementById('cartOverlay').classList.add('active');
-        }
-        
-        function closeCart() {
-            document.getElementById('cartSidebar').classList.remove('active');
-            document.getElementById('cartOverlay').classList.remove('active');
         }
         
         function searchProducts() {
@@ -238,11 +308,14 @@
             if(cart.length === 0) return showNotif('سبد خرید خالی است');
             let msg = encodeURIComponent('سفارش جدید:\n' + cart.map(i => `${i.name} × ${i.quantity}`).join('\n'));
             window.open(`https://wa.me/989965566964?text=${msg}`, '_blank');
+            closeCart();
         });
         
         createCategoryButtons();
         displayProducts(products);
         updateCartUI();
+        
+        console.log('✅ سایت آماده است - سبد خرید با کلیک روی آیکون باز میشود');
     </script>
 </body>
 </html>
