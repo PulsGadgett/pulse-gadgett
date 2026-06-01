@@ -69,10 +69,10 @@
 
             <!-- سبد خرید -->
             <div class="header-actions">
-                <button class="cart-button" id="cartIcon">
-                    🛒 سبد خرید 
-                    <span id="cartCount" class="cart-count">0</span>
-                </button>
+<button class="cart-button" id="cartIcon" onclick="document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); document.body.style.overflow='hidden';">
+    🛒 سبد خرید 
+    <span id="cartCount" class="cart-count">0</span>
+</button>
             </div>
         </div>
     </header>
