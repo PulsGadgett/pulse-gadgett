@@ -4,54 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جزئیات محصول - PulseGadgett</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="common.css">
     <script src="products-data.js"></script>
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
     <style>
-        .product-detail-page {
-            padding: 3rem 0;
-            min-height: 70vh;
-        }
         .product-detail-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2rem;
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         }
-        .product-image-main {
+        .product-detail-image {
             width: 100%;
             height: 400px;
             object-fit: contain;
             background: #f8f8f8;
             border-radius: 16px;
-            cursor: pointer;
         }
-        .product-title-detail {
+        .product-detail-title {
             font-size: 2rem;
-            margin-bottom: 1rem;
             color: var(--text);
+            margin-bottom: 1rem;
         }
-        .product-price-detail {
+        .product-detail-price {
             font-size: 2rem;
             color: var(--primary);
             font-weight: bold;
             margin: 1rem 0;
         }
-        .product-code-detail {
+        .product-detail-code {
             color: #666;
             margin-bottom: 1rem;
         }
-        .product-description-detail {
+        .product-detail-desc {
             line-height: 1.8;
             color: #555;
             margin: 1.5rem 0;
         }
         .add-to-cart-detail {
-            background: linear-gradient(135deg, var(--primary), #ff8b6b);
+            background: linear-gradient(135deg, #FF6B4A, #ff8b6b);
             color: white;
             border: none;
             padding: 1rem 2rem;
@@ -62,16 +56,19 @@
             margin-top: 1rem;
         }
         .back-button {
-            margin-top: 2rem;
+            margin: 2rem 0;
             text-align: center;
         }
         .back-button button {
-            background: var(--secondary);
+            background: #00C9B1;
             color: white;
             border: none;
             padding: 0.8rem 2rem;
             border-radius: 10px;
             cursor: pointer;
+        }
+        .cart-sidebar, .cart-overlay {
+            display: none;
         }
         @media (max-width: 768px) {
             .product-detail-container {
@@ -102,7 +99,7 @@
                 <a href="faq.html" class="nav-link">❓ سوالات</a>
             </nav>
             <div class="header-actions">
-                <button class="cart-button" id="cartIcon">
+                <button class="cart-button" id="cartIcon" onclick="window.location.href='index.html'">
                     🛒 سبد خرید 
                     <span id="cartCount" class="cart-count">0</span>
                 </button>
@@ -110,71 +107,55 @@
         </div>
     </header>
 
-    <main class="container product-detail-page">
-        <div id="productDetailContainer">
-            <div style="text-align: center; padding: 50px;">در حال بارگذاری...</div>
-        </div>
+    <main class="container">
+        <div id="productDetail"></div>
         <div class="back-button">
             <button onclick="window.location.href='index.html'">← بازگشت به فروشگاه</button>
         </div>
     </main>
 
-    <!-- سبد خرید سایدبار -->
-    <div id="cartSidebar" class="cart-sidebar">
-        <div class="cart-header">
-            <h3 class="cart-title">🛒 سبد خرید شما</h3>
-            <button class="close-cart" id="closeCartButton">✕</button>
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
         </div>
-        <div id="cartItems" class="cart-items"></div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
-            </div>
-            <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
-        </div>
-    </div>
-    <div id="cartOverlay" class="cart-overlay"></div>
+    </footer>
 
     <script>
-        function displayProductDetail() {
+        // نمایش جزئیات محصول
+        function showProductDetail() {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = parseInt(urlParams.get('id'));
             
             if (!products || products.length === 0) {
-                document.getElementById('productDetailContainer').innerHTML = '<div style="text-align:center;padding:50px;">خطا در بارگذاری محصولات</div>';
+                document.getElementById('productDetail').innerHTML = '<p>خطا در بارگذاری محصول</p>';
                 return;
             }
             
             const product = products.find(p => p.id === productId);
-            const container = document.getElementById('productDetailContainer');
+            const container = document.getElementById('productDetail');
             
             if (!product) {
-                container.innerHTML = `
-                    <div style="text-align:center;padding:50px;">
-                        <h2>محصول یافت نشد</h2>
-                        <button onclick="window.location.href='index.html'" style="background:var(--primary);color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;">بازگشت به فروشگاه</button>
-                    </div>
-                `;
+                container.innerHTML = '<p>محصول یافت نشد</p>';
                 return;
             }
             
-            const displayPrice = product.priceText || product.price;
-            const brandName = product.brand || (product.description ? product.description.split('|')[0]?.trim() : 'PulseGadgett');
+            const price = product.priceText || product.price;
+            const brand = product.brand || (product.description ? product.description.split('|')[0] : '');
             
             container.innerHTML = `
                 <div class="product-detail-container">
-                    <div class="product-image-section">
-                        <img src="${product.image || 'images/placeholder.jpg'}" alt="${product.name}" class="product-image-main" id="mainProductImage"
-                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiPjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjNGM0YzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiPtio2YrYstmF2YbbjCDYp9mG2K8iLz48L3N2Zz4='">
+                    <div>
+                        <img src="${product.image || 'images/placeholder.jpg'}" alt="${product.name}" class="product-detail-image"
+                             onerror="this.src='images/placeholder.jpg'">
                     </div>
-                    <div class="product-info-section">
-                        <h1 class="product-title-detail">${product.name}</h1>
-                        <div class="product-brand">${brandName}</div>
-                        <div class="product-code-detail">کد محصول: ${product.code}</div>
-                        <div class="product-category-detail" style="color:var(--secondary);">دسته: ${product.category}</div>
-                        <div class="product-price-detail">${displayPrice}</div>
-                        <div class="product-description-detail">${product.description || 'توضیحاتی برای این محصول موجود نیست.'}</div>
-                        <button class="add-to-cart-detail" id="detailAddToCart" data-id="${product.id}">
+                    <div>
+                        <h1 class="product-detail-title">${product.name}</h1>
+                        ${brand ? '<div style="color:#00C9B1; margin-bottom:0.5rem;">🏷️ ' + brand + '</div>' : ''}
+                        <div class="product-detail-code">کد محصول: ${product.code}</div>
+                        <div style="color:#666; margin:0.5rem 0;">دسته: ${product.category}</div>
+                        <div class="product-detail-price">${price}</div>
+                        <div class="product-detail-desc">${product.description || 'توضیحاتی برای این محصول موجود نیست.'}</div>
+                        <button class="add-to-cart-detail" onclick="addToCartAndRedirect(${product.id})">
                             🛒 افزودن به سبد خرید
                         </button>
                     </div>
@@ -183,76 +164,49 @@
             
             document.title = `${product.name} - PulseGadgett`;
             
-            const addBtn = document.getElementById('detailAddToCart');
-            if (addBtn) {
-                addBtn.addEventListener('click', function() {
-                    if (typeof addToCart === 'function') {
-                        addToCart(product.id);
-                    } else {
-                        alert('خطا: تابع افزودن به سبد خرید یافت نشد');
-                    }
-                });
-            }
-            
-            const mainImage = document.getElementById('mainProductImage');
-            if (mainImage) {
-                mainImage.addEventListener('click', function() {
-                    window.open(this.src, '_blank');
-                });
-            }
+            // بروزرسانی تعداد سبد خرید
+            updateCartCount();
         }
         
-        document.addEventListener('DOMContentLoaded', function() {
-            displayProductDetail();
+        function addToCartAndRedirect(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
             
-            if (typeof updateCartDisplay === 'function') updateCartDisplay();
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const existing = cart.find(item => item.id === id);
             
-            const cartIcon = document.getElementById('cartIcon');
-            const closeCartButton = document.getElementById('closeCartButton');
-            const checkoutButton = document.getElementById('checkoutButton');
-            const cartOverlay = document.getElementById('cartOverlay');
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    priceText: product.priceText || product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
             
-            if (cartIcon && typeof toggleCart === 'function') cartIcon.addEventListener('click', toggleCart);
-            if (closeCartButton && typeof toggleCart === 'function') closeCartButton.addEventListener('click', toggleCart);
-            if (checkoutButton && typeof checkout === 'function') checkoutButton.addEventListener('click', checkout);
-            if (cartOverlay && typeof toggleCart === 'function') cartOverlay.addEventListener('click', toggleCart);
-        });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${product.name} به سبد خرید اضافه شد`);
+            window.location.href = 'index.html';
+        }
+        
+        function updateCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                const total = cart.reduce((sum, i) => sum + i.quantity, 0);
+                const cartCount = document.getElementById('cartCount');
+                if (cartCount) cartCount.innerText = total;
+            } catch(e) {}
+        }
+        
+        showProductDetail();
+        updateCartCount();
+        
+        // هر 3 ثانیه یکبار آپدیت کن
+        setInterval(updateCartCount, 3000);
     </script>
-    <script src="common.js"></script>
-    <script>
-    // اتصال دستی و مستقیم سبد خرید
-    (function() {
-        // پیدا کردن المان‌ها
-        const cartBtn = document.getElementById('cartIcon');
-        const cartSidebar = document.getElementById('cartSidebar');
-        const cartOverlay = document.getElementById('cartOverlay');
-        const closeCartBtn = document.getElementById('closeCartButton');
-        
-        // تابع باز کردن
-        function openCart() {
-            if (cartSidebar) cartSidebar.classList.add('active');
-            if (cartOverlay) cartOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // تابع بستن
-        function closeCart() {
-            if (cartSidebar) cartSidebar.classList.remove('active');
-            if (cartOverlay) cartOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        // اتصال رویدادها
-        if (cartBtn) {
-            cartBtn.addEventListener('click', openCart);
-            console.log('✅ دکمه سبد خرید متصل شد');
-        } else {
-            console.log('❌ دکمه سبد خرید پیدا نشد');
-        }
-        
-        if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
-        if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
-    })();
-</script>
 </body>
 </html>
