@@ -612,7 +612,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         console.log('✅ سایت با موفقیت بارگذاری شد');
     } else {
-        console.error('❌ داده‌های محصول یافت نشد!');
         showNotification('خطا در بارگذاری محصولات. لطفاً صفحه را refresh کنید.', 'error');
     }
 });
