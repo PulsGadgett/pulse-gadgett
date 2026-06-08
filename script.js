@@ -611,10 +611,6 @@ document.addEventListener('DOMContentLoaded', function() {
         enhanceProductCards();
         
         console.log('✅ سایت با موفقیت بارگذاری شد');
-    } else {
-        showNotification('خطا در بارگذاری محصولات. لطفاً صفحه را refresh کنید.', 'error');
-    }
-});
 
 // ==================== اکسپورت توابع به اسکوپ گلوبال ====================
 
