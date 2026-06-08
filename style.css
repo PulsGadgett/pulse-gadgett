@@ -1370,3 +1370,74 @@ body {
     padding: 2rem;
     color: #888;
 }
+/* ========== ریسپانسیو برای موبایل و تبلت ========== */
+@media (max-width: 992px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .product-card .product-title {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-wrap: wrap;
+    }
+    
+    .main-nav {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+    }
+    
+    .search-container {
+        order: 3;
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cart-sidebar {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .product-detail-container {
+        flex-direction: column;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .content-card h2 {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-title {
+        font-size: 1.2rem;
+    }
+    
+    .nav-link {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .product-price {
+        font-size: 1.2rem;
+    }
+    
+    .cart-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+}
