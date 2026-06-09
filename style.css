@@ -1441,3 +1441,55 @@ body {
         font-size: 0.8rem;
     }
 }
+/* موبایل */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .product-card .product-title {
+        font-size: 1rem;
+    }
+    
+    .product-price {
+        font-size: 1.2rem;
+    }
+    
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .cart-sidebar {
+        width: 85%;
+        right: -85%;
+    }
+    
+    .support-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .support-btn {
+        width: 80%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .site-title {
+        font-size: 1.2rem;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+}
