@@ -5,8 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تماس با ما - PulseGadgett</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="common.css">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        /* ریسپانسیو مخصوص صفحه تماس */
+        @media (max-width: 768px) {
+            .grid-2-col {
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
+            }
+            .contact-item {
+                flex-direction: column !important;
+                text-align: center !important;
+            }
+            .info-table th, .info-table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+            .form-control {
+                font-size: 0.9rem;
+                padding: 0.7rem;
+            }
+            .content-card h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -47,7 +70,6 @@
         </div>
 
         <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
-            <!-- فرم تماس -->
             <div class="content-card">
                 <h2>پیام بفرستید</h2>
                 <form class="contact-form" id="contactForm">
@@ -67,67 +89,32 @@
                         <label for="message">پیام شما</label>
                         <textarea id="message" class="form-control" required></textarea>
                     </div>
-                    <button type="submit" class="submit-btn">
-                        📨 ارسال پیام
-                    </button>
+                    <button type="submit" class="submit-btn">📨 ارسال پیام</button>
                 </form>
             </div>
 
-            <!-- اطلاعات تماس -->
             <div class="content-card">
                 <h2>اطلاعات تماس</h2>
                 <div class="contact-info">
                     <div class="contact-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f8f8f8; border-radius: 12px;">
-                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                            📍
-                        </div>
-                        <div>
-                            <h3 style="margin: 0 0 0.3rem 0;">آدرس</h3>
-                            <p style="margin: 0; color: #666;">تهران، خیابان ولیعصر، پلاک ۱۲۳</p>
-                        </div>
+                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📍</div>
+                        <div><h3 style="margin: 0 0 0.3rem 0;">آدرس</h3><p style="margin: 0; color: #666;">تهران، خیابان ولیعصر، پلاک ۱۲۳</p></div>
                     </div>
-                    
                     <div class="contact-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f8f8f8; border-radius: 12px;">
-                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--secondary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                            📱
-                        </div>
-                        <div>
-                            <h3 style="margin: 0 0 0.3rem 0;">تلفن</h3>
-                            <p style="margin: 0; color: #666;">۰۲۱-۱۲۳۴۵۶۷۸</p>
-                        </div>
+                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--secondary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📱</div>
+                        <div><h3 style="margin: 0 0 0.3rem 0;">تلفن</h3><p style="margin: 0; color: #666;">۰۲۱-۱۲۳۴۵۶۷۸</p></div>
                     </div>
-
                     <div class="contact-item" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; padding: 1rem; background: #f8f8f8; border-radius: 12px;">
-                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                            ✉️
-                        </div>
-                        <div>
-                            <h3 style="margin: 0 0 0.3rem 0;">ایمیل</h3>
-                            <p style="margin: 0; color: #666;">info@pulse-gadgett.ir</p>
-                        </div>
+                        <div class="contact-icon" style="width: 50px; height: 50px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">✉️</div>
+                        <div><h3 style="margin: 0 0 0.3rem 0;">ایمیل</h3><p style="margin: 0; color: #666;">info@pulse-gadgett.ir</p></div>
                     </div>
                 </div>
-
                 <table class="info-table">
-                    <thead>
-                        <tr>
-                            <th>روز</th>
-                            <th>ساعات کاری</th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>روز</th><th>ساعات کاری</th></tr></thead>
                     <tbody>
-                        <tr>
-                            <td>شنبه تا چهارشنبه</td>
-                            <td>۸:۰۰ - ۱۷:۰۰</td>
-                        </tr>
-                        <tr>
-                            <td>پنج‌شنبه</td>
-                            <td>۸:۰۰ - ۱۴:۰۰</td>
-                        </tr>
-                        <tr>
-                            <td>جمعه</td>
-                            <td>تعطیل</td>
-                        </tr>
+                        <tr><td>شنبه تا چهارشنبه</td><td>۸:۰۰ - ۱۷:۰۰</td></tr>
+                        <tr><td>پنج‌شنبه</td><td>۸:۰۰ - ۱۴:۰۰</td></tr>
+                        <tr><td>جمعه</td><td>تعطیل</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -146,15 +133,14 @@
     </section>
 
     <footer class="site-footer">
-    <div class="container footer-container">
-        <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
-        <p class="footer-credit" style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">
-            طراحی و توسعه توسط <strong>نکسیو تیم</strong>
-        </p>
-    </div>
-</footer>
+        <div class="container footer-container">
+            <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
+            <p style="font-size: 0.8rem; text-align: center; margin-top: 0.5rem; opacity: 0.8;">
+                طراحی و توسعه توسط <strong>نکسیو تیم</strong>
+            </p>
+        </div>
+    </footer>
 
-    <!-- سبد خرید سایدبار -->
     <div id="cartSidebar" class="cart-sidebar">
         <div class="cart-header">
             <h3 class="cart-title">🛒 سبد خرید شما</h3>
@@ -162,9 +148,7 @@
         </div>
         <div id="cartItems" class="cart-items"></div>
         <div class="cart-footer">
-            <div class="cart-total">
-                <strong>تعداد کل: <span id="totalItems">0</span> محصول</strong>
-            </div>
+            <div class="cart-total"><strong>تعداد کل: <span id="totalItems">0</span> محصول</strong></div>
             <button class="checkout-btn" id="checkoutButton">📦 ثبت سفارش</button>
         </div>
     </div>
@@ -173,69 +157,29 @@
     <script src="common.js"></script>
     <script src="script.js"></script>
     <script>
-        // مدیریت فرم تماس
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const submitBtn = this.querySelector('.submit-btn');
             submitBtn.classList.add('submitting');
             submitBtn.innerHTML = '⏳ در حال ارسال...';
-            
-            // شبیه‌سازی ارسال
             setTimeout(() => {
-                if (typeof showNotification === 'function') {
-                    showNotification('پیام شما با موفقیت ارسال شد!', 'success');
-                } else {
-                    alert('پیام شما با موفقیت ارسال شد!');
-                }
+                if (typeof showNotification === 'function') showNotification('پیام شما با موفقیت ارسال شد!', 'success');
+                else alert('پیام شما با موفقیت ارسال شد!');
                 submitBtn.classList.remove('submitting');
                 submitBtn.innerHTML = '📨 ارسال پیام';
                 this.reset();
             }, 1500);
         });
-    </script>
-    <script>
-    // اتصال دستی و مستقیم سبد خرید
-    (function() {
-        // پیدا کردن المان‌ها
+
         const cartBtn = document.getElementById('cartIcon');
         const cartSidebar = document.getElementById('cartSidebar');
         const cartOverlay = document.getElementById('cartOverlay');
         const closeCartBtn = document.getElementById('closeCartButton');
-        
-        // تابع باز کردن
-        function openCart() {
-            if (cartSidebar) cartSidebar.classList.add('active');
-            if (cartOverlay) cartOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // تابع بستن
-        function closeCart() {
-            if (cartSidebar) cartSidebar.classList.remove('active');
-            if (cartOverlay) cartOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        
-        // اتصال رویدادها
-        if (cartBtn) {
-            cartBtn.addEventListener('click', openCart);
-            console.log('✅ دکمه سبد خرید متصل شد');
-        } else {
-            console.log('❌ دکمه سبد خرید پیدا نشد');
-        }
-        
+        function openCart() { cartSidebar?.classList.add('active'); cartOverlay?.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeCart() { cartSidebar?.classList.remove('active'); cartOverlay?.classList.remove('active'); document.body.style.overflow = ''; }
+        if (cartBtn) cartBtn.addEventListener('click', openCart);
         if (closeCartBtn) closeCartBtn.addEventListener('click', closeCart);
         if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
-    })();
-</script>
-<footer class="site-footer">
-    <div class="container footer-container">
-        <p class="footer-text">© PulseGadgett - ضربان استایل دیجیتال شما</p>
-        <p style="font-size: 0.8rem; text-align: center; margin-top: 0.5rem; opacity: 0.8;">
-            طراحی و توسعه توسط <strong>نکسیو تیم</strong>
-        </p>
-    </div>
-</footer>    
+    </script>
 </body>
 </html>
